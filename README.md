@@ -43,7 +43,9 @@ Open browser to <http://localhost:8080>
 ## Installation
 
 ```shall
-npm i vue-pivottable
+npm i ibiz-vue-pivottable
+或
+yarn add ibiz-vue-pivottable
 ```
 
 ## Usage
