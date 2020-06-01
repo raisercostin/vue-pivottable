@@ -25,7 +25,9 @@ $ npm run serve
 ## Installation
 
 ```shall
-npm i vue-pivottable
+npm i ibiz-vue-pivottable
+或
+yarn add ibiz-vue-pivottable
 ```
 
 ## Usage
