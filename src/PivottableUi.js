@@ -54,18 +54,28 @@ export default {
   },
   computed: {
     renderers () {
-      return Object.assign({}, TableRenderer, PlotlyRenderer)
-    },
-    aggregators() {
-      var item = {};
-      for(let key in aggregators) {
-        if(this.locales && this.locales.aggregators && this.locales.aggregators.hasOwnProperty(key)) {
-          item[this.locales.aggregators[key]] = aggregators[key];
-        } else {
-          item[key] = aggregators[key];
+      var options = {}
+      Object.assign(options, TableRenderer, PlotlyRenderer)
+      if (this.locales && this.locales.renderer) {
+        for (let key in this.locales.renderer) {
+          if (options.hasOwnProperty(key)) {
+            options[this.locales.renderer[key]] = options[key]
+            delete options[key]
+          }
         }
       }
-      return item;
+      return options
+    },
+    aggregators () {
+      var item = {}
+      for (let key in aggregators) {
+        if (this.locales && this.locales.aggregators && this.locales.aggregators.hasOwnProperty(key)) {
+          item[this.locales.aggregators[key]] = aggregators[key]
+        } else {
+          item[key] = aggregators[key]
+        }
+      }
+      return item
     },
     numValsAllowed () {
       return this.aggregators[this.propsData.aggregatorName || this.aggregatorName]([])().numInputs || 0
@@ -155,14 +165,21 @@ export default {
       this.propsData.cols = this.cols
       this.unusedOrder = this.unusedAttrs
       this.propsData.aggregatorName = this.transformAggregatorName()
+      this.propsData.rendererName = this.transformRendererName()
       Object.keys(this.attrValues).map(this.assignValue)
       Object.keys(this.openStatus).map(this.assignValue)
     },
     transformAggregatorName () {
-      if(this.locales && this.locales.aggregators && this.locales.aggregators.hasOwnProperty(this.aggregatorName)) {
-        return this.locales.aggregators[this.aggregatorName];
+      if (this.locales && this.locales.aggregators && this.locales.aggregators.hasOwnProperty(this.aggregatorName)) {
+        return this.locales.aggregators[this.aggregatorName]
       }
-      return this.aggregatorName;
+      return this.aggregatorName
+    },
+    transformRendererName () {
+      if (this.locales && this.locales.renderer && this.locales.renderer.hasOwnProperty(this.rendererName)) {
+        return this.locales.renderer[this.rendererName]
+      }
+      return this.rendererName
     },
     assignValue (field) {
       this.$set(this.propsData.valueFilter, field, {})
@@ -183,6 +200,7 @@ export default {
       this.openStatus[attribute] = open
     },
     materializeInput (nextData) {
+      let _this = this
       if (this.propsData.data === nextData) {
         return
       }
@@ -193,6 +211,9 @@ export default {
       PivotData.forEachRecord(this.data, this.derivedAttributes, function (record) {
         materializedInput.push(record)
         for (const attr of Object.keys(record)) {
+          if (_this.columns.findIndex((col) => Object.is(col.prop, attr)) < 0) {
+            continue
+          }
           if (!(attr in attrValues)) {
             attrValues[attr] = {}
             if (recordsProcessed > 0) {
