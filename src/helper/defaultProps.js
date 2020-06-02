@@ -66,6 +66,12 @@ export default {
       validator: function (value) {
         return ['key_a_to_z', 'value_a_to_z', 'value_z_to_a'].indexOf(value) !== -1
       }
+    },
+    locales: {
+      type: Object,
+      default: function() {
+        return {};
+      }
     }
   }
 }
