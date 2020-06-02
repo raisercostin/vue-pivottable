@@ -311,9 +311,13 @@ export default {
       const attrValues = {}
       const materializedInput = []
       let recordsProcessed = 0
+      let _this = this
       PivotData.forEachRecord(this.pivotData, this.derivedAttributes, function (record) {
         materializedInput.push(record)
         for (const attr of Object.keys(record)) {
+          if (_this.columns.findIndex((col) => Object.is(col.prop, attr)) < 0) {
+            continue
+          }
           if (!(attr in attrValues)) {
             attrValues[attr] = {}
             if (recordsProcessed > 0) {
