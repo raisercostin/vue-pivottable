@@ -56,8 +56,19 @@ export default {
     renderers () {
       return Object.assign({}, TableRenderer, PlotlyRenderer)
     },
+    aggregators() {
+      var item = {};
+      for(let key in aggregators) {
+        if(this.locales && this.locales.aggregators && this.locales.aggregators.hasOwnProperty(key)) {
+          item[this.locales.aggregators[key]] = aggregators[key];
+        } else {
+          item[key] = aggregators[key];
+        }
+      }
+      return item;
+    },
     numValsAllowed () {
-      return aggregators[this.propsData.aggregatorName || this.aggregatorName]([])().numInputs || 0
+      return this.aggregators[this.propsData.aggregatorName || this.aggregatorName]([])().numInputs || 0
     },
     rowAttrs () {
       return this.propsData.rows.filter(
@@ -143,8 +154,15 @@ export default {
       this.propsData.rows = this.rows
       this.propsData.cols = this.cols
       this.unusedOrder = this.unusedAttrs
+      this.propsData.aggregatorName = this.transformAggregatorName()
       Object.keys(this.attrValues).map(this.assignValue)
       Object.keys(this.openStatus).map(this.assignValue)
+    },
+    transformAggregatorName () {
+      if(this.locales && this.locales.aggregators && this.locales.aggregators.hasOwnProperty(this.aggregatorName)) {
+        return this.locales.aggregators[this.aggregatorName];
+      }
+      return this.aggregatorName;
     },
     assignValue (field) {
       this.$set(this.propsData.valueFilter, field, {})
@@ -279,7 +297,7 @@ export default {
                   display: 'inline-block'
                 },
                 props: {
-                  values: Object.keys(aggregators)
+                  values: Object.keys(this.aggregators)
                 },
                 domProps: {
                   value: aggregatorName

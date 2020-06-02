@@ -507,6 +507,7 @@ Data Model class
 class PivotData {
   constructor (inputProps = {}) {
     this.props = Object.assign({}, PivotData.defaultProps, inputProps)
+    this.mergeAggregatorLocale()
     this.aggregator = this.props.aggregators[this.props.aggregatorName](
       this.props.vals
     )
@@ -527,6 +528,18 @@ class PivotData {
         }
       }
     )
+  }
+
+  mergeAggregatorLocale () {
+    if (this.props.locales && this.props.locales.aggregators) {
+      let aggregators = this.props.aggregators
+      for (let key in this.props.locales.aggregators) {
+        if (aggregators.hasOwnProperty(key)) {
+          aggregators[this.props.locales.aggregators[key]] = aggregators[key]
+          delete aggregators[key]
+        }
+      }
+    }
   }
 
   filter (record) {

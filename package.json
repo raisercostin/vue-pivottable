@@ -1,6 +1,6 @@
 {
-  "name": "vue-pivottable",
-  "version": "0.3.64",
+  "name": "ibiz-vue-pivottable",
+  "version": "1.0.0",
   "main": "src/index.js",
   "files": [
     "dist",
@@ -20,7 +20,7 @@
   "author": "Seungwoo, Lee <seungwoo321@gmail.com> (https://github.com/seungwoo321)",
   "license": "MIT",
   "scripts": {
-    "build": "vue-cli-service build --target lib --name vue-pivottable src/index.js",
+    "build": "vue-cli-service build --target lib --name ibiz-vue-pivottable src/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
