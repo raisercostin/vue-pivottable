@@ -69,8 +69,14 @@ export default {
     },
     locales: {
       type: Object,
-      default: function() {
-        return {};
+      default: function () {
+        return {}
+      }
+    },
+    columns: {
+      type: Array,
+      default: function () {
+        return []
       }
     }
   }
