@@ -534,7 +534,7 @@ class PivotData {
     if (this.props.locales && this.props.locales.aggregators) {
       let aggregators = this.props.aggregators
       for (let key in this.props.locales.aggregators) {
-        if (aggregators.hasOwnProperty(key)) {
+        if (aggregators.hasOwnProperty(key) && !Object.is(this.props.locales.aggregators[key], key)) {
           aggregators[this.props.locales.aggregators[key]] = aggregators[key]
           delete aggregators[key]
         }
