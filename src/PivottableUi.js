@@ -104,6 +104,13 @@ export default {
             !this.hiddenFromDragDrop.includes(e)
         )
         .sort(sortAs(this.unusedOrder))
+    },
+    numVals () {
+      return Object.keys(this.attrValues).filter(
+        e =>
+          !this.hiddenAttributes.includes(e) &&
+          !this.hiddenFromAggregators.includes(e)
+      )
     }
   },
   data () {
@@ -245,6 +252,22 @@ export default {
       }
       return key
     },
+    getAttrItems (attrs) {
+      if (this.columns) {
+        let items = []
+        attrs.forEach((attr) => {
+          let column = this.columns.find((col) => Object.is(col.prop, attr))
+          if (column) {
+            items.push({
+              label: column.label,
+              id: attr
+            })
+          }
+        })
+        return items
+      }
+      return attrs
+    },
     makeDnDCell (items, onChange, classes, h) {
       return h(draggable, {
         attrs: {
@@ -365,9 +388,7 @@ export default {
             ? new Array(this.numValsAllowed).fill().map((n, i) => [
               h(Dropdown, {
                 props: {
-                  values: Object.keys(this.attrValues).filter(e =>
-                    !this.hiddenAttributes.includes(e) &&
-                      !this.hiddenFromAggregators.includes(e))
+                  values: this.getAttrItems(this.numVals)
                 },
                 domProps: {
                   value: vals[i]

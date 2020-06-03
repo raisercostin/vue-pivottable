@@ -20,9 +20,9 @@ export default {
       this.values.map(r => {
         return h('option', {
           attrs: {
-            value: r
+            value: r.id ? r.id : r
           }
-        }, r)
+        }, r.label ? r.label : r)
       })
     ])
   }
