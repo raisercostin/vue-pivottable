@@ -197,6 +197,9 @@ export default {
       this.zIndices[attribute] = this.maxZIndex + 1
     },
     openFilterBox ({ attribute, open }) {
+      for (let key in this.openStatus) {
+        this.openStatus[key] = false
+      }
       this.openStatus[attribute] = open
     },
     materializeInput (nextData) {
@@ -233,6 +236,15 @@ export default {
       this.materializedInput = materializedInput
       this.attrValues = attrValues
     },
+    getAttrItemLabel (key) {
+      if (this.columns) {
+        let column = this.columns.find((col) => Object.is(col.prop, key))
+        if (column) {
+          return column.label
+        }
+      }
+      return key
+    },
     makeDnDCell (items, onChange, classes, h) {
       return h(draggable, {
         attrs: {
@@ -257,6 +269,7 @@ export default {
             props: {
               sortable: this.sortonlyFromDragDrop.includes(x) || !this.disabledFromDragDrop.includes(x),
               draggable: !this.sortonlyFromDragDrop.includes(x) && !this.disabledFromDragDrop.includes(x),
+              label: this.getAttrItemLabel(x),
               name: x,
               key: x,
               attrValues: this.attrValues[x],
@@ -264,7 +277,8 @@ export default {
               menuLimit: this.menuLimit,
               zIndex: this.zIndices[x] || this.maxZIndex,
               valueFilter: this.propsData.valueFilter[x],
-              open: this.openStatus[x]
+              open: this.openStatus[x],
+              locales: this.locales
             },
             domProps: {
             },
