@@ -39,6 +39,15 @@ function makeRenderer (opts = {}) {
       }
     },
     methods: {
+      getAttrItemLabel (key) {
+        if (this.columns) {
+          let column = this.columns.find((col) => Object.is(col.prop, key))
+          if (column) {
+            return column.label
+          }
+        }
+        return key
+      },
       spanSize (arr, i, j) {
         // helper function for setting row/col-span in pivotTableRenderer
         let x
@@ -187,7 +196,7 @@ function makeRenderer (opts = {}) {
 
                 h('th', {
                   staticClass: ['pvtAxisLabel']
-                }, c),
+                }, this.getAttrItemLabel(c)),
 
                 colKeys.map((colKey, i) => {
                   const x = this.spanSize(colKeys, i, j)
@@ -220,7 +229,7 @@ function makeRenderer (opts = {}) {
                     attrs: {
                       key: `rowAttr${i}`
                     }
-                  }, r)
+                  }, this.getAttrItemLabel(r))
                 }),
 
                 this.rowTotal

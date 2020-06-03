@@ -24,10 +24,10 @@ export default {
     },
     [
       this.values.map(r => {
-        const text = r
+        const text =  r.label ? r.label : r
         return h('option', {
           attrs: {
-            value: r,
+            value: r.id ? r.id : r
             selected: r === this.value ? 'selected' : undefined
           }
         }, text)
