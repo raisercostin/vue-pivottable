@@ -14,6 +14,10 @@ export default {
       type: Boolean,
       default: true
     },
+    label: {
+      type: String,
+      required: false
+    },
     name: {
       type: String,
       required: true
@@ -229,6 +233,10 @@ export default {
     },
     openFilterBox (attribute, open) {
       this.$emit('open:filterbox', { attribute, open })
+    },
+    closeFilterBox () {
+      this.openFilterBox(this.name, false)
+      this.moveFilterBoxToTop(this.name)
     }
   },
   render (h) {
@@ -245,9 +253,13 @@ export default {
         class: {
           sortonly: this.sortonly,
           disabled: this.disabled
+        },
+        on: {
+          'click': this.closeFilterBox.bind(this)
         }
       },
       [
+        this.label ? this.label : this.name,
         pvtAttrScopedSlot ? pvtAttrScopedSlot({ name: this.name }) : this.name,
         !this.disabled &&
         (!this.async || (!this.unused && this.async)) ? h('span', {

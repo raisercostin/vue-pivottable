@@ -337,6 +337,15 @@ export default {
       this.materializedInput = materializedInput
       this.attrValues = attrValues
     },
+    getAttrItemLabel (key) {
+      if (this.columns) {
+        let column = this.columns.find((col) => Object.is(col.prop, key))
+        if (column) {
+          return column.label
+        }
+      }
+      return key
+    },
     makeDnDCell (items, onChange, classes, h) {
       const scopedSlots = this.$scopedSlots.pvtAttr
       return h(draggable, {
@@ -365,6 +374,7 @@ export default {
             props: {
               sortable: this.sortonlyFromDragDrop.includes(x) || !this.disabledFromDragDrop.includes(x),
               draggable: !this.sortonlyFromDragDrop.includes(x) && !this.disabledFromDragDrop.includes(x),
+              label: this.getAttrItemLabel(x),
               name: x,
               key: x,
               attrValues: this.attrValues[x],
