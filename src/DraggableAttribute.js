@@ -14,6 +14,10 @@ export default {
       type: Boolean,
       default: true
     },
+    label: {
+      type: String,
+      required: false
+    },
     name: {
       type: String,
       required: true
@@ -31,6 +35,12 @@ export default {
     sorter: {
       type: Function,
       required: true
+    },
+    locales: {
+      type: Object,
+      default: function () {
+        return {}
+      }
     },
     menuLimit: Number,
     zIndex: Number
@@ -126,7 +136,7 @@ export default {
             staticClass: ['pvtSearch'],
             attrs: {
               type: 'text',
-              placeholder: 'Filter Values'
+              placeholder: this.locales['Filter Values'] ? this.locales['Filter Values'] : 'Filter Values'
             },
             domProps: {
               value: this.filterText
@@ -152,7 +162,7 @@ export default {
             on: {
               click: () => this.removeValuesFromFilter(this.name, Object.keys(this.attrValues).filter(this.matchesFilter.bind(this)))
             }
-          }, `Select ${values.length === shown.length ? 'All' : shown.length}`),
+          }, this.locales['Select All'] ? this.locales['Select All'] : 'Select All'),
           h('a', {
             staticClass: ['pvtButton'],
             attrs: {
@@ -161,7 +171,7 @@ export default {
             on: {
               click: () => this.addValuesToFilter(this.name, Object.keys(this.attrValues).filter(this.matchesFilter.bind(this)))
             }
-          }, `Deselect ${values.length === shown.length ? 'All' : shown.length}`)
+          }, this.locales['Deselect All'] ? this.locales['Deselect All'] : 'Deselect All')
         ]),
         showMenu && h('div', {
           staticClass: ['pvtCheckContainer']
@@ -204,12 +214,17 @@ export default {
         ])
       ])
     },
-    toggleFilterBox () {
+    toggleFilterBox (event) {
+      event.stopPropagation()
       this.openFilterBox(this.name, !this.open)
       this.moveFilterBoxToTop(this.name)
     },
     openFilterBox (attribute, open) {
       this.$emit('open:filterbox', { attribute, open })
+    },
+    closeFilterBox () {
+      this.openFilterBox(this.name, false)
+      this.moveFilterBoxToTop(this.name)
     }
   },
   render (h) {
@@ -225,10 +240,13 @@ export default {
         class: {
           sortonly: this.sortonly,
           disabled: this.disabled
+        },
+        on: {
+          'click': this.closeFilterBox.bind(this)
         }
       },
       [
-        this.name,
+        this.label ? this.label : this.name,
         !this.disabled ? h('span', {
           staticClass: ['pvtTriangle'],
           on: {
