@@ -1,6 +1,6 @@
 {
   "name": "ibiz-vue-pivottable",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "src/index.js",
   "files": [
     "dist",
