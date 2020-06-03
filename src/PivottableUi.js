@@ -58,7 +58,7 @@ export default {
       Object.assign(options, TableRenderer, PlotlyRenderer)
       if (this.locales && this.locales.renderer) {
         for (let key in this.locales.renderer) {
-          if (options.hasOwnProperty(key)) {
+          if (options.hasOwnProperty(key) && !Object.is(this.locales.renderer[key], key)) {
             options[this.locales.renderer[key]] = options[key]
             delete options[key]
           }
