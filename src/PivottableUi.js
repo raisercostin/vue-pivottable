@@ -302,7 +302,8 @@ export default {
               zIndex: this.zIndices[x] || this.maxZIndex,
               valueFilter: this.propsData.valueFilter[x],
               open: this.openStatus[x],
-              locales: this.locales
+              locales: this.locales,
+              column: this.columns.find(col => Object.is(col.prop, x))
             },
             domProps: {
             },
