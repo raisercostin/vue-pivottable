@@ -48,6 +48,15 @@ function makeRenderer (opts = {}) {
         }
         return key
       },
+      getItemValue (key, val) {
+        if (this.columns) {
+          let column = this.columns.find((col) => Object.is(col.prop, key))
+          if (column && typeof column.render === 'function') {
+            return column.render(val)
+          }
+        }
+        return val
+      },
       spanSize (arr, i, j) {
         // helper function for setting row/col-span in pivotTableRenderer
         let x
@@ -210,7 +219,7 @@ function makeRenderer (opts = {}) {
                       colSpan: x,
                       rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
                     }
-                  }, colKey[j])
+                  }, this.getItemValue(c, colKey[j]))
                 }),
                 j === 0 && this.rowTotal ? h('th', {
                   staticClass: ['pvtTotalLabel'],
@@ -263,7 +272,7 @@ function makeRenderer (opts = {}) {
                       rowSpan: x,
                       colSpan: j === rowAttrs.length - 1 && colAttrs.length !== 0 ? 2 : 1
                     }
-                  }, text)
+                  }, this.getItemValue(rowAttrs[j], text))
                 }),
 
                 colKeys.map((colKey, j) => {

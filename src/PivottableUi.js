@@ -409,8 +409,8 @@ export default {
               open: this.openStatus[x],
               async: this.async,
               unused: this.unusedAttrs.includes(x),
-              localeStrings: this.locales[this.locale].localeStrings
-            },
+              localeStrings: this.locales[this.locale].localeStrings,
+              column: this.columns.find(col => Object.is(col.prop, x))            },
             domProps: {
             },
             on: {
