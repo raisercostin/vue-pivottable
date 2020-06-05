@@ -42,6 +42,7 @@ export default {
         return {}
       }
     },
+    column: Object,
     menuLimit: Number,
     zIndex: Number
   },
@@ -101,7 +102,7 @@ export default {
       }
     },
     matchesFilter (x) {
-      return x
+      return this.getItemValue(x)
         .toLowerCase()
         .trim()
         .includes(this.filterText.toLowerCase().trim())
@@ -110,6 +111,12 @@ export default {
       e.stopPropagation()
       this.value = value
       this.setValuesInFilter(this.name, Object.keys(this.attrValues).filter(y => y !== value))
+    },
+    getItemValue (val) {
+      if (this.column && typeof this.column.render === 'function') {
+        return this.column.render(val)
+      }
+      return val
     },
     getFilterBox (h) {
       const showMenu = Object.keys(this.attrValues).length < this.menuLimit
@@ -199,7 +206,7 @@ export default {
                   checked: checked
                 }
               }),
-              x,
+              this.getItemValue(x),
               h('a', {
                 staticClass: ['pvtOnly'],
                 on: {
@@ -240,9 +247,6 @@ export default {
         class: {
           sortonly: this.sortonly,
           disabled: this.disabled
-        },
-        on: {
-          'click': this.closeFilterBox.bind(this)
         }
       },
       [
