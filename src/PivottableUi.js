@@ -306,6 +306,7 @@ export default {
     },
     openFilterBox ({ attribute, open }) {
       this.$set(this.openStatus, attribute, open)
+      this.$forceUpdate()
     },
     closeFilterBox (event) {
       this.openStatus = {}
@@ -638,7 +639,11 @@ export default {
             colAttrsCell
           ]
         ),
-        h('tr',
+          h('tr', {
+            style: {
+              height: '100%'
+            }
+          },
           [
             rowAttrsCell,
             outputSlot ? h('td', { staticClass: 'pvtOutput' }, outputSlot) : undefined,
