@@ -208,6 +208,7 @@ export default {
         this.openStatus[key] = false
       }
       this.openStatus[attribute] = open
+      this.$forceUpdate()
     },
     materializeInput (nextData) {
       let _this = this
@@ -509,11 +510,15 @@ export default {
               colAttrsCell
             ]
           ),
-          h('tr',
-            [
-              rowAttrsCell,
-              outputCell
-            ]
+          h('tr', {
+            style: {
+              height: '100%'
+            }
+          },
+          [
+            rowAttrsCell,
+            outputCell
+          ]
           )
         ])
     ])
