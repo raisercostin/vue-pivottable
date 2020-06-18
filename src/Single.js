@@ -1,27 +1,18 @@
 export default {
-  props: ['values', 'changeValue'],
-  methods: {
-    handleChange(e) {
-      const changeValue = e.target.value;
-      this.$emit('input', changeValue);
-    },
-  },
+  props: ['values'],
   render(h) {
     return h(
-      'select',
+      'div',
       {
         staticClass: ['pvtDropdown'],
         attrs: {
           value: this.value,
         },
-        on: {
-          change: this.handleChange,
-        },
       },
       [
         this.values.map((r) => {
           return h(
-            'option',
+            'p',
             {
               attrs: {
                 value: r,

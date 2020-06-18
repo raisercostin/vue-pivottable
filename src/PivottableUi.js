@@ -1,6 +1,7 @@
 import defaultProps from './helper/defaultProps';
 import DraggableAttribute from './DraggableAttribute';
 import Dropdown from './Dropdown';
+import Single from './Single';
 import Pivottable from './Pivottable';
 import { PivotData, getSort, aggregators, sortAs } from './helper/utils';
 import draggable from 'vuedraggable';
@@ -13,37 +14,37 @@ export default {
     tableMaxWidth: {
       type: Number,
       default: 0,
-      validator: function (value) {
+      validator: function(value) {
         return value >= 0;
       },
     },
     hiddenAttributes: {
       type: Array,
-      default: function () {
+      default: function() {
         return [];
       },
     },
     hiddenFromAggregators: {
       type: Array,
-      default: function () {
+      default: function() {
         return [];
       },
     },
     hiddenFromDragDrop: {
       type: Array,
-      default: function () {
+      default: function() {
         return [];
       },
     },
     sortonlyFromDragDrop: {
       type: Array,
-      default: function () {
+      default: function() {
         return [];
       },
     },
     disabledFromDragDrop: {
       type: Array,
-      default: function () {
+      default: function() {
         return [];
       },
     },
@@ -53,13 +54,13 @@ export default {
     },
     showRenderers: {
       type: Array,
-      default: function () {
+      default: function() {
         return [];
       },
     },
     showAggregators: {
       type: Array,
-      default: function () {
+      default: function() {
         return [];
       },
     },
@@ -187,7 +188,7 @@ export default {
       const attrValues = {};
       const materializedInput = [];
       let recordsProcessed = 0;
-      PivotData.forEachRecord(this.data, this.derivedAttributes, function (record) {
+      PivotData.forEachRecord(this.data, this.derivedAttributes, function(record) {
         materializedInput.push(record);
         for (const attr of Object.keys(record)) {
           if (!(attr in attrValues)) {
@@ -270,7 +271,7 @@ export default {
               staticClass: ['pvtRenderers'],
             },
             [
-              h(Dropdown, {
+              h(Object.keys(this.renderers).length > 1 ? Dropdown : Single, {
                 props: {
                   values: Object.keys(this.renderers),
                 },

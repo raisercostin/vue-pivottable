@@ -33,7 +33,7 @@ export default {
       disabledFromDragDrop: ['Payer Gender'],
       hiddenFromDragDrop: ['Total Bill'],
       sortonlyFromDragDrop: ['Party Size'],
-      rendererList: [], // Here to specify show renderer list
+      rendererList: ['Table'], // Here to specify show renderer list
       aggregatorList: [], // Here to specify show aggregator list
     };
   },
