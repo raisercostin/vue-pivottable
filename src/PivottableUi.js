@@ -163,7 +163,6 @@ export default {
     },
     openFilterBox ({ attribute, open }) {
       this.openStatus[attribute] = open
-      Object.keys(this.openStatus).map(this.assignValue)
     },
     materializeInput (nextData) {
       if (this.propsData.data === nextData) {
