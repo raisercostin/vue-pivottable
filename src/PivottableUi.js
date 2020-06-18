@@ -163,6 +163,7 @@ export default {
     },
     openFilterBox ({ attribute, open }) {
       this.openStatus[attribute] = open
+      console.log('Hi')
     },
     materializeInput (nextData) {
       if (this.propsData.data === nextData) {
