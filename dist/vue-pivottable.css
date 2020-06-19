@@ -3,6 +3,39 @@
     box-sizing: border-box
 }
 
+.exportbtn {
+  margin-bottom: 1%;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  border: 1px solid transparent;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  background-color: #008357 !important;
+  color: #ffffff !important;
+  padding-left: 4%;
+  padding-right: 4%;
+  padding-bottom: 0.5%;
+  padding-top: 0.5%
+}
+
+.exportbtn:hover,
+.exportbtn:focus,
+.exportbtn:active {
+  outline: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
 .pvtUi {
     width: 100%;
     color: #2a3f5f;
