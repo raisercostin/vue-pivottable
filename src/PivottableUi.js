@@ -7,6 +7,8 @@ import { PivotData, getSort, aggregators, sortAs } from './helper/utils';
 import draggable from 'vuedraggable';
 import TableRenderer from './TableRenderer';
 import PlotlyRenderer from './PlotlyRenderer';
+import ExportBtn from './ExportBtn'
+
 export default {
   name: 'vue-pivottable-ui',
   mixins: [defaultProps],
@@ -464,12 +466,12 @@ export default {
     const aggregatorCell = this.aggregatorCell(aggregatorName, vals, h);
     const outputCell = this.outputCell(props, rendererName.indexOf('Chart') > -1, h);
 
-    return h(
+    return h('div', [h(ExportBtn), h(
       'table',
       {
         staticClass: ['pvtUi'],
       },
       [h('tbody', [h('tr', [rendererCell, unusedAttrsCell]), h('tr', [aggregatorCell, colAttrsCell]), h('tr', [rowAttrsCell, outputCell])])]
-    );
+    )]);
   },
 };

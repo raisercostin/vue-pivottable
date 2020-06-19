@@ -14,15 +14,15 @@
   </div>
 </template>
 <script>
-import tips from './tips';
-import './assets/vue-pivottable.css';
-import VuePivottableUi from './PivottableUi';
+import tips from './tips'
+import './assets/vue-pivottable.css'
+import VuePivottableUi from './PivottableUi'
 
 export default {
   components: {
-    VuePivottableUi,
+    VuePivottableUi
   },
-  data() {
+  data () {
     return {
       pivotData: tips,
       aggregatorName: 'Count',
@@ -34,8 +34,8 @@ export default {
       hiddenFromDragDrop: ['Total Bill'],
       sortonlyFromDragDrop: ['Party Size'],
       rendererList: ['Table'], // Here to specify show renderer list
-      aggregatorList: [], // Here to specify show aggregator list
-    };
-  },
-};
+      aggregatorList: [] // Here to specify show aggregator list
+    }
+  }
+}
 </script>
