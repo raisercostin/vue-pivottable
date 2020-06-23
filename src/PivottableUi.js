@@ -2,6 +2,7 @@ import defaultProps from './helper/defaultProps';
 import DraggableAttribute from './DraggableAttribute';
 import Dropdown from './Dropdown';
 import Single from './Single';
+import MultiDropDown from './MultiDropDown';
 import Pivottable from './Pivottable';
 import { PivotData, getSort, aggregators, sortAs } from './helper/utils';
 import draggable from 'vuedraggable';
@@ -32,7 +33,7 @@ export default {
         return [];
       },
     },
-    hiddenFromDragDrop: {
+    fields: {
       type: Array,
       default: function() {
         return [];
@@ -88,16 +89,16 @@ export default {
       return aggregators[this.propsData.aggregatorName || this.aggregatorName]([])().numInputs || 0;
     },
     rowAttrs() {
-      return this.propsData.rows.filter((e) => !this.hiddenAttributes.includes(e) && !this.hiddenFromDragDrop.includes(e));
+      return this.propsData.rows.filter((e) => !this.hiddenAttributes.includes(e) && !this.propsData.hidden.includes(e));
     },
     colAttrs() {
-      return this.propsData.cols.filter((e) => !this.hiddenAttributes.includes(e) && !this.hiddenFromDragDrop.includes(e));
+      return this.propsData.cols.filter((e) => !this.hiddenAttributes.includes(e) && !this.propsData.hidden.includes(e));
     },
     unusedAttrs() {
       return Object.keys(this.attrValues)
         .filter(
           (e) =>
-            !this.propsData.rows.includes(e) && !this.propsData.cols.includes(e) && !this.hiddenAttributes.includes(e) && !this.hiddenFromDragDrop.includes(e)
+            !this.propsData.rows.includes(e) && !this.propsData.cols.includes(e) && !this.hiddenAttributes.includes(e) && !this.propsData.hidden.includes(e)
         )
         .sort(sortAs(this.unusedOrder));
     },
@@ -115,6 +116,7 @@ export default {
         rows: [],
         valueFilter: {},
         renderer: null,
+        hidden: []
       },
       openStatus: {},
       attrValues: {},
@@ -152,6 +154,11 @@ export default {
     data() {
       this.init();
     },
+    /*
+    firstName: function (val) {
+      this.fullName = val + ' ' + this.lastName
+    },
+    */
   },
   methods: {
     init() {
@@ -180,7 +187,6 @@ export default {
     },
     openFilterBox({ attribute, open }) {
       this.openStatus[attribute] = open;
-      Object.keys(this.openStatus).map(this.assignValue);
     },
     materializeInput(nextData) {
       if (this.propsData.data === nextData) {
@@ -466,7 +472,34 @@ export default {
     const aggregatorCell = this.aggregatorCell(aggregatorName, vals, h);
     const outputCell = this.outputCell(props, rendererName.indexOf('Chart') > -1, h);
 
-    return h('div', [h(ExportBtn), h(
+    return h('div', [ 
+      h(MultiDropDown, {
+      props: {
+        values: this.fields,
+      },
+      domProps: {
+        value: "Select",
+      },
+      on: {
+        input: (value) => {
+          this.propsData.hidden = value
+          this.init()
+          this.rows.map((x) => {
+            if (this.propsData.hidden.includes(x)) {
+              const index = this.rows.indexOf(x)
+              this.rows.splice(index, 1)
+            }
+           })
+           this.cols.map((x) => {
+            if (this.propsData.hidden.includes(x)) {
+              const index = this.cols.indexOf(x)
+              this.cols.splice(index, 1)
+            }
+           })
+        },
+      },
+    }), h(ExportBtn),
+     h(
       'table',
       {
         staticClass: ['pvtUi'],

@@ -2,10 +2,14 @@
 * {
     box-sizing: border-box
 }
-
+.OuterBox {
+    display:inline;
+    font-family: Verdana;
+    color: #2a3f5f;
+}
 .exportbtn {
-  margin-bottom: 1%;
   font-size: 1rem;
+  margin-left: 1.5%;
   line-height: 1.5;
   text-align: center;
   white-space: nowrap;
@@ -19,14 +23,13 @@
   -ms-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
-  background-color: #008357 !important;
+  background-color: #707070 !important;
   color: #ffffff !important;
   padding-left: 4%;
   padding-right: 4%;
   padding-bottom: 0.5%;
   padding-top: 0.5%
 }
-
 .exportbtn:hover,
 .exportbtn:focus,
 .exportbtn:active {
@@ -35,9 +38,40 @@
   -moz-box-shadow: none !important;
   box-shadow: none !important;
 }
-
+.generatebtn {
+    font-size: 1rem;
+    margin-left: 1.5%;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+        touch-action: manipulation;
+    cursor: pointer;
+    border: 1px solid transparent;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    background-color: #008357 !important;
+    color: #ffffff !important;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-bottom: 0.5%;
+    padding-top: 0.5%
+}
+.generatebtn:hover,
+.generatebtn:focus,
+.generatebtn:active {
+  outline: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
 .pvtUi {
     width: 100%;
+    margin-top: 2%;
     color: #2a3f5f;
     font-family: Verdana;
     border-collapse: collapse;
@@ -129,6 +163,24 @@ table.pvtTable tbody tr td {
     user-select: none;
 }
 
+.OuterDropDown {
+    -webkit-text-size-adjust: 100%;
+    font-size:90%;
+    background: #f3f6fa;
+    border: 2px solid #c8d4e3;
+    padding: 0.8% 1% 0.8% 1%;
+    white-space: nowrap;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+    cursor: pointer;
+}
+
 .pvtDropdown {
     border: 1px solid #a2b1c6;
     align-items: center;
@@ -213,7 +265,11 @@ table.pvtTable tbody tr td {
     cursor: pointer;
     color: #506784;
 }
-
+.OuterTriangle {
+    cursor: pointer;
+    color: #506784;
+    margin-left: 2%
+}
 .pvtHorizList li {
     display: inline-block;
 }
@@ -270,12 +326,13 @@ table.pvtTable tbody tr td {
     background: #d1dae6;
 }
 
-.pvtFilterBox input {
+.pvtFilterBox input, .OuterFilterBox p input{
     border: 1px solid #c8d4e3;
     border-radius: 5px;
     color: #506784;
     padding: 0 3px;
     font-size: 14px;
+    margin-right: 6%
 }
 
 .pvtFilterBox input:focus {
@@ -283,7 +340,7 @@ table.pvtTable tbody tr td {
     outline: none;
 }
 
-.pvtFilterBox {
+.pvtFilterBox, .OuterFilterBox {
     z-index: 100;
     border: 1px solid #506784;
     max-width: 600px;
@@ -299,7 +356,7 @@ table.pvtTable tbody tr td {
     -ms-user-select: none;
 }
 
-.pvtFilterBox input[type='text'] {
+.pvtFilterBox input[type='text']{
     display: block;
     width: 100%;
     color: #2a3f5f;
@@ -307,11 +364,16 @@ table.pvtTable tbody tr td {
     padding: 6px;
     /* border-radius: 4px; */
 }
-
-.pvtFilterBox {
+.pvtFilterBox, .OuterFilterBox {
     padding: 3px;
 }
-
+.OuterFilterBox {
+    display: none;
+    overflow-y: scroll;
+    max-height: 30vh;
+    white-space: nowrap;
+    font-size: 14px;
+}
 .pvtCheckContainer {
     text-align: left;
     font-size: 14px;
@@ -322,14 +384,14 @@ table.pvtTable tbody tr td {
     border-top: 1px solid #dfe8f3;
 }
 
-.pvtCheckContainer p {
+.pvtCheckContainer p, .OuterFilterBox p {
     margin: 0;
     margin-bottom: 1px;
     padding: 3px;
     cursor: default;
 }
 
-.pvtCheckContainer p.selected {
+.pvtCheckContainer p.selected, .OuterFilterBox p.selected {
     background: #ebf0f8;
     min-width: 100%;
     width: max-content;

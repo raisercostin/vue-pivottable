@@ -10,6 +10,7 @@
       :col-total="true"
       :showRenderers="rendererList"
       :showAggregators="aggregatorList"
+      :fields="fieldList"
     ></VuePivottableUi>
   </div>
 </template>
@@ -27,14 +28,12 @@ export default {
       pivotData: tips,
       aggregatorName: 'Count',
       rendererName: 'Table',
-      rows: ['Payer Gender', 'Party Size'],
-      cols: ['Meal', 'Payer Smoker', 'Day of Week'],
-      vals: ['Total Bill'],
-      disabledFromDragDrop: ['Payer Gender'],
-      hiddenFromDragDrop: ['Total Bill'],
-      sortonlyFromDragDrop: ['Party Size'],
+      rows: [],
+      cols: [],
+      vals: [],
+      fieldList: ['Meal', 'Tip', 'Payer Smoker', 'Day of Week', 'Payer Gender', 'Party Size','Total Bill'],
       rendererList: ['Table'], // Here to specify show renderer list
-      aggregatorList: [] // Here to specify show aggregator list
+      aggregatorList: [], // Here to specify show aggregator list
     }
   }
 }

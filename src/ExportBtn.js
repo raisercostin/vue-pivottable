@@ -1,9 +1,7 @@
 import JQuery from 'jquery'
 
 export default {
-  props: ['values'],
   mounted () {
-    console.log('test')
     JQuery(document).on('click', '.exportbtn', function () {
       exportTableToExcel()
     })
