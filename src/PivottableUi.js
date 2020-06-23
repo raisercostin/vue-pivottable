@@ -8,7 +8,7 @@ import { PivotData, getSort, aggregators, sortAs } from './helper/utils';
 import draggable from 'vuedraggable';
 import TableRenderer from './TableRenderer';
 import PlotlyRenderer from './PlotlyRenderer';
-import ExportBtn from './ExportBtn'
+
 
 export default {
   name: 'vue-pivottable-ui',
@@ -498,7 +498,7 @@ export default {
            })
         },
       },
-    }), h(ExportBtn),
+    }),
      h(
       'table',
       {

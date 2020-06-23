@@ -1,4 +1,5 @@
 import JQuery from "jquery";
+import ExportBtn from './ExportBtn'
 
 export default {
   props: ["values"],
@@ -156,6 +157,7 @@ export default {
           },
           "Generate"
         ),
+        h(ExportBtn)
       ]
     );
   },
