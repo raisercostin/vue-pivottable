@@ -114,6 +114,9 @@ export default {
               },
               `Deselect All`
             ),
+            h("div", {
+              staticClass: ["pvtCheckContainer"],
+            }, [
             this.selected.map((x) => {
               const checked = x.selected;
               return h(
@@ -142,6 +145,7 @@ export default {
                 ]
               );
             }),
+          ])
           ]
         ),
         h(
