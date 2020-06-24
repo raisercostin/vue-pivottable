@@ -256,9 +256,6 @@ export default {
         attrs: {
           'data-id': !this.disabled ? this.name : undefined,
         },
-        on: {
-          click: this.toggleFilterBox.bind(this),
-        },
       },
       [
         h(
@@ -277,6 +274,9 @@ export default {
                   'span',
                   {
                     staticClass: ['pvtTriangle'],
+                    on: {
+                      click: this.toggleFilterBox.bind(this),
+                    },
                   },
                   '  ▾'
                 )
