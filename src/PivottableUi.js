@@ -123,7 +123,7 @@ export default {
         renderer: null,
         hidden: [],
       },
-      openStatus: {},
+      currentOpen: '',
       attrValues: {},
       unusedOrder: [],
       zIndices: {},
@@ -173,7 +173,6 @@ export default {
       this.propsData.cols = this.cols;
       this.unusedOrder = this.unusedAttrs;
       Object.keys(this.attrValues).map(this.assignValue);
-      Object.keys(this.openStatus).map(this.assignValue);
     },
     assignValue(field) {
       this.$set(this.propsData.valueFilter, field, {});
@@ -191,7 +190,7 @@ export default {
       this.zIndices[attribute] = this.maxZIndex + 1;
     },
     openFilterBox({ attribute, open }) {
-      this.openStatus[attribute] = open;
+      this.currentOpen = open ? attribute : '';
     },
     materializeInput(nextData) {
       if (this.propsData.data === nextData) {
@@ -256,7 +255,7 @@ export default {
                 menuLimit: this.menuLimit,
                 zIndex: this.zIndices[x] || this.maxZIndex,
                 valueFilter: this.propsData.valueFilter[x],
-                open: this.openStatus[x],
+                open: this.currentOpen == x,
               },
               domProps: {},
               on: {
