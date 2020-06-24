@@ -1,45 +1,49 @@
-import JQuery from "jquery";
-import ExportBtn from './ExportBtn'
+import JQuery from 'jquery';
+import ExportBtn from './ExportBtn';
 
 export default {
-  props: ["values"],
+  props: ['values', 'defaultValues'],
   mounted() {
-    JQuery(document).on("click", ".OuterDropDown", function() {
+    JQuery(document).on('click', '.OuterDropDown', function() {
       showCheckboxes();
     });
     for (var index in this.values) {
       this.selected.push({
-        value: this.values[index], 
-        selected: true
+        value: this.values[index],
+        selected: this.selectedOrNot(this.values[index]),
       });
     }
+    this.GenerateReport();
   },
   methods: {
+    selectedOrNot(val) {
+      return this.defaultValues.indexOf(val) !== -1;
+    },
     toggleValue(value) {
-       this.selected.map((x) => {
-       if (value === x.value) {
-         x.selected = !x.selected
-       }
-      })
+      this.selected.map((x) => {
+        if (value === x.value) {
+          x.selected = !x.selected;
+        }
+      });
     },
     selectAll() {
       this.selected.map((x) => {
-          x.selected = true
-      })
+        x.selected = true;
+      });
     },
     deselectAll() {
       this.selected.map((x) => {
-        x.selected = false
-    })
+        x.selected = false;
+      });
     },
     GenerateReport() {
-      var hidden = []
+      var hidden = [];
       this.selected.map((x) => {
         if (x.selected == false) {
-          hidden.push(x.value)
+          hidden.push(x.value);
         }
-      })
-      this.$emit("input", hidden);
+      });
+      this.$emit('input', hidden);
     },
   },
   data() {
@@ -49,33 +53,33 @@ export default {
   },
   render(h) {
     return h(
-      "div",
+      'div',
       {
-        staticClass: ["OuterBox"],
+        staticClass: ['OuterBox'],
       },
       [
         h(
           //Drop Down List (with sample option)
-          "span",
+          'span',
           {
-            staticClass: ["OuterDropDown"],
+            staticClass: ['OuterDropDown'],
           },
           [
             h(
-              "span",
+              'span',
               {
                 attrs: {
-                  value: "Sample option",
+                  value: 'Sample option',
                 },
               },
               [
-                "Select Column Fields",
+                'Select Column Fields',
                 h(
-                  "span",
+                  'span',
                   {
-                    staticClass: ["OuterTriangle"],
+                    staticClass: ['OuterTriangle'],
                   },
-                  "  ▾"
+                  '  ▾'
                 ),
               ]
             ),
@@ -83,17 +87,17 @@ export default {
         ),
         h(
           //Actual Options
-          "div",
+          'div',
           {
-            staticClass: ["OuterFilterBox"],
+            staticClass: ['OuterFilterBox'],
           },
           [
             h(
-              "a",
+              'a',
               {
-                staticClass: ["pvtButton"],
+                staticClass: ['pvtButton'],
                 attrs: {
-                  role: "button",
+                  role: 'button',
                 },
                 on: {
                   click: () => this.selectAll(),
@@ -102,11 +106,11 @@ export default {
               `Select All`
             ),
             h(
-              "a",
+              'a',
               {
-                staticClass: ["pvtButton"],
+                staticClass: ['pvtButton'],
                 attrs: {
-                  role: "button",
+                  role: 'button',
                 },
                 on: {
                   click: () => this.deselectAll(),
@@ -114,54 +118,58 @@ export default {
               },
               `Deselect All`
             ),
-            h("div", {
-              staticClass: ["pvtCheckContainer"],
-            }, [
-            this.selected.map((x) => {
-              const checked = x.selected;
-              return h(
-                "p",
-                {
-                  class: {
-                    selected: checked,
-                  },
-                  attrs: {
-                    key: x.value,
-                  },
-                  on: {
-                    click: () => this.toggleValue(x.value),
-                  },
-                },
-                [
-                  h("input", {
-                    attrs: {
-                      type: "checkbox",
+            h(
+              'div',
+              {
+                staticClass: ['pvtCheckContainer'],
+              },
+              [
+                this.selected.map((x) => {
+                  const checked = x.selected;
+                  return h(
+                    'p',
+                    {
+                      class: {
+                        selected: checked,
+                      },
+                      attrs: {
+                        key: x.value,
+                      },
+                      on: {
+                        click: () => this.toggleValue(x.value),
+                      },
                     },
-                    domProps: {
-                      checked: checked,
-                    },
-                  }),
-                  x.value,
-                ]
-              );
-            }),
-          ])
+                    [
+                      h('input', {
+                        attrs: {
+                          type: 'checkbox',
+                        },
+                        domProps: {
+                          checked: checked,
+                        },
+                      }),
+                      x.value,
+                    ]
+                  );
+                }),
+              ]
+            ),
           ]
         ),
         h(
-          "button",
+          'button',
           {
-            staticClass: ["generatebtn"],
+            staticClass: ['generatebtn'],
             attrs: {
-              role: "button",
+              role: 'button',
             },
             on: {
               click: () => this.GenerateReport(),
             },
           },
-          "Generate"
+          'Generate'
         ),
-        h(ExportBtn)
+        h(ExportBtn),
       ]
     );
   },
@@ -170,13 +178,13 @@ export default {
 var expanded = false;
 
 function showCheckboxes() {
-  var checkboxes = document.getElementsByClassName("OuterFilterBox")[0];
+  var checkboxes = document.getElementsByClassName('OuterFilterBox')[0];
 
   if (!expanded) {
-    checkboxes.style.display = "block";
+    checkboxes.style.display = 'block';
     expanded = true;
   } else {
-    checkboxes.style.display = "none";
+    checkboxes.style.display = 'none';
     expanded = false;
   }
 }

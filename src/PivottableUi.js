@@ -9,7 +9,6 @@ import draggable from 'vuedraggable';
 import TableRenderer from './TableRenderer';
 import PlotlyRenderer from './PlotlyRenderer';
 
-
 export default {
   name: 'vue-pivottable-ui',
   mixins: [defaultProps],
@@ -28,6 +27,12 @@ export default {
       },
     },
     hiddenFromAggregators: {
+      type: Array,
+      default: function() {
+        return [];
+      },
+    },
+    defaultFields: {
       type: Array,
       default: function() {
         return [];
@@ -116,7 +121,7 @@ export default {
         rows: [],
         valueFilter: {},
         renderer: null,
-        hidden: []
+        hidden: [],
       },
       openStatus: {},
       attrValues: {},
@@ -472,39 +477,41 @@ export default {
     const aggregatorCell = this.aggregatorCell(aggregatorName, vals, h);
     const outputCell = this.outputCell(props, rendererName.indexOf('Chart') > -1, h);
 
-    return h('div', [ 
+    return h('div', [
       h(MultiDropDown, {
-      props: {
-        values: this.fields,
-      },
-      domProps: {
-        value: "Select",
-      },
-      on: {
-        input: (value) => {
-          this.propsData.hidden = value
-          this.init()
-          this.rows.map((x) => {
-            if (this.propsData.hidden.includes(x)) {
-              const index = this.rows.indexOf(x)
-              this.rows.splice(index, 1)
-            }
-           })
-           this.cols.map((x) => {
-            if (this.propsData.hidden.includes(x)) {
-              const index = this.cols.indexOf(x)
-              this.cols.splice(index, 1)
-            }
-           })
+        props: {
+          values: this.fields,
+          defaultValues: this.defaultFields,
         },
-      },
-    }),
-     h(
-      'table',
-      {
-        staticClass: ['pvtUi'],
-      },
-      [h('tbody', [h('tr', [rendererCell, unusedAttrsCell]), h('tr', [aggregatorCell, colAttrsCell]), h('tr', [rowAttrsCell, outputCell])])]
-    )]);
+        domProps: {
+          value: 'Select',
+        },
+        on: {
+          input: (value) => {
+            this.propsData.hidden = value;
+            this.init();
+            this.rows.map((x) => {
+              if (this.propsData.hidden.includes(x)) {
+                const index = this.rows.indexOf(x);
+                this.rows.splice(index, 1);
+              }
+            });
+            this.cols.map((x) => {
+              if (this.propsData.hidden.includes(x)) {
+                const index = this.cols.indexOf(x);
+                this.cols.splice(index, 1);
+              }
+            });
+          },
+        },
+      }),
+      h(
+        'table',
+        {
+          staticClass: ['pvtUi'],
+        },
+        [h('tbody', [h('tr', [rendererCell, unusedAttrsCell]), h('tr', [aggregatorCell, colAttrsCell]), h('tr', [rowAttrsCell, outputCell])])]
+      ),
+    ]);
   },
 };
