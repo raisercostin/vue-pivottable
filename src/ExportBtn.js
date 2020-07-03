@@ -14,7 +14,7 @@ export default {
         attrs: {
           role: 'button'
         }
-      }, 'Export'
+      }, 'Export to Excel'
     )
   }
 }

@@ -1,19 +1,22 @@
-import JQuery from 'jquery';
-import ExportBtn from './ExportBtn';
+import JQuery from "jquery";
+import ExportBtn from "./ExportBtn";
 
 export default {
-  props: ['values', 'defaultValues'],
+  props: ["values", "defaultValues"],
   mounted() {
-    JQuery(document).on('click', '.OuterDropDown', function() {
+    JQuery(document).on("click", ".OuterDropDown", function() {
       showCheckboxes();
     });
+    JQuery(document).on("click", function(event){
+      hide(event);        
+  });
     for (var index in this.values) {
       this.selected.push({
         value: this.values[index],
         selected: this.selectedOrNot(this.values[index]),
       });
     }
-    this.GenerateReport();
+    this.generateReport();
   },
   methods: {
     selectedOrNot(val) {
@@ -36,14 +39,18 @@ export default {
         x.selected = false;
       });
     },
-    GenerateReport() {
+    generateReport() {
       var hidden = [];
       this.selected.map((x) => {
         if (x.selected == false) {
           hidden.push(x.value);
         }
       });
-      this.$emit('input', hidden);
+      this.$emit("input", hidden);
+    },
+    clearFields() {
+      this.deselectAll();
+      this.generateReport();
     },
   },
   data() {
@@ -53,33 +60,33 @@ export default {
   },
   render(h) {
     return h(
-      'div',
+      "div",
       {
-        staticClass: ['OuterBox'],
+        staticClass: ["OuterBox"],
       },
       [
         h(
           //Drop Down List (with sample option)
-          'span',
+          "span",
           {
-            staticClass: ['OuterDropDown'],
+            staticClass: ["OuterDropDown"],
           },
           [
             h(
-              'span',
+              "span",
               {
                 attrs: {
-                  value: 'Sample option',
+                  value: "Sample option",
                 },
               },
               [
-                'Select Column Fields',
+                "Select Column Fields",
                 h(
-                  'span',
+                  "span",
                   {
-                    staticClass: ['OuterTriangle'],
+                    staticClass: ["OuterTriangle"],
                   },
-                  '  ▾'
+                  "  ▾"
                 ),
               ]
             ),
@@ -87,17 +94,17 @@ export default {
         ),
         h(
           //Actual Options
-          'div',
+          "div",
           {
-            staticClass: ['OuterFilterBox'],
+            staticClass: ["OuterFilterBox"],
           },
           [
             h(
-              'a',
+              "a",
               {
-                staticClass: ['pvtButton'],
+                staticClass: ["pvtButton"],
                 attrs: {
-                  role: 'button',
+                  role: "button",
                 },
                 on: {
                   click: () => this.selectAll(),
@@ -106,11 +113,11 @@ export default {
               `Select All`
             ),
             h(
-              'a',
+              "a",
               {
-                staticClass: ['pvtButton'],
+                staticClass: ["pvtButton"],
                 attrs: {
-                  role: 'button',
+                  role: "button",
                 },
                 on: {
                   click: () => this.deselectAll(),
@@ -119,15 +126,15 @@ export default {
               `Deselect All`
             ),
             h(
-              'div',
+              "div",
               {
-                staticClass: ['pvtCheckContainer'],
+                staticClass: ["pvtCheckContainer"],
               },
               [
                 this.selected.map((x) => {
                   const checked = x.selected;
                   return h(
-                    'p',
+                    "p",
                     {
                       class: {
                         selected: checked,
@@ -140,9 +147,9 @@ export default {
                       },
                     },
                     [
-                      h('input', {
+                      h("input", {
                         attrs: {
-                          type: 'checkbox',
+                          type: "checkbox",
                         },
                         domProps: {
                           checked: checked,
@@ -157,17 +164,32 @@ export default {
           ]
         ),
         h(
-          'button',
+          //Generate Button
+          "button",
           {
-            staticClass: ['generatebtn'],
+            staticClass: ["generatebtn"],
             attrs: {
-              role: 'button',
+              role: "button",
             },
             on: {
-              click: () => this.GenerateReport(),
+              click: () => this.generateReport(),
             },
           },
-          'Generate'
+          "Generate"
+        ),
+        h(
+          //Clear Fields Button
+          "button",
+          {
+            staticClass: ["clearbtn"],
+            attrs: {
+              role: "button",
+            },
+            on: {
+              click: () => this.clearFields(),
+            },
+          },
+          "Clear"
         ),
         h(ExportBtn),
       ]
@@ -178,13 +200,20 @@ export default {
 var expanded = false;
 
 function showCheckboxes() {
-  var checkboxes = document.getElementsByClassName('OuterFilterBox')[0];
 
   if (!expanded) {
-    checkboxes.style.display = 'block';
+    JQuery(".OuterFilterBox").show();
     expanded = true;
   } else {
-    checkboxes.style.display = 'none';
+    JQuery(".OuterFilterBox").hide();
     expanded = false;
   }
 }
+
+function hide(event) {
+  if(JQuery(".OuterDropDown") !== event.target && !JQuery(".OuterDropDown").has(event.target).length){
+    JQuery(".OuterFilterBox").hide();
+    expanded = false;
+  }    
+}
+
