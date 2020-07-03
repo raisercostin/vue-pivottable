@@ -9,6 +9,7 @@
 }
 .exportbtn {
   font-size: 1rem;
+  float:right;
   margin-left: 1.5%;
   line-height: 1.5;
   text-align: center;
@@ -23,7 +24,7 @@
   -ms-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
-  background-color: #707070 !important;
+  background-color: #008357 !important;
   color: #ffffff !important;
   padding-left: 4%;
   padding-right: 4%;
@@ -38,6 +39,37 @@
   -moz-box-shadow: none !important;
   box-shadow: none !important;
 }
+.clearbtn {
+    font-size: 1rem;
+    margin-left: 1.5%;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+        touch-action: manipulation;
+    cursor: pointer;
+    border: 1px solid transparent;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    background-color: #707070 !important;
+    color: #ffffff !important;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-bottom: 0.5%;
+    padding-top: 0.5%
+  }
+  .clearbtn:hover,
+  .clearbtn:focus,
+  .clearbtn:active {
+    outline: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+  }
 .generatebtn {
     font-size: 1rem;
     margin-left: 1.5%;
@@ -265,6 +297,10 @@ table.pvtTable tbody tr td {
     cursor: pointer;
     color: #506784;
 }
+.pvtAttrTriangle {
+    cursor: pointer;
+    color: #506784;
+}
 .OuterTriangle {
     cursor: pointer;
     color: #506784;
@@ -347,7 +383,6 @@ table.pvtTable tbody tr td {
     min-width: 210px;
     background-color: #fff;
     position: absolute;
-    padding: 6px;
     user-select: none;
     min-height: 100px;
     -webkit-user-select: none;
@@ -364,13 +399,14 @@ table.pvtTable tbody tr td {
     padding: 6px;
     /* border-radius: 4px; */
 }
-.pvtFilterBox, .OuterFilterBox {
+.pvtFilterBox {
     padding: 3px;
 }
 .OuterFilterBox {
+    width: 300px;
+    height:200px;
     display: none;
     overflow-y: scroll;
-    max-height: 30vh;
     white-space: nowrap;
     font-size: 14px;
 }
