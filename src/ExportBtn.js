@@ -2,7 +2,7 @@ import JQuery from 'jquery'
 
 export default {
   mounted () {
-    JQuery(document).on('click', '.exportbtn', function () {
+    JQuery(document).unbind().on('click', '.exportbtn', function () {
       exportTableToExcel()
     })
   },
