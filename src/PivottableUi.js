@@ -169,7 +169,6 @@ export default {
   mounted() {
     var self = this;
     JQuery(document).on("click", function(event) {
-      console.log(self.currentOpen)
       if(JQuery(".pvtAttr") !== event.target && !JQuery(".pvtAttr").has(event.target).length){
         self.currentOpen = '';
       }

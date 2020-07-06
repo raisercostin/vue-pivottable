@@ -211,7 +211,7 @@ function showCheckboxes() {
 }
 
 function hide(event) {
-  if(JQuery(".OuterDropDown") !== event.target && !JQuery(".OuterDropDown").has(event.target).length){
+  if(JQuery(".OuterDropDown") !== event.target && !JQuery(".OuterFilterBox").has(event.target).length && !JQuery(".OuterDropDown").has(event.target).length){
     JQuery(".OuterFilterBox").hide();
     expanded = false;
   }    
