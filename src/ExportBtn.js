@@ -90,9 +90,9 @@ function exportDocument(className, format) {
       donwloadLink.target = '_blank';
       donwloadLink.style.display = 'none';
 
-      document.body.appendChild(a);
+      document.body.appendChild(donwloadLink);
       donwloadLink.click();
-      document.body.removeChild(a);
+      document.body.removeChild(donwloadLink);
     });
   } else if (format === 'pdf') {
     var doc = new jsPDF({ orientation: 'landscape' });
