@@ -79,16 +79,20 @@ function exportDocument(className, format) {
     var wb = XLSX.utils.table_to_book(table, { sheet: 'Sheet 1' });
     return XLSX.writeFile(wb, fileName + '.xlsx');
   } else if (format === 'png') {
-    html2canvas(table).then(function(canvas) {
-      window.scrollTo(0, 0);
-      var image = canvas.toDataURL();
-      var byteString = atob(image.substring(22)); // remove data stuff
-      var buffer = new ArrayBuffer(byteString.length);
-      var intArray = new Uint8Array(buffer);
-      for (var i = 0; i < byteString.length; i++) {
-        intArray[i] = byteString.charCodeAt(i);
-      }
-      saveToFile(buffer, fileName + '.png', 'image/png', '', '', false);
+    window.scrollTo(0, 0);
+    html2canvas(table, {
+      width: table.offsetWidth + 30,
+      height: table.offsetHeight + 30,
+    }).then(function(canvas) {
+      var donwloadLink = document.createElement('a');
+      donwloadLink.href = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+      donwloadLink.download = fileName + '.png';
+      donwloadLink.target = '_blank';
+      donwloadLink.style.display = 'none';
+
+      document.body.appendChild(a);
+      donwloadLink.click();
+      document.body.removeChild(a);
     });
   } else if (format === 'pdf') {
     var doc = new jsPDF({ orientation: 'landscape' });
@@ -104,41 +108,6 @@ function exportDocument(className, format) {
       html: table,
     });
     doc.save(fileName + '.pdf');
-  }
-}
-
-// save file
-function saveToFile(data, fileName, type, charset, encoding, bom) {
-  var header = 'data:' + type + (charset.length ? ';charset=' + charset : '') + (encoding.length ? ';' + encoding : '') + ',';
-  var data = bom ? '\ufeff' + data : data;
-  var DownloadLink = document.createElement('a');
-
-  if (DownloadLink) {
-    var blobUrl = null;
-    DownloadLink.style.display = 'none';
-    DownloadLink.download = fileName;
-    DownloadLink.target = '_blank';
-
-    if (typeof data === 'object') {
-      window.URL = window.URL || window.webkitURL;
-      var binaryData = [];
-      binaryData.push(data);
-      blobUrl = window.URL.createObjectURL(new Blob(binaryData, { type: header }));
-      DownloadLink.href = blobUrl;
-    } else if (header.toLowerCase().indexOf('base64,') >= 0) {
-      DownloadLink.href = header + base64encode(data);
-    } else {
-      DownloadLink.href = header + encodeURIComponent(data);
-    }
-
-    document.body.appendChild(DownloadLink);
-
-    // Click and remove
-    DownloadLink.click();
-    setTimeout(function() {
-      if (blobUrl) window.URL.revokeObjectURL(blobUrl);
-      document.body.removeChild(DownloadLink);
-    }, 100);
   }
 }
 
