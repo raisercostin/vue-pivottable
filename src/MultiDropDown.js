@@ -49,7 +49,18 @@ export default {
       this.$emit('input', hidden);
     },
     clearFields() {
+      var prevSelected = this.selected.filter((x) => {
+        return x.selected == true;
+      });
       this.deselectAll();
+      this.generateReport();
+      this.selected.map((x) => {
+        prevSelected.map((y) => {
+          if (y.value === x.value) {
+            x.selected = !x.selected;
+          }
+        });
+      });
       this.generateReport();
     },
   },

@@ -80,6 +80,7 @@ function exportDocument(className, format) {
     return XLSX.writeFile(wb, fileName + '.xlsx');
   } else if (format === 'png') {
     html2canvas(table).then(function(canvas) {
+      window.scrollTo(0, 0);
       var image = canvas.toDataURL();
       var byteString = atob(image.substring(22)); // remove data stuff
       var buffer = new ArrayBuffer(byteString.length);
