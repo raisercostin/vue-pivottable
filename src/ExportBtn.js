@@ -81,8 +81,8 @@ function exportDocument(className, format) {
   } else if (format === 'png') {
     window.scrollTo(0, 0);
     html2canvas(table, {
-      width: table.offsetWidth + 30,
-      height: table.offsetHeight + 30,
+      scale: 0.8,
+      scrollX: 0,
     }).then(function(canvas) {
       var donwloadLink = document.createElement('a');
       donwloadLink.href = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
