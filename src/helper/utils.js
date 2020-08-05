@@ -409,12 +409,12 @@ const aggregators = (tpl => ({
   First: tpl.first(usFmt),
   Last: tpl.last(usFmt),
   'Sum over Sum': tpl.sumOverSum(usFmt),
-  'Sum as Fraction of Total': tpl.fractionOf(tpl.sum(), 'total', usFmtPct),
-  'Sum as Fraction of Rows': tpl.fractionOf(tpl.sum(), 'row', usFmtPct),
-  'Sum as Fraction of Columns': tpl.fractionOf(tpl.sum(), 'col', usFmtPct),
-  'Count as Fraction of Total': tpl.fractionOf(tpl.count(), 'total', usFmtPct),
-  'Count as Fraction of Rows': tpl.fractionOf(tpl.count(), 'row', usFmtPct),
-  'Count as Fraction of Columns': tpl.fractionOf(tpl.count(), 'col', usFmtPct)
+  'Sum as Percentage of Total': tpl.fractionOf(tpl.sum(), 'total', usFmtPct),
+  'Sum as Percentage of Rows': tpl.fractionOf(tpl.sum(), 'row', usFmtPct),
+  'Sum as Percentage of Columns': tpl.fractionOf(tpl.sum(), 'col', usFmtPct),
+  'Count as Percentage of Total': tpl.fractionOf(tpl.count(), 'total', usFmtPct),
+  'Count as Percentage of Rows': tpl.fractionOf(tpl.count(), 'row', usFmtPct),
+  'Count as Percentage of Columns': tpl.fractionOf(tpl.count(), 'col', usFmtPct)
 }))(aggregatorTemplates)
 
 const locales = {

@@ -175,7 +175,7 @@ export default {
               click: () => this.generateReport(),
             },
           },
-          'Generate'
+          'Populate'
         ),
         h(
           //Clear Fields Button
