@@ -511,6 +511,23 @@ export default {
               }
             });
           },
+          clear: (value) => {
+            this.init();
+            value.map((x) => {
+             
+              if (!this.unusedAttrs.includes(x.value)) {
+                this.unusedAttrs.push(x.value)
+              }
+              if (this.rows.includes(x.value)) {
+                const index = this.rows.indexOf(x.value);
+                this.rows.splice(index, 1);
+              }
+              if (this.cols.includes(x.value)) {
+                const index = this.cols.indexOf(x.value);
+                this.cols.splice(index, 1);
+              }
+            })
+          }
         },
       }),
       h(
