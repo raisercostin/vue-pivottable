@@ -4,7 +4,7 @@ import ExportBtn from './ExportBtn';
 export default {
   props: ['values', 'defaultValues'],
   mounted() {
-    $(document).on('click', '.OuterDropDown', function() {
+    $(document).unbind().on('click', '.OuterDropDown', function() {
       showCheckboxes();
     });
     $(document).on('click', function(event) {

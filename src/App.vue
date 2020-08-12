@@ -16,9 +16,9 @@
   </div>
 </template>
 <script>
-import tips from './tips';
-import './assets/vue-pivottable.css';
-import VuePivottableUi from './PivottableUi';
+import tips from "./tips";
+import "./assets/vue-pivottable.css";
+import VuePivottableUi from "./PivottableUi";
 
 export default {
   components: {
@@ -27,14 +27,22 @@ export default {
   data() {
     return {
       pivotData: tips,
-      aggregatorName: 'Count',
-      rendererName: 'Table',
+      aggregatorName: "Count",
+      rendererName: "Table",
       rows: [],
       cols: [],
       vals: [],
-      defaultFieldList: ['Meal', 'Tip'],
-      fieldList: ['Meal', 'Tip', 'Payer Smoker', 'Day of Week', 'Payer Gender', 'Party Size', 'Total Bill'],
-      rendererList: ['Table'], // Here to specify show renderer list
+      defaultFieldList: ["Meal", "Tip"],
+      fieldList: [
+        "Total Bill",
+        "Tip",
+        "Payer Gender",
+        "Payer Smoker",
+        "Day of Week",
+        "Meal",
+        "Party Size",
+      ],
+      rendererList: ["Table"], // Here to specify show renderer list
       aggregatorList: [], // Here to specify show aggregator list
     };
   },

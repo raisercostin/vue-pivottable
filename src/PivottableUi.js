@@ -106,7 +106,6 @@ export default {
           (e) =>
             !this.propsData.rows.includes(e) && !this.propsData.cols.includes(e) && !this.hiddenAttributes.includes(e) && !this.propsData.hidden.includes(e)
         )
-        .sort(sortAs(this.unusedOrder));
     },
   },
   data() {
