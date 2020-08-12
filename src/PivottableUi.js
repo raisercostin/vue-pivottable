@@ -123,6 +123,7 @@ export default {
         renderer: null,
         hidden: [],
       },
+      dragging: false,
       currentOpen: '',
       attrValues: {},
       unusedOrder: [],
@@ -274,6 +275,64 @@ export default {
             });
           }),
         ]
+      );
+    },
+    makeDnDCell2(items, onChange, classes, h) {
+      console.log(items)
+      
+      var arr = [h(
+        "span",
+        {
+          staticClass: "pvtEmpty"
+        },
+        "Select Columns"
+      )]
+      if (items.length > 0) {
+        arr = [
+          items.map((x) => {
+            return h(DraggableAttribute, {
+              props: {
+                sortable: this.sortonlyFromDragDrop.includes(x) || !this.disabledFromDragDrop.includes(x),
+                draggable: !this.sortonlyFromDragDrop.includes(x) && !this.disabledFromDragDrop.includes(x),
+                name: x,
+                key: x,
+                attrValues: this.attrValues[x],
+                sorter: getSort(this.sorters, x),
+                menuLimit: this.menuLimit,
+                zIndex: this.zIndices[x] || this.maxZIndex,
+                valueFilter: this.propsData.valueFilter[x],
+                open: this.currentOpen == x,
+              },
+              domProps: {},
+              on: {
+                'update:filter': this.updateValueFilter,
+                'moveToTop:filterbox': this.moveFilterBoxToTop,
+                'open:filterbox': this.openFilterBox,
+              },
+            });
+          }),
+        ]
+      }
+      return h(
+        draggable,
+        {
+          attrs: {
+            draggable: 'li[data-id]',
+            group: 'sharted',
+            ghostClass: '.pvtPlaceholder',
+            filter: '.pvtFilterBox',
+            preventOnFilter: false,
+            tag: 'td',
+          },
+          props: {
+            value: items,
+          },
+          staticClass: classes,
+          on: {
+            sort: onChange.bind(this),
+          },
+        },
+        arr
       );
     },
     rendererCell(rendererName, h) {
@@ -434,7 +493,7 @@ export default {
       `pvtAxisContainer pvtUnused pvtHorizList`,
       h
     );
-    const colAttrsCell = this.makeDnDCell(
+    const colAttrsCell = this.makeDnDCell2(
       this.colAttrs,
       (e) => {
         const item = e.item.getAttribute('data-id');

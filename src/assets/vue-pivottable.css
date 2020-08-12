@@ -234,6 +234,11 @@ table.pvtTable tbody tr td {
   margin-bottom: 0px;
 }
 
+.pvtEmpty {
+  color: #BDC3C7;
+
+}
+
 .pvtVals {
   white-space: nowrap;
   vertical-align: top;
