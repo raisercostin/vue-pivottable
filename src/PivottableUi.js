@@ -231,61 +231,13 @@ export default {
       this.materializedInput = materializedInput;
       this.attrValues = attrValues;
     },
-    makeDnDCell(items, onChange, classes, h) {
-      return h(
-        draggable,
-        {
-          attrs: {
-            draggable: 'li[data-id]',
-            group: 'sharted',
-            ghostClass: '.pvtPlaceholder',
-            filter: '.pvtFilterBox',
-            preventOnFilter: false,
-            tag: 'td',
-          },
-          props: {
-            value: items,
-          },
-          staticClass: classes,
-          on: {
-            sort: onChange.bind(this),
-          },
-        },
-        [
-          items.map((x) => {
-            return h(DraggableAttribute, {
-              props: {
-                sortable: this.sortonlyFromDragDrop.includes(x) || !this.disabledFromDragDrop.includes(x),
-                draggable: !this.sortonlyFromDragDrop.includes(x) && !this.disabledFromDragDrop.includes(x),
-                name: x,
-                key: x,
-                attrValues: this.attrValues[x],
-                sorter: getSort(this.sorters, x),
-                menuLimit: this.menuLimit,
-                zIndex: this.zIndices[x] || this.maxZIndex,
-                valueFilter: this.propsData.valueFilter[x],
-                open: this.currentOpen == x,
-              },
-              domProps: {},
-              on: {
-                'update:filter': this.updateValueFilter,
-                'moveToTop:filterbox': this.moveFilterBoxToTop,
-                'open:filterbox': this.openFilterBox,
-              },
-            });
-          }),
-        ]
-      );
-    },
-    makeDnDCell2(items, onChange, classes, h) {
-      console.log(items)
-      
+    makeDnDCell(items, onChange, classes, h, text = "") {
       var arr = [h(
         "span",
         {
           staticClass: "pvtEmpty"
         },
-        "Select Columns"
+        text
       )]
       if (items.length > 0) {
         arr = [
@@ -493,7 +445,7 @@ export default {
       `pvtAxisContainer pvtUnused pvtHorizList`,
       h
     );
-    const colAttrsCell = this.makeDnDCell2(
+    const colAttrsCell = this.makeDnDCell(
       this.colAttrs,
       (e) => {
         const item = e.item.getAttribute('data-id');
@@ -508,7 +460,8 @@ export default {
         }
       },
       'pvtAxisContainer pvtHorizList pvtCols',
-      h
+      h,
+      "Select Columns from Table"
     );
     const rowAttrsCell = this.makeDnDCell(
       this.rowAttrs,
@@ -525,7 +478,8 @@ export default {
         }
       },
       'pvtAxisContainer pvtVertList pvtRows',
-      h
+      h,
+      "Select Rows from Table"
     );
     const props = {
       ...this.$props,
