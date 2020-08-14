@@ -234,6 +234,11 @@ table.pvtTable tbody tr td {
   margin-bottom: 0px;
 }
 
+.pvtEmpty {
+  color: #BDC3C7;
+
+}
+
 .pvtVals {
   white-space: nowrap;
   vertical-align: top;
@@ -352,6 +357,19 @@ table.pvtTable tbody tr td {
   background: #d1dae6;
 }
 
+.pvtOptionsContainer {
+  padding: 2%;
+  display: inline-flex;
+}
+
+.pvtOptions {
+  margin-left: 50%
+}
+
+.pvtOption {
+  margin-left: 5%
+}
+
 .pvtFilterBox input,
 .OuterFilterBox p input {
   border: 1px solid #c8d4e3;
@@ -395,8 +413,8 @@ table.pvtTable tbody tr td {
   padding: 3px;
 }
 .OuterFilterBox {
-  width: 300px;
-  height: 200px;
+  width: 600px;
+  height: 250px;
   display: none;
   overflow-y: scroll;
   white-space: nowrap;
