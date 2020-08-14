@@ -160,11 +160,6 @@ export default {
     data() {
       this.init();
     },
-    /*
-    firstName: function (val) {
-      this.fullName = val + ' ' + this.lastName
-    },
-    */
   },
   mounted() {
     var self = this;
@@ -516,19 +511,19 @@ export default {
             
           },
           clear: (value) => {
-            this.init();
+
             value.map((x) => {
-             
-              if (!this.unusedAttrs.includes(x.value)) {
-                this.unusedAttrs.push(x.value)
+
+              if (!this.propsData.table.includes(x)) {
+                this.propsData.table.push(x)
               }
-              if (this.rows.includes(x.value)) {
-                const index = this.rows.indexOf(x.value);
-                this.rows.splice(index, 1);
+              if (this.propsData.rows.includes(x)) {
+                const index = this.propsData.rows.indexOf(x);
+                this.propsData.rows.splice(index, 1);
               }
-              if (this.cols.includes(x.value)) {
-                const index = this.cols.indexOf(x.value);
-                this.cols.splice(index, 1);
+              if (this.propsData.cols.includes(x)) {
+                const index = this.propsData.cols.indexOf(x);
+                this.propsData.cols.splice(index, 1);
               }
             })
           }

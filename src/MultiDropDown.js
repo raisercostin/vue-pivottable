@@ -125,9 +125,12 @@ export default {
       this.$emit("input", list);
     },
     clearFields() {
-      var prevSelected = this.selected.filter((x) => {
-        return x.selected == true;
-      });
+      var prevSelected = []
+      this.options.map((option) => {
+        option.fields.filter((item) => item.selected == true)
+        .map((x) => prevSelected.push(x.value))
+      })
+
       this.generateReport();
 
       this.$emit("clear", prevSelected);
