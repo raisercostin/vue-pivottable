@@ -23,7 +23,7 @@ export default {
     },
     valueFilter: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       },
     },
@@ -109,10 +109,37 @@ export default {
         Object.keys(this.attrValues).filter((y) => y !== value)
       );
     },
-    getFilterBox(h) {
+    getFilterBox(h, attr) {
+      var foundmonth = false;
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
       const showMenu = Object.keys(this.attrValues).length < this.menuLimit;
       const values = Object.keys(this.attrValues);
-      const shown = values.filter(this.matchesFilter.bind(this)).sort(this.sorter);
+      console.log(values)
+      console.log(attr)
+      var shown;
+      for (var j = 0; j < values.length; j++) {
+        for (var i = 0; i < months.length; i++) {
+          if (values[j] === months[i]) {
+            foundmonth = true;
+            break;
+          }
+        }
+      }
+      if (foundmonth) { //if foundmonth==true when select month
+        shown = months.filter(this.matchesFilter.bind(this)).sort(function (a, b) { a - b })
+        console.log(foundmonth)
+      }
+      else { //if foundmonth = false
+        console.log(foundmonth)
+        console.log(values)
+        shown = values.filter(this.matchesFilter.bind(this)).sort(function (a, b) {
+          if (isNaN(a) && isNaN(b)) return a < b ? -1 : a == b ? 0 : 1;//both are string
+          else if (isNaN(a)) return 1;//only a is a string
+          else if (isNaN(b)) return -1;//only b is a string
+          else return b - a;//both are num
+
+        })
+      }
       return h(
         'div',
         {
@@ -135,22 +162,22 @@ export default {
             [
               showMenu || h('p', 'too many values to show'),
               showMenu &&
-                h('input', {
-                  staticClass: ['pvtSearch'],
-                  attrs: {
-                    type: 'text',
-                    placeholder: 'Filter Values',
+              h('input', {
+                staticClass: ['pvtSearch'],
+                attrs: {
+                  type: 'text',
+                  placeholder: 'Filter Values',
+                },
+                domProps: {
+                  value: this.filterText,
+                },
+                on: {
+                  input: (e) => {
+                    this.filterText = e.target.value;
+                    this.$emit('input', e.target.value);
                   },
-                  domProps: {
-                    value: this.filterText,
-                  },
-                  on: {
-                    input: (e) => {
-                      this.filterText = e.target.value;
-                      this.$emit('input', e.target.value);
-                    },
-                  },
-                }),
+                },
+              }),
               h('a', {
                 staticClass: ['pvtFilterTextClear'],
                 on: {
@@ -188,55 +215,55 @@ export default {
             ]
           ),
           showMenu &&
-            h(
-              'div',
-              {
-                staticClass: ['pvtCheckContainer'],
-              },
-              [
-                ...shown.map((x) => {
-                  const checked = !(x in this.valueFilter);
-                  return h(
-                    'p',
-                    {
-                      class: {
-                        selected: checked,
-                      },
-                      attrs: {
-                        key: x,
-                      },
-                      on: {
-                        click: () => this.toggleValue(x),
-                      },
+          h(
+            'div',
+            {
+              staticClass: ['pvtCheckContainer'],
+            },
+            [
+              ...shown.map((x) => {
+                const checked = !(x in this.valueFilter);
+                return h(
+                  'p',
+                  {
+                    class: {
+                      selected: checked,
                     },
-                    [
-                      h('input', {
-                        attrs: {
-                          type: 'checkbox',
+                    attrs: {
+                      key: x,
+                    },
+                    on: {
+                      click: () => this.toggleValue(x),
+                    },
+                  },
+                  [
+                    h('input', {
+                      attrs: {
+                        type: 'checkbox',
+                      },
+                      domProps: {
+                        checked: checked,
+                      },
+                    }),
+                    x,
+                    h(
+                      'a',
+                      {
+                        staticClass: ['pvtOnly'],
+                        on: {
+                          click: (e) => this.selectOnly(e, x),
                         },
-                        domProps: {
-                          checked: checked,
-                        },
-                      }),
-                      x,
-                      h(
-                        'a',
-                        {
-                          staticClass: ['pvtOnly'],
-                          on: {
-                            click: (e) => this.selectOnly(e, x),
-                          },
-                        },
-                        'only'
-                      ),
-                      h('a', {
-                        staticClass: ['pvtOnlySpacer'],
-                      }),
-                    ]
-                  );
-                }),
-              ]
-            ),
+                      },
+                      'only'
+                    ),
+                    h('a', {
+                      staticClass: ['pvtOnlySpacer'],
+                    }),
+                  ]
+                );
+              }),
+            ]
+          ),
         ]
       );
     },
@@ -271,17 +298,17 @@ export default {
             this.name,
             !this.disabled
               ? h(
-                  'span',
-                  {
-                    staticClass: ['pvtTriangle'],
-                    on: {
-                      click: this.toggleFilterBox.bind(this),
-                    },
+                'span',
+                {
+                  staticClass: ['pvtTriangle'],
+                  on: {
+                    click: this.toggleFilterBox.bind(this),
                   },
-                  '  ▾'
-                )
+                },
+                '  ▾'
+              )
               : undefined,
-            this.open ? this.getFilterBox(h) : undefined,
+            this.open ? this.getFilterBox(h, this.name) : undefined,
           ]
         ),
       ]
