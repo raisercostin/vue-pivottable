@@ -95,14 +95,12 @@ export default {
       return aggregators[this.propsData.aggregatorName || this.aggregatorName]([])().numInputs || 0;
     },
     rowAttrs() {
-      console.log(this.propsData.rows)
       return this.propsData.rows.filter((e) => !this.hiddenAttributes.includes(e));
     },
     colAttrs() {
       return this.propsData.cols.filter((e) => !this.hiddenAttributes.includes(e));
     },
     unusedAttrs() {
-      console.log(this.propsData.table)
       return this.propsData.table
         .filter(
           (e) =>
@@ -431,7 +429,6 @@ export default {
     const rendererName = this.propsData.rendererName || this.rendererName;
     const aggregatorName = this.propsData.aggregatorName || this.aggregatorName;
     const vals = this.propsData.vals;
-    console.log(this.unusedAttrs)
     const unusedAttrsCell = this.makeDnDCell(
       this.unusedAttrs,
       (e) => {
@@ -467,7 +464,6 @@ export default {
       h,
       "Select Columns from Table"
     );
-    console.log(this.rowAttrs)
     const rowAttrsCell = this.makeDnDCell(
       this.rowAttrs,
       (e) => {
@@ -517,7 +513,6 @@ export default {
             this.propsData.rows = value[0].fields;
             this.propsData.cols = value[1].fields;
             this.propsData.table = value[2].fields;
-            console.log(value)
             
           },
           clear: (value) => {
