@@ -120,15 +120,11 @@ export default {
         list.push({
           type: option.text,
           fields: option.fields.filter((item) => item.selected == true)
+          .map((x) => x.value)
         })
       })
 
-      this.selected.map((x) => {
-        if (x.selected == false) {
-          hidden.push(x.value);
-        }
-      });
-      this.$emit("input", hidden);
+      this.$emit("input", list);
     },
     clearFields() {
       var prevSelected = this.selected.filter((x) => {

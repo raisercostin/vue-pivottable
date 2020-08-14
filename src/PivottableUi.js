@@ -95,16 +95,18 @@ export default {
       return aggregators[this.propsData.aggregatorName || this.aggregatorName]([])().numInputs || 0;
     },
     rowAttrs() {
-      return this.propsData.rows.filter((e) => !this.hiddenAttributes.includes(e) && !this.propsData.hidden.includes(e));
+      console.log(this.propsData.rows)
+      return this.propsData.rows.filter((e) => !this.hiddenAttributes.includes(e));
     },
     colAttrs() {
-      return this.propsData.cols.filter((e) => !this.hiddenAttributes.includes(e) && !this.propsData.hidden.includes(e));
+      return this.propsData.cols.filter((e) => !this.hiddenAttributes.includes(e));
     },
     unusedAttrs() {
-      return Object.keys(this.attrValues)
+      console.log(this.propsData.table)
+      return this.propsData.table
         .filter(
           (e) =>
-            !this.propsData.rows.includes(e) && !this.propsData.cols.includes(e) && !this.hiddenAttributes.includes(e) && !this.propsData.hidden.includes(e)
+            !this.hiddenAttributes.includes(e)
         )
     },
   },
@@ -121,7 +123,7 @@ export default {
         rows: [],
         valueFilter: {},
         renderer: null,
-        hidden: [],
+        table: []
       },
       dragging: false,
       currentOpen: '',
@@ -180,6 +182,7 @@ export default {
       this.propsData.vals = this.vals.slice();
       this.propsData.rows = this.rows;
       this.propsData.cols = this.cols;
+      this.propsData.table = [];
       this.unusedOrder = this.unusedAttrs;
       Object.keys(this.attrValues).map(this.assignValue);
     },
@@ -428,6 +431,7 @@ export default {
     const rendererName = this.propsData.rendererName || this.rendererName;
     const aggregatorName = this.propsData.aggregatorName || this.aggregatorName;
     const vals = this.propsData.vals;
+    console.log(this.unusedAttrs)
     const unusedAttrsCell = this.makeDnDCell(
       this.unusedAttrs,
       (e) => {
@@ -436,10 +440,10 @@ export default {
           return;
         }
         if (e.from.classList.contains('pvtUnused')) {
-          this.unusedOrder.splice(e.oldIndex, 1);
+          this.propsData.table.splice(e.oldIndex, 1);
         }
         if (e.to.classList.contains('pvtUnused')) {
-          this.unusedOrder.splice(e.newIndex, 0, item);
+          this.propsData.table.splice(e.newIndex, 0, item);
         }
       },
       `pvtAxisContainer pvtUnused pvtHorizList`,
@@ -463,6 +467,7 @@ export default {
       h,
       "Select Columns from Table"
     );
+    console.log(this.rowAttrs)
     const rowAttrsCell = this.makeDnDCell(
       this.rowAttrs,
       (e) => {
@@ -508,20 +513,12 @@ export default {
         },
         on: {
           input: (value) => {
-            this.propsData.hidden = value;
             this.init();
-            this.rows.map((x) => {
-              if (this.propsData.hidden.includes(x)) {
-                const index = this.rows.indexOf(x);
-                this.rows.splice(index, 1);
-              }
-            });
-            this.cols.map((x) => {
-              if (this.propsData.hidden.includes(x)) {
-                const index = this.cols.indexOf(x);
-                this.cols.splice(index, 1);
-              }
-            });
+            this.propsData.rows = value[0].fields;
+            this.propsData.cols = value[1].fields;
+            this.propsData.table = value[2].fields;
+            console.log(value)
+            
           },
           clear: (value) => {
             this.init();
