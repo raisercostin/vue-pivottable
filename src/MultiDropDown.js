@@ -3,9 +3,9 @@ import ExportBtn from "./ExportBtn";
 
 export default {
   props: ["values", "defaultValues"],
-  mounted() {
+  created() {
+    $(document).off('click')
     $(document)
-      .unbind()
       .on("click", ".OuterDropDown", function() {
         showCheckboxes();
       });
@@ -21,8 +21,6 @@ export default {
         });
       }
     });
-    console.log(this.options.filter((x) => x.text == this.optionSelected));
-    console.log(this.options);
     this.generateReport();
   },
   methods: {

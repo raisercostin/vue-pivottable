@@ -5,7 +5,7 @@ import 'jspdf-autotable';
 import $ from 'jquery';
 
 export default {
-  mounted() {
+  created() {
     $(document).on('click', '.OuterExportDropDown', function() {
       showCheckboxes();
     });
