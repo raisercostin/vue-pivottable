@@ -54,11 +54,6 @@ export default {
       }
     }
   },
-  computed: {
-    optionList() {
-      return this.options
-    }
-  },
   methods: {
     init() {
       this.options = [
@@ -75,6 +70,7 @@ export default {
           });
         }
       });
+      this.optionSelected = "Table"
       this.generateReport();
     },
     selectedOrNot(type, val) {
@@ -188,7 +184,6 @@ export default {
     },
     clearFields() {
       this.init();
-      this.optionSelected = "Table";
       this.$emit("clear");
     },
   },
@@ -271,6 +266,7 @@ export default {
                   },
                   `Deselect All`
                 ),
+
                 h(
                   "div",
                   {
@@ -308,6 +304,20 @@ export default {
                     }),
                   ]
                 ),
+              ]
+            ),
+            h(
+              "p",
+              {
+                staticClass: ["remarkText"]
+              },
+              [
+                h("span", "Selecting fields for "),
+                h("span",
+                  {
+                    staticClass: ["optionText"]
+                  },
+                  this.optionSelected + "...")
               ]
             ),
             h(
