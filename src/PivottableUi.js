@@ -600,7 +600,8 @@ export default {
             this.propsData.table = value[2].fields;
           },
           clear: () => {
-            this.init();
+            //remove filters
+            Object.keys(this.attrValues).map(this.assignValue);
           }
         },
       }),

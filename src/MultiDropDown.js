@@ -51,12 +51,13 @@ export default {
     }
   },
   methods: {
-    init() {
+    init(clear = false) {
       this.options = [
         { text: "Row", fields: [] },
         { text: "Column", fields: [] },
         { text: "Table", fields: [] },
       ]
+      if (!clear) {
       this.options.map((x) => {
         for (var index in this.values) {
           x.fields.push({
@@ -66,6 +67,17 @@ export default {
           });
         }
       });
+    } else {
+      this.options.map((x) => {
+        for (var index in this.values) {
+          x.fields.push({
+            value: this.values[index],
+            selected: false,
+            selectedOther: false,
+          });
+        }
+      });
+    }
       this.optionSelected = "Table"
       this.generateReport();
     },
@@ -179,7 +191,7 @@ export default {
       this.$emit("input", list);
     },
     clearFields() {
-      this.init();
+      this.init(true);
       this.$emit("clear");
     },
   },
