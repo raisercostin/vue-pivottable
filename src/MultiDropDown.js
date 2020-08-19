@@ -2,7 +2,7 @@ import $ from "jquery";
 import ExportBtn from "./ExportBtn";
 
 export default {
-  props: ["values", "defaultValues"],
+  props: ["values", "defaultValues", "attrs"],
   created() {
     $(document).off('click')
     $(document)
@@ -22,6 +22,51 @@ export default {
       }
     });
     this.generateReport();
+  },
+  watch: {
+    attrs() {
+      var list = this.attrs
+      var current = this.options;
+      
+      if (list[0].fields.length > 0 || list[1].fields.length > 0 || list[2].fields.length > 0) {
+        //map each each field in list
+       Object.keys(list).map((option) => {
+         list[option].fields.map((listitem) => {
+          //check if listitem is not selected in options
+          var boolitem = current[option].fields.filter((field) => field.value == listitem && !field.selected)
+          var bool = boolitem.length > 0
+          if (bool) {
+            console.log(boolitem)
+            //check if it was selected b4
+            if (boolitem[0].selectedOther) {
+              console.log(Object.keys(current).filter((x) => current[x].text != list[option].text))
+              Object.keys(current).filter((x) => current[x].text != list[option].text)
+              .map((item) => {
+                console.log(item)
+                var bool2 = current[item].fields.filter((y) => y.value == listitem && y.selected).length > 0;
+                console.log(bool2)
+                if (bool2) {
+                  
+                //if true then we toggle the checkboxes for the other option that is selected
+                this.toggleOption(current[item].text);
+                this.toggleValue(listitem)
+                }
+
+              })
+            }
+            //if true then we toggle the checkboxes
+            this.toggleOption(current[option].text);
+            this.toggleValue(listitem)  
+          }
+         })
+      })
+    }
+  }
+  },
+  computed: {
+    optionList() {
+      return this.options
+    }
   },
   methods: {
     // selectedOrNot(val) {
@@ -135,6 +180,7 @@ export default {
 
       this.$emit("clear", prevSelected);
     },
+    
   },
   data() {
     return {
@@ -332,7 +378,7 @@ export default {
           },
           "Clear"
         ),
-        h(ExportBtn),
+        h(ExportBtn)
       ]
     );
   },

@@ -498,6 +498,11 @@ export default {
         props: {
           values: this.fields,
           defaultValues: this.defaultFields,
+          attrs: [
+            { text: "Row", fields: this.rowAttrs },
+            { text: "Column", fields: this.colAttrs },
+            { text: "Table", fields: this.unusedAttrs }
+          ]
         },
         domProps: {
           value: 'Select',
