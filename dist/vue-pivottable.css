@@ -357,8 +357,18 @@ table.pvtTable tbody tr td {
   background: #d1dae6;
 }
 
+.remarkText {
+  padding: 2% !important;
+  font-style: italic
+}
+
+.optionText {
+  font-weight: bold
+}
+
 .pvtOptionsContainer {
   padding: 2%;
+  padding-bottom: 0;
   display: inline-flex;
 }
 
