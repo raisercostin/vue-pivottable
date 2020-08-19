@@ -111,22 +111,62 @@ export default {
     },
     getFilterBox(h, attr) {
       var foundmonth = false;
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      const monthArray = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
       const showMenu = Object.keys(this.attrValues).length < this.menuLimit;
       const values = Object.keys(this.attrValues);
       var shown;
+
+      var months = new Array(12);
+      months['Jan'] = 1;
+      months['Feb'] = 2;
+      months['Mar'] = 3;
+      months['Apr'] = 4;
+      months['May'] = 5;
+      months['Jun'] = 6;
+      months['Jul'] = 7;
+      months['Aug'] = 8;
+      months['Sep'] = 9;
+      months['Oct'] = 10;
+      months['Nov'] = 11;
+      months['Dec'] = 12;
+      months['No value'] = 13;
+
+      function sortMonth(a, b) {
+        var m1 = a.substring(0, 3);
+        var y1 = a.substring(4);
+        var m2 = b.substring(0, 3);
+        var y2 = b.substring(4);
+
+        if (Number(y1) > Number(y2)) {
+          return 1;
+        } else if (Number(y1) < Number(y2)) {
+          return -1;
+        } else {
+          if (months[m1] > months[m2]) {
+            return 1;
+          } 
+          if (a.includes("No value" || b.includes("No value"))) {
+            return -1
+          }
+          else if (months[m1] < months[m2]) {
+            return -1;
+          }
+        }
+        return 0;
+      }
+
       for (var j = 0; j < values.length; j++) {
-        for (var i = 0; i < months.length; i++) {
-          if (values[j] === months[i]) {
+        for (var i = 0; i < monthArray.length; i++) {
+          if (values[j] === monthArray[i]) {
             foundmonth = true;
             break;
           }
         }
       }
-      if (foundmonth) { //if foundmonth==true when select month
-        shown = months.filter(this.matchesFilter.bind(this)).sort(function (a, b) { a - b })
+      if (foundmonth) { 
+        shown = values.filter(this.matchesFilter.bind(this)).sort(sortMonth);
       }
-      else { //if foundmonth = false
+      else { 
         shown = values.filter(this.matchesFilter.bind(this)).sort(function (a, b) {
           if (isNaN(a) && isNaN(b)) return a < b ? -1 : a == b ? 0 : 1;//both are string
           else if (isNaN(a)) return 1;//only a is a string
