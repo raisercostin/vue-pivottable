@@ -2,7 +2,7 @@ import $ from "jquery";
 import ExportBtn from "./ExportBtn";
 
 export default {
-  props: ["values", "defaultValues"],
+  props: ["values", "defaultValues", "attrs"],
   created() {
     $(document).off('click')
     $(document)
@@ -12,21 +12,71 @@ export default {
     $(document).on("click", function(event) {
       hide(event);
     });
-    this.options.map((x) => {
-      for (var index in this.values) {
-        x.fields.push({
-          value: this.values[index],
-          selected: false,
-          selectedOther: false,
-        });
-      }
-    });
-    this.generateReport();
+    this.init();
+  },
+  watch: {
+    attrs() {
+      var list = this.attrs
+      var current = this.options;
+      
+      if (list[0].fields.length > 0 || list[1].fields.length > 0 || list[2].fields.length > 0) {
+        //map each each field in list
+       Object.keys(list).map((option) => {
+         list[option].fields.map((listitem) => {
+          //check if listitem is not selected in options
+          var boolitem = current[option].fields.filter((field) => field.value == listitem && !field.selected)
+          var bool = boolitem.length > 0
+          if (bool) {
+            console.log(boolitem)
+            //check if it was selected b4
+            if (boolitem[0].selectedOther) {
+              console.log(Object.keys(current).filter((x) => current[x].text != list[option].text))
+              Object.keys(current).filter((x) => current[x].text != list[option].text)
+              .map((item) => {
+                console.log(item)
+                var bool2 = current[item].fields.filter((y) => y.value == listitem && y.selected).length > 0;
+                console.log(bool2)
+                if (bool2) {
+                  
+                //if true then we toggle the checkboxes for the other option that is selected
+                this.toggleOption(current[item].text);
+                this.toggleValue(listitem)
+                }
+
+              })
+            }
+            //if true then we toggle the checkboxes
+            this.toggleOption(current[option].text);
+            this.toggleValue(listitem)  
+          }
+         })
+      })
+    }
+  }
   },
   methods: {
     // selectedOrNot(val) {
     //   return this.defaultValues.indexOf(val) !== -1;
     // },
+    init() {
+      this.options = [
+        { text: "Row", fields: [] },
+        { text: "Column", fields: [] },
+        { text: "Table", fields: [] },
+      ]
+
+      this.options.map((x) => {
+        for (var index in this.values) {
+          x.fields.push({
+            value: this.values[index],
+            selected: false,
+            selectedOther: false,
+          });
+        }
+      });
+      this.optionSelected = "Table"
+      this.generateReport();
+    },
     toggleValue(value) {
       //update current option filter
       this.options
@@ -124,26 +174,14 @@ export default {
 
       this.$emit("input", list);
     },
-    clearFields() {
-      var prevSelected = []
-      this.options.map((option) => {
-        option.fields.filter((item) => item.selected == true)
-        .map((x) => prevSelected.push(x.value))
-      })
-
-      this.generateReport();
-
-      this.$emit("clear", prevSelected);
+    clearFields() {  
+      this.init();
+      this.$emit("clear");
     },
   },
   data() {
     return {
-      selected: [],
-      options: [
-        { text: "Row", fields: [] },
-        { text: "Column", fields: [] },
-        { text: "Table", fields: [] },
-      ],
+      options: null,
       optionSelected: "Table",
     };
   },
@@ -220,6 +258,7 @@ export default {
                   },
                   `Deselect All`
                 ),
+                
                 h(
                   "div",
                   {
@@ -257,6 +296,20 @@ export default {
                     }),
                   ]
                 ),
+              ]
+            ),
+            h(
+              "p",
+              {
+                staticClass: ["remarkText"]
+              },
+              [
+                h("span","Selecting fields for "), 
+                h("span", 
+                {
+                  staticClass: ["optionText"]
+                },
+                this.optionSelected + "...")
               ]
             ),
             h(
@@ -332,7 +385,7 @@ export default {
           },
           "Clear"
         ),
-        h(ExportBtn),
+        h(ExportBtn)
       ]
     );
   },

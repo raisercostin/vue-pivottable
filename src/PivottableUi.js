@@ -498,34 +498,23 @@ export default {
         props: {
           values: this.fields,
           defaultValues: this.defaultFields,
+          attrs: [
+            { text: "Row", fields: this.rowAttrs },
+            { text: "Column", fields: this.colAttrs },
+            { text: "Table", fields: this.unusedAttrs }
+          ]
         },
         domProps: {
           value: 'Select',
         },
         on: {
           input: (value) => {
-            this.init();
             this.propsData.rows = value[0].fields;
             this.propsData.cols = value[1].fields;
             this.propsData.table = value[2].fields;
-            
           },
-          clear: (value) => {
-
-            value.map((x) => {
-
-              if (!this.propsData.table.includes(x)) {
-                this.propsData.table.push(x)
-              }
-              if (this.propsData.rows.includes(x)) {
-                const index = this.propsData.rows.indexOf(x);
-                this.propsData.rows.splice(index, 1);
-              }
-              if (this.propsData.cols.includes(x)) {
-                const index = this.propsData.cols.indexOf(x);
-                this.propsData.cols.splice(index, 1);
-              }
-            })
+          clear: () => {
+            this.init();
           }
         },
       }),
