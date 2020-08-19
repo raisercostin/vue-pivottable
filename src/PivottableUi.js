@@ -509,11 +509,9 @@ export default {
         },
         on: {
           input: (value) => {
-            this.init();
             this.propsData.rows = value[0].fields;
             this.propsData.cols = value[1].fields;
             this.propsData.table = value[2].fields;
-            
           },
           clear: () => {
             this.init();

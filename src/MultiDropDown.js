@@ -54,11 +54,6 @@ export default {
     }
   }
   },
-  computed: {
-    optionList() {
-      return this.options
-    }
-  },
   methods: {
     // selectedOrNot(val) {
     //   return this.defaultValues.indexOf(val) !== -1;
@@ -79,6 +74,7 @@ export default {
           });
         }
       });
+      this.optionSelected = "Table"
       this.generateReport();
     },
     toggleValue(value) {
@@ -178,11 +174,8 @@ export default {
 
       this.$emit("input", list);
     },
-    clearFields() {
-      
+    clearFields() {  
       this.init();
-      this.optionSelected = "Table",
-
       this.$emit("clear");
     },
   },
@@ -265,6 +258,7 @@ export default {
                   },
                   `Deselect All`
                 ),
+                
                 h(
                   "div",
                   {
@@ -302,6 +296,20 @@ export default {
                     }),
                   ]
                 ),
+              ]
+            ),
+            h(
+              "p",
+              {
+                staticClass: ["remarkText"]
+              },
+              [
+                h("span","Selecting fields for "), 
+                h("span", 
+                {
+                  staticClass: ["optionText"]
+                },
+                this.optionSelected + "...")
               ]
             ),
             h(
