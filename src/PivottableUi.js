@@ -33,7 +33,14 @@ export default {
         return [];
       },
     },
-    defaultFields: {
+    defaultAggregatorName: String,
+    defaultVals: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
+    defaultTables: {
       type: Array,
       default: function () {
         return [];
@@ -49,6 +56,12 @@ export default {
       type: Array,
       default: function () {
         return [];
+      },
+    },
+    defaultValueFilter: {
+      type: Object,
+      default: function () {
+        return {};
       },
     },
     fields: {
@@ -84,9 +97,27 @@ export default {
       default: function () {
         return [];
       },
-    },
+    }
   },
   computed: {
+    innerAggregatorName() {
+      return this.propsData.aggregatorName;
+    },
+    innerVals() {
+      return this.propsData.vals;
+    },
+    innerTables() {
+      return this.propsData.table;
+    },
+    innerRows() {
+      return this.propsData.rows;
+    },
+    innerColumns() {
+      return this.propsData.cols;
+    },
+    innerValueFilter() {
+      return this.propsData.valueFilter;
+    },
     renderers() {
       var res = Object.assign({}, TableRenderer, PlotlyRenderer);
       var result = this.showRenderers.length == 0 ? res : {};
@@ -104,7 +135,7 @@ export default {
       return result;
     },
     numValsAllowed() {
-      return aggregators[this.propsData.aggregatorName || this.aggregatorName]([])().numInputs || 0;
+      return aggregators[this.propsData.aggregatorName || this.defaultAggregatorName]([])().numInputs || 0;
     },
     rowAttrs() {
       return this.propsData.rows.filter((e) => !this.hiddenAttributes.includes(e));
@@ -172,6 +203,42 @@ export default {
     data() {
       this.init();
     },
+    innerAggregatorName: {
+      handler: function (newValue) {
+        this.$emit("updateAggregatorName", newValue);
+      },
+      deep: true
+    },
+    innerVals: {
+      handler: function (newValue) {
+        this.$emit("updateVals", newValue);
+      },
+      deep: true
+    },
+    innerTables: {
+      handler: function (newValue) {
+        this.$emit("updateTables", newValue);
+      },
+      deep: true
+    },
+    innerRows: {
+      handler: function (newValue) {
+        this.$emit("updateRows", newValue);
+      },
+      deep: true
+    },
+    innerColumns: {
+      handler: function (newValue) {
+        this.$emit("updateColumns", newValue);
+      },
+      deep: true
+    },
+    innerValueFilter: {
+      handler: function (newValue) {
+        this.$emit("updateFilter", newValue);
+      },
+      deep: true
+    }
   },
   mounted() {
     var self = this;
@@ -180,6 +247,10 @@ export default {
         self.currentOpen = '';
       }
     });
+
+    // Default value filter
+    this.propsData.valueFilter = this.defaultValueFilter;
+    this.propsData.vals = this.defaultVals;
   },
   methods: {
     init() {
@@ -319,6 +390,7 @@ export default {
               },
               on: {
                 input: (value) => {
+                  debugger
                   this.propUpdater('rendererName')(value);
                   this.propUpdater('renderer', this.renderers[value]);
                 },
@@ -434,7 +506,7 @@ export default {
   render(h) {
     if (this.data.length < 1) return;
     const rendererName = this.propsData.rendererName || this.rendererName;
-    const aggregatorName = this.propsData.aggregatorName || this.aggregatorName;
+    const aggregatorName = this.propsData.aggregatorName || this.defaultAggregatorName;
     const vals = this.propsData.vals;
     const unusedAttrsCell = this.makeDnDCell(
       this.unusedAttrs,
@@ -509,7 +581,9 @@ export default {
       h(MultiDropDown, {
         props: {
           values: this.fields,
-          defaultValues: this.defaultFields,
+          defaultTables: this.defaultTables,
+          defaultRows: this.defaultRows,
+          defaultColumns: this.defaultColumns,
           attrs: [
             { text: "Row", fields: this.rowAttrs },
             { text: "Column", fields: this.colAttrs },

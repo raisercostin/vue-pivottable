@@ -2,7 +2,7 @@ import $ from "jquery";
 import ExportBtn from "./ExportBtn";
 
 export default {
-  props: ["values", "defaultValues", "attrs"],
+  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs"],
   created() {
     $(document).off('click')
     $(document)
@@ -18,41 +18,41 @@ export default {
     attrs() {
       var list = this.attrs
       var current = this.options;
-      
+
       if (list[0].fields.length > 0 || list[1].fields.length > 0 || list[2].fields.length > 0) {
         //map each each field in list
-       Object.keys(list).map((option) => {
-         list[option].fields.map((listitem) => {
-          //check if listitem is not selected in options
-          var boolitem = current[option].fields.filter((field) => field.value == listitem && !field.selected)
-          var bool = boolitem.length > 0
-          if (bool) {
-            console.log(boolitem)
-            //check if it was selected b4
-            if (boolitem[0].selectedOther) {
-              console.log(Object.keys(current).filter((x) => current[x].text != list[option].text))
-              Object.keys(current).filter((x) => current[x].text != list[option].text)
-              .map((item) => {
-                console.log(item)
-                var bool2 = current[item].fields.filter((y) => y.value == listitem && y.selected).length > 0;
-                console.log(bool2)
-                if (bool2) {
-                  
-                //if true then we toggle the checkboxes for the other option that is selected
-                this.toggleOption(current[item].text);
-                this.toggleValue(listitem)
-                }
+        Object.keys(list).map((option) => {
+          list[option].fields.map((listitem) => {
+            //check if listitem is not selected in options
+            var boolitem = current[option].fields.filter((field) => field.value == listitem && !field.selected)
+            var bool = boolitem.length > 0
+            if (bool) {
+              console.log(boolitem)
+              //check if it was selected b4
+              if (boolitem[0].selectedOther) {
+                console.log(Object.keys(current).filter((x) => current[x].text != list[option].text))
+                Object.keys(current).filter((x) => current[x].text != list[option].text)
+                  .map((item) => {
+                    console.log(item)
+                    var bool2 = current[item].fields.filter((y) => y.value == listitem && y.selected).length > 0;
+                    console.log(bool2)
+                    if (bool2) {
 
-              })
+                      //if true then we toggle the checkboxes for the other option that is selected
+                      this.toggleOption(current[item].text);
+                      this.toggleValue(listitem)
+                    }
+
+                  })
+              }
+              //if true then we toggle the checkboxes
+              this.toggleOption(current[option].text);
+              this.toggleValue(listitem)
             }
-            //if true then we toggle the checkboxes
-            this.toggleOption(current[option].text);
-            this.toggleValue(listitem)  
-          }
-         })
-      })
+          })
+        })
+      }
     }
-  }
   },
   computed: {
     optionList() {
@@ -66,17 +66,28 @@ export default {
         { text: "Column", fields: [] },
         { text: "Table", fields: [] },
       ]
-
       this.options.map((x) => {
         for (var index in this.values) {
           x.fields.push({
             value: this.values[index],
-            selected: false,
-            selectedOther: false,
+            selected: this.selectedOrNot(x.text, this.values[index]),
+            selectedOther: this.selectedOrNotOthers(x.text, this.values[index]),
           });
         }
       });
       this.generateReport();
+    },
+    selectedOrNot(type, val) {
+      if (type === 'Table') return this.defaultTables.indexOf(val) !== -1;
+      else if (type === 'Column') return this.defaultColumns.indexOf(val) !== -1;
+      else if (type === 'Row') return this.defaultRows.indexOf(val) !== -1;
+      else return false;
+    },
+    selectedOrNotOthers(type, val) {
+      if (type === 'Table') return (this.defaultColumns.indexOf(val) !== -1 || this.defaultRows.indexOf(val) !== -1);
+      else if (type === 'Column') return (this.defaultTables.indexOf(val) !== -1 || this.defaultRows.indexOf(val) !== -1);
+      else if (type === 'Row') return (this.defaultTables.indexOf(val) !== -1 || this.defaultColumns.indexOf(val) !== -1);
+      else return false;
     },
     toggleValue(value) {
       //update current option filter

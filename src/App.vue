@@ -2,18 +2,22 @@
   <div id="app">
     <VuePivottableUi
       :data="pivotData"
-      :aggregator-name="aggregatorName"
       :renderer-name="rendererName"
-      :rows="rows"
-      :cols="cols"
-      :row-total="true"
-      :col-total="true"
       :showRenderers="rendererList"
       :showAggregators="aggregatorList"
-      :defaultFields="defaultFieldList"
-      :defaultRows="defaultRowList"
-      :defaultColumns="defaultColumnList"
+      :defaultAggregatorName="defaultAggregatorName"
+      :defaultVals="defaultVals"
+      :defaultTables="defaultTables"
+      :defaultRows="defaultRows"
+      :defaultColumns="defaultColumns"
+      :defaultValueFilter="defaultValueFilter"
       :fields="fieldList"
+      @updateFilter="updateFilter"
+      @updateTables="updateTables"
+      @updateRows="updateRows"
+      @updateColumns="updateColumns"
+      @updateAggregatorName="updateAggregatorName"
+      @updateVals="updateVals"
     ></VuePivottableUi>
   </div>
 </template>
@@ -26,17 +30,44 @@ export default {
   components: {
     VuePivottableUi,
   },
+  methods: {
+    updateAggregatorName(val) {
+      this.selectedAggregatorName = val;
+    },
+    updateVals(val) {
+      this.selectedVals = JSON.stringify(val);
+    },
+    updateTables(val) {
+      this.selectedTables = JSON.stringify(val);
+    },
+    updateRows(val) {
+      this.selectedRows = JSON.stringify(val);
+    },
+    updateColumns(val) {
+      this.selectedColumns = JSON.stringify(val);
+    },
+    updateFilter(val) {
+      this.selectedFilter = JSON.stringify(val);
+    },
+  },
   data() {
     return {
       pivotData: tips,
-      aggregatorName: "Count",
       rendererName: "Table",
-      rows: [],
-      cols: [],
-      vals: [],
-      defaultFieldList: ["Meal", "Tip"],
-      defaultRowList: ["Total Bill"],
-      defaultColumnList: ["Party Size"],
+      defaultAggregatorName: "Count Unique Values",
+      defaultVals: ["Tip"],
+      defaultTables: ["Tip"],
+      defaultRows: ["Meal"],
+      defaultColumns: ["Party Size"],
+      defaultValueFilter: {
+        "Total Bill": {},
+        Tip: {},
+        "Payer Gender": {},
+        "Payer Smoker": {},
+        "Day of Week": {},
+        Meal: { Dinner: true },
+        "Party Size": {},
+      },
       fieldList: [
         "Total Bill",
         "Tip",
@@ -48,6 +79,12 @@ export default {
       ],
       rendererList: ["Table"], // Here to specify show renderer list
       aggregatorList: [], // Here to specify show aggregator list
+      selectedAggregatorName: "",
+      selectedVals: [],
+      selectedTables: [],
+      selectedRows: [],
+      selectedColumns: [],
+      selectedFilter: {},
     };
   },
 };
