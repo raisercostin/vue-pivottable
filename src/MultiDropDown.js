@@ -27,15 +27,11 @@ export default {
             var boolitem = current[option].fields.filter((field) => field.value == listitem && !field.selected)
             var bool = boolitem.length > 0
             if (bool) {
-              console.log(boolitem)
               //check if it was selected b4
               if (boolitem[0].selectedOther) {
-                console.log(Object.keys(current).filter((x) => current[x].text != list[option].text))
                 Object.keys(current).filter((x) => current[x].text != list[option].text)
                   .map((item) => {
-                    console.log(item)
                     var bool2 = current[item].fields.filter((y) => y.value == listitem && y.selected).length > 0;
-                    console.log(bool2)
                     if (bool2) {
 
                       //if true then we toggle the checkboxes for the other option that is selected
