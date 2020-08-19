@@ -12,16 +12,7 @@ export default {
     $(document).on("click", function(event) {
       hide(event);
     });
-    this.options.map((x) => {
-      for (var index in this.values) {
-        x.fields.push({
-          value: this.values[index],
-          selected: false,
-          selectedOther: false,
-        });
-      }
-    });
-    this.generateReport();
+    this.init();
   },
   watch: {
     attrs() {
@@ -72,6 +63,24 @@ export default {
     // selectedOrNot(val) {
     //   return this.defaultValues.indexOf(val) !== -1;
     // },
+    init() {
+      this.options = [
+        { text: "Row", fields: [] },
+        { text: "Column", fields: [] },
+        { text: "Table", fields: [] },
+      ]
+
+      this.options.map((x) => {
+        for (var index in this.values) {
+          x.fields.push({
+            value: this.values[index],
+            selected: false,
+            selectedOther: false,
+          });
+        }
+      });
+      this.generateReport();
+    },
     toggleValue(value) {
       //update current option filter
       this.options
@@ -170,26 +179,16 @@ export default {
       this.$emit("input", list);
     },
     clearFields() {
-      var prevSelected = []
-      this.options.map((option) => {
-        option.fields.filter((item) => item.selected == true)
-        .map((x) => prevSelected.push(x.value))
-      })
+      
+      this.init();
+      this.optionSelected = "Table",
 
-      this.generateReport();
-
-      this.$emit("clear", prevSelected);
+      this.$emit("clear");
     },
-    
   },
   data() {
     return {
-      selected: [],
-      options: [
-        { text: "Row", fields: [] },
-        { text: "Column", fields: [] },
-        { text: "Table", fields: [] },
-      ],
+      options: null,
       optionSelected: "Table",
     };
   },
