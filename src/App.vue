@@ -11,6 +11,8 @@
       :showRenderers="rendererList"
       :showAggregators="aggregatorList"
       :defaultFields="defaultFieldList"
+      :defaultRows="defaultRowList"
+      :defaultColumns="defaultColumnList"
       :fields="fieldList"
     ></VuePivottableUi>
   </div>
@@ -33,6 +35,8 @@ export default {
       cols: [],
       vals: [],
       defaultFieldList: ["Meal", "Tip"],
+      defaultRowList: ["Total Bill"],
+      defaultColumnList: ["Party Size"],
       fieldList: [
         "Total Bill",
         "Tip",

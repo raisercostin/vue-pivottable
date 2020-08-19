@@ -114,8 +114,6 @@ export default {
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
       const showMenu = Object.keys(this.attrValues).length < this.menuLimit;
       const values = Object.keys(this.attrValues);
-      console.log(values)
-      console.log(attr)
       var shown;
       for (var j = 0; j < values.length; j++) {
         for (var i = 0; i < months.length; i++) {
@@ -127,11 +125,8 @@ export default {
       }
       if (foundmonth) { //if foundmonth==true when select month
         shown = months.filter(this.matchesFilter.bind(this)).sort(function (a, b) { a - b })
-        console.log(foundmonth)
       }
       else { //if foundmonth = false
-        console.log(foundmonth)
-        console.log(values)
         shown = values.filter(this.matchesFilter.bind(this)).sort(function (a, b) {
           if (isNaN(a) && isNaN(b)) return a < b ? -1 : a == b ? 0 : 1;//both are string
           else if (isNaN(a)) return 1;//only a is a string

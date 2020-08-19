@@ -17,43 +17,55 @@ export default {
     tableMaxWidth: {
       type: Number,
       default: 0,
-      validator: function(value) {
+      validator: function (value) {
         return value >= 0;
       },
     },
     hiddenAttributes: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     hiddenFromAggregators: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     defaultFields: {
       type: Array,
-      default: function() {
+      default: function () {
+        return [];
+      },
+    },
+    defaultColumns: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
+    defaultRows: {
+      type: Array,
+      default: function () {
         return [];
       },
     },
     fields: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     sortonlyFromDragDrop: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     disabledFromDragDrop: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
@@ -63,13 +75,13 @@ export default {
     },
     showRenderers: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     showAggregators: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
@@ -163,7 +175,7 @@ export default {
   },
   mounted() {
     var self = this;
-    $(document).on('click', function(event) {
+    $(document).on('click', function (event) {
       if ($('.pvtAttr') !== event.target && !$('.pvtAttr').has(event.target).length) {
         self.currentOpen = '';
       }
@@ -205,7 +217,7 @@ export default {
       const attrValues = {};
       const materializedInput = [];
       let recordsProcessed = 0;
-      PivotData.forEachRecord(this.data, this.derivedAttributes, function(record) {
+      PivotData.forEachRecord(this.data, this.derivedAttributes, function (record) {
         materializedInput.push(record);
         for (const attr of Object.keys(record)) {
           if (!(attr in attrValues)) {
@@ -286,117 +298,117 @@ export default {
     rendererCell(rendererName, h) {
       return this.$slots.rendererCell
         ? h(
-            'td',
-            {
-              staticClass: ['pvtRenderers pvtVals pvtText'],
-            },
-            this.$slots.rendererCell
-          )
+          'td',
+          {
+            staticClass: ['pvtRenderers pvtVals pvtText'],
+          },
+          this.$slots.rendererCell
+        )
         : h(
-            'td',
-            {
-              staticClass: ['pvtRenderers'],
-            },
-            [
-              h(Object.keys(this.renderers).length > 1 ? Dropdown : Single, {
-                props: {
-                  values: Object.keys(this.renderers),
+          'td',
+          {
+            staticClass: ['pvtRenderers'],
+          },
+          [
+            h(Object.keys(this.renderers).length > 1 ? Dropdown : Single, {
+              props: {
+                values: Object.keys(this.renderers),
+              },
+              domProps: {
+                value: rendererName,
+              },
+              on: {
+                input: (value) => {
+                  this.propUpdater('rendererName')(value);
+                  this.propUpdater('renderer', this.renderers[value]);
                 },
-                domProps: {
-                  value: rendererName,
-                },
-                on: {
-                  input: (value) => {
-                    this.propUpdater('rendererName')(value);
-                    this.propUpdater('renderer', this.renderers[value]);
-                  },
-                },
-              }),
-            ]
-          );
+              },
+            }),
+          ]
+        );
     },
     aggregatorCell(aggregatorName, vals, h) {
       return this.$slots.aggregatorCell
         ? h(
-            'td',
-            {
-              staticClass: ['pvtVals pvtText'],
-            },
-            this.$slots.aggregatorCell
-          )
+          'td',
+          {
+            staticClass: ['pvtVals pvtText'],
+          },
+          this.$slots.aggregatorCell
+        )
         : h(
-            'td',
-            {
-              staticClass: ['pvtVals'],
-            },
-            [
-              h('div', [
-                h(Dropdown, {
-                  style: {
-                    display: 'inline-block',
+          'td',
+          {
+            staticClass: ['pvtVals'],
+          },
+          [
+            h('div', [
+              h(Dropdown, {
+                style: {
+                  display: 'inline-block',
+                },
+                props: {
+                  values: Object.keys(this.customAggregators),
+                },
+                domProps: {
+                  value: aggregatorName,
+                },
+                on: {
+                  input: (value) => {
+                    this.propUpdater('aggregatorName')(value);
                   },
+                },
+              }),
+              h(
+                'a',
+                {
+                  staticClass: ['pvtRowOrder'],
+                  attrs: {
+                    role: 'button',
+                  },
+                  on: {
+                    click: () => {
+                      this.propUpdater('rowOrder')(this.sortIcons[this.propsData.rowOrder].next);
+                    },
+                  },
+                },
+                this.sortIcons[this.propsData.rowOrder].rowSymbol
+              ),
+              h(
+                'a',
+                {
+                  staticClass: ['pvtColOrder'],
+                  attrs: {
+                    role: 'button',
+                  },
+                  on: {
+                    click: () => {
+                      this.propUpdater('colOrder')(this.sortIcons[this.propsData.colOrder].next);
+                    },
+                  },
+                },
+                this.sortIcons[this.propsData.colOrder].colSymbol
+              ),
+            ]),
+            this.numValsAllowed > 0
+              ? new Array(this.numValsAllowed).fill().map((n, i) => [
+                h(Dropdown, {
                   props: {
-                    values: Object.keys(this.customAggregators),
+                    values: Object.keys(this.attrValues).filter((e) => !this.hiddenAttributes.includes(e) && !this.hiddenFromAggregators.includes(e)),
                   },
                   domProps: {
-                    value: aggregatorName,
+                    value: vals[i],
                   },
                   on: {
                     input: (value) => {
-                      this.propUpdater('aggregatorName')(value);
+                      this.propsData.vals.splice(i, 1, value);
                     },
                   },
                 }),
-                h(
-                  'a',
-                  {
-                    staticClass: ['pvtRowOrder'],
-                    attrs: {
-                      role: 'button',
-                    },
-                    on: {
-                      click: () => {
-                        this.propUpdater('rowOrder')(this.sortIcons[this.propsData.rowOrder].next);
-                      },
-                    },
-                  },
-                  this.sortIcons[this.propsData.rowOrder].rowSymbol
-                ),
-                h(
-                  'a',
-                  {
-                    staticClass: ['pvtColOrder'],
-                    attrs: {
-                      role: 'button',
-                    },
-                    on: {
-                      click: () => {
-                        this.propUpdater('colOrder')(this.sortIcons[this.propsData.colOrder].next);
-                      },
-                    },
-                  },
-                  this.sortIcons[this.propsData.colOrder].colSymbol
-                ),
-              ]),
-              this.numValsAllowed > 0
-                ? new Array(this.numValsAllowed).fill().map((n, i) => [
-                    h(Dropdown, {
-                      props: {
-                        values: Object.keys(this.attrValues).filter((e) => !this.hiddenAttributes.includes(e) && !this.hiddenFromAggregators.includes(e)),
-                      },
-                      domProps: {
-                        value: vals[i],
-                      },
-                      on: {
-                        input: (value) => {
-                          this.propsData.vals.splice(i, 1, value);
-                        },
-                      },
-                    }),
-                  ])
-                : undefined,
-            ]
-          );
+              ])
+              : undefined,
+          ]
+        );
     },
     outputCell(props, isPlotlyRenderer, h) {
       return h(
@@ -407,14 +419,14 @@ export default {
         [
           isPlotlyRenderer
             ? h(PlotlyRenderer[props.rendererName], {
-                props,
-              })
+              props,
+            })
             : h(Pivottable, {
-                props: {
-                  ...props,
-                  tableMaxWidth: this.tableMaxWidth,
-                },
-              }),
+              props: {
+                ...props,
+                tableMaxWidth: this.tableMaxWidth,
+              },
+            }),
         ]
       );
     },
@@ -497,7 +509,9 @@ export default {
       h(MultiDropDown, {
         props: {
           values: this.fields,
-          defaultValues: this.defaultFields,
+          defaultTableValues: this.defaultFields,
+          defaultRowValues: this.defaultRows,
+          defaultColumnValues: this.defaultColumns,
         },
         domProps: {
           value: 'Select',
@@ -508,7 +522,7 @@ export default {
             this.propsData.rows = value[0].fields;
             this.propsData.cols = value[1].fields;
             this.propsData.table = value[2].fields;
-            
+
           },
           clear: (value) => {
 

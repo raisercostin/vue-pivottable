@@ -2,31 +2,40 @@ import $ from "jquery";
 import ExportBtn from "./ExportBtn";
 
 export default {
-  props: ["values", "defaultValues"],
+  props: ["values", "defaultTableValues", "defaultRowValues", "defaultColumnValues"],
   created() {
     $(document).off('click')
     $(document)
-      .on("click", ".OuterDropDown", function() {
+      .on("click", ".OuterDropDown", function () {
         showCheckboxes();
       });
-    $(document).on("click", function(event) {
+    $(document).on("click", function (event) {
       hide(event);
     });
     this.options.map((x) => {
       for (var index in this.values) {
         x.fields.push({
           value: this.values[index],
-          selected: false,
-          selectedOther: false,
+          selected: this.selectedOrNot(x.text, this.values[index]),
+          selectedOther: this.selectedOrNotOthers(x.text, this.values[index]),
         });
       }
     });
     this.generateReport();
   },
   methods: {
-    // selectedOrNot(val) {
-    //   return this.defaultValues.indexOf(val) !== -1;
-    // },
+    selectedOrNot(type, val) {
+      if (type === 'Table') return this.defaultTableValues.indexOf(val) !== -1;
+      else if (type === 'Column') return this.defaultColumnValues.indexOf(val) !== -1;
+      else if (type === 'Row') return this.defaultRowValues.indexOf(val) !== -1;
+      else return false;
+    },
+    selectedOrNotOthers(type, val) {
+      if (type === 'Table') return (this.defaultColumnValues.indexOf(val) !== -1 || this.defaultRowValues.indexOf(val) !== -1);
+      else if (type === 'Column') return (this.defaultTableValues.indexOf(val) !== -1 || this.defaultRowValues.indexOf(val) !== -1);
+      else if (type === 'Row') return (this.defaultTableValues.indexOf(val) !== -1 || this.defaultColumnValues.indexOf(val) !== -1);
+      else return false;
+    },
     toggleValue(value) {
       //update current option filter
       this.options
@@ -118,7 +127,7 @@ export default {
         list.push({
           type: option.text,
           fields: option.fields.filter((item) => item.selected == true)
-          .map((x) => x.value)
+            .map((x) => x.value)
         })
       })
 
@@ -128,7 +137,7 @@ export default {
       var prevSelected = []
       this.options.map((option) => {
         option.fields.filter((item) => item.selected == true)
-        .map((x) => prevSelected.push(x.value))
+          .map((x) => prevSelected.push(x.value))
       })
 
       this.generateReport();
