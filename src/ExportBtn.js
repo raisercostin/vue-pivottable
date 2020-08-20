@@ -74,17 +74,18 @@ function exportDocument(className, format) {
   var fileName = 'Export';
   var table = $(className)[0];
   $(className).attr('border', '1');
-  $(className).css('max-width', $(document).width());
-  $(className).css('max-height', $(document).height());
 
   if (format === 'xlsx') {
     var wb = XLSX.utils.table_to_book(table, { sheet: 'Sheet 1' });
     return XLSX.writeFile(wb, fileName + '.xlsx');
   } else if (format === 'png') {
     window.scrollTo(0, 0);
+    $(className).css('max-width', $(document).width() + 300);
+    $(className).css('max-height', $(document).height() + 300);
     html2canvas(table, {
       allowTaint: true,
-      scrollY: -window.scrollY
+      scrollY: -window.scrollY,
+      scrollX: -window.scrollX
     }).then(function (canvas) {
       var donwloadLink = document.createElement('a');
       donwloadLink.href = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
@@ -95,6 +96,8 @@ function exportDocument(className, format) {
       document.body.appendChild(donwloadLink);
       donwloadLink.click();
       document.body.removeChild(donwloadLink);
+
+      $(className).removeAttr('style');
     });
   } else if (format === 'pdf') {
     var doc = new jsPDF({ orientation: 'landscape' });
