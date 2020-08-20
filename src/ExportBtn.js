@@ -6,10 +6,10 @@ import $ from 'jquery';
 
 export default {
   created() {
-    $(document).on('click', '.OuterExportDropDown', function() {
+    $(document).on('click', '.OuterExportDropDown', function () {
       showCheckboxes();
     });
-    $(document).on('click', function(event) {
+    $(document).on('click', function (event) {
       hideExport(event);
     });
   },
@@ -74,6 +74,8 @@ function exportDocument(className, format) {
   var fileName = 'Export';
   var table = $(className)[0];
   $(className).attr('border', '1');
+  $(className).css('max-width', $(document).width());
+  $(className).css('max-height', $(document).height());
 
   if (format === 'xlsx') {
     var wb = XLSX.utils.table_to_book(table, { sheet: 'Sheet 1' });
@@ -81,9 +83,9 @@ function exportDocument(className, format) {
   } else if (format === 'png') {
     window.scrollTo(0, 0);
     html2canvas(table, {
-      scale: 0.8,
-      scrollX: 0,
-    }).then(function(canvas) {
+      allowTaint: true,
+      scrollY: -window.scrollY
+    }).then(function (canvas) {
       var donwloadLink = document.createElement('a');
       donwloadLink.href = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
       donwloadLink.download = fileName + '.png';
@@ -101,7 +103,7 @@ function exportDocument(className, format) {
       styles: { halign: 'center', fillColor: [0, 131, 87], textColor: [0, 0, 0], lineWidth: 0.01, lineColor: [235, 240, 248] },
       headStyles: { halign: 'center', textColor: [255, 255, 255], fontStyle: 'normal' },
       bodyStyles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0] },
-      columnStyles: { 0: { halign: 'right', fillColor: [0, 131, 87], textColor: [255, 255, 255] } },
+      columnStyles: { text: { cellWidth: 'wrap' }, 0: { halign: 'right', fillColor: [0, 131, 87], textColor: [255, 255, 255] } },
       margin: { top: 5, bottom: 5, left: 5, right: 5 },
       tableLineWidth: 0.01,
       tableLineColor: [235, 240, 248],

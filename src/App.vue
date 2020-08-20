@@ -54,18 +54,23 @@ export default {
     return {
       pivotData: tips,
       rendererName: "Table",
-      defaultAggregatorName: "Count Unique Values",
-      defaultVals: ["Tip"],
+      defaultAggregatorName: "Count",
+      defaultVals: [],
       defaultTables: ["Tip"],
       defaultRows: ["Meal"],
-      defaultColumns: ["Party Size"],
+      defaultColumns: [
+        "Payer Gender",
+        "Payer Smoker",
+        "Day of Week",
+        "Party Size",
+      ],
       defaultValueFilter: {
         "Total Bill": {},
         Tip: {},
         "Payer Gender": {},
         "Payer Smoker": {},
         "Day of Week": {},
-        Meal: { Dinner: true },
+        Meal: {},
         "Party Size": {},
       },
       fieldList: [
