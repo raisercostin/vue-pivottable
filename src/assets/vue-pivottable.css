@@ -423,7 +423,7 @@ table.pvtTable tbody tr td {
   -ms-user-select: none;
 }
 
-.pvtFilterBox input[type="text"] {
+.pvtFilterBox input[type="search"] {
   display: block;
   width: 100%;
   color: #2a3f5f;
@@ -456,6 +456,16 @@ table.pvtTable tbody tr td {
   border-radius: 5px;
   font-size: 14px;
   padding: 1%;
+}
+
+.recordNumberContainer {
+  text-align: right;
+  padding: 2%;
+}
+
+.recordNumber {
+  font-size: 12px;
+  
 }
 
 .pvtCheckContainer {

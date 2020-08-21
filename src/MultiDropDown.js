@@ -428,6 +428,20 @@ export default {
                   }),
               ]
             ),
+            h(
+              "div", 
+              {
+                staticClass: ["recordNumberContainer"]
+              }, 
+              [
+              h("span",
+                {
+                  staticClass: ["recordNumber"]
+                },
+                "Fields found: " + this.filtered.length
+              )
+              ]
+            )
           ]
         ),
         h(

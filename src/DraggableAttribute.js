@@ -200,7 +200,7 @@ export default {
               h('input', {
                 staticClass: ['pvtSearch'],
                 attrs: {
-                  type: 'text',
+                  type: 'search',
                   placeholder: 'Filter Values',
                 },
                 domProps: {
@@ -297,8 +297,23 @@ export default {
                   ]
                 );
               }),
+              
             ]
           ),
+          h(
+            "div", 
+            {
+              staticClass: ["recordNumberContainer"]
+            }, 
+            [
+            h("span",
+              {
+                staticClass: ["recordNumber"]
+              },
+              "Values found: " + Object.keys(values).length
+            )
+            ]
+          )
         ]
       );
     },
