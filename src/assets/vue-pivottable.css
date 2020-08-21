@@ -448,6 +448,10 @@ table.pvtTable tbody tr td {
   cursor: default;
 }
 
+.pvtCheckContainer p.selected.selectedOther {
+  background: #EBEDEF;;
+}
+
 .pvtCheckContainer p.selected,
 .OuterFilterBox p.selected {
   background: #ebf0f8;

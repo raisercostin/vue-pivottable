@@ -345,6 +345,7 @@ export default {
                           selected: x.selectedOther
                             ? x.selectedOther
                             : x.selected,
+                          selectedOther: x.selectedOther
                         },
                         attrs: {
                           key: x.value,
