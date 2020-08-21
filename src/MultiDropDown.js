@@ -50,6 +50,21 @@ export default {
       }
     }
   },
+  computed: {
+    filtered() {
+      let list = this.options.filter((y) => y.text == this.optionSelected)[0]
+      if (this.filterText != "") {
+        
+        var fields = list.fields.filter((x) => {
+            return x.value.toLowerCase().trim().includes(this.filterText.toLowerCase().trim())
+        })
+        console.log(fields)
+        return fields
+      } 
+      
+      return list.fields
+    }
+  },
   methods: {
     init(clear = false) {
       this.options = [
@@ -137,14 +152,24 @@ export default {
             });
         });
     },
-    selectAll() {
+    selectAll(filter = false) {
       var marked = [];
       this.options
         .filter((x) => x.text == this.optionSelected)[0]
         .fields.filter((x) => x.selected == false && !x.selectedOther)
         .map((x) => {
-          marked.push(x.value);
-          x.selected = true;
+          if (filter) {
+            var bool = this.filtered.filter((y) => x.value == y.value).length > 0
+            if (bool) {
+              marked.push(x.value);
+              x.selected = true;
+            }
+            
+          } else {
+            marked.push(x.value);
+            x.selected = true;
+          }
+          
         });
 
       this.options
@@ -157,14 +182,23 @@ export default {
             });
         });
     },
-    deselectAll() {
+    deselectAll(filter = false) {
       var marked = [];
       this.options
         .filter((x) => x.text == this.optionSelected)[0]
         .fields.filter((x) => x.selected == true && !x.selectedOther)
         .map((x) => {
-          marked.push(x.value);
-          x.selected = false;
+          if (filter) {
+            var bool = this.filtered.filter((y) => x.value == y.value).length > 0
+            if (bool) {
+              marked.push(x.value);
+              x.selected = false;
+            }
+            
+          } else {
+            marked.push(x.value);
+            x.selected = false;
+          }
         });
 
       this.options
@@ -199,6 +233,7 @@ export default {
     return {
       options: null,
       optionSelected: "Table",
+      filterText: ""
     };
   },
   render(h) {
@@ -245,6 +280,29 @@ export default {
             h(
               "div",
               {
+                staticClass: ["pvtFilterSearchContainer"]
+              },
+              [
+                h('input', {
+                  staticClass: ['pvtFilterSearch'],
+                  attrs: {
+                    type: 'search',
+                    placeholder: 'Filter Values',
+                  },
+                  domProps: {
+                    value: this.filterText,
+                  },
+                  on: {
+                    input: (e) => {
+                      this.filterText = e.target.value;
+                    },
+                  },
+                }),
+              ]
+            ),
+            h(
+              "div",
+              {
                 staticClass: ["pvtOptionsContainer"],
               },
               [
@@ -256,7 +314,7 @@ export default {
                       role: "button",
                     },
                     on: {
-                      click: () => this.selectAll(),
+                      click: () => this.filterText == "" ? this.selectAll() : this.selectAll(true),
                     },
                   },
                   `Select All`
@@ -269,7 +327,7 @@ export default {
                       role: "button",
                     },
                     on: {
-                      click: () => this.deselectAll(),
+                      click: () => this.filterText == "" ? this.deselectAll() : this.deselectAll(true),
                     },
                   },
                   `Deselect All`
@@ -334,9 +392,7 @@ export default {
                 staticClass: ["pvtCheckContainer"],
               },
               [
-                this.options
-                  .filter((x) => x.text == this.optionSelected)[0]
-                  .fields.map((x) => {
+                this.filtered.map((x) => {
                     const checked = x.selected;
                     return h(
                       "p",
