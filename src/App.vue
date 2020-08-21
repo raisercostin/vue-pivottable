@@ -1,24 +1,26 @@
 <template>
   <div id="app">
-    <VuePivottableUi
-      :data="pivotData"
-      :renderer-name="rendererName"
-      :showRenderers="rendererList"
-      :showAggregators="aggregatorList"
-      :defaultAggregatorName="defaultAggregatorName"
-      :defaultVals="defaultVals"
-      :defaultTables="defaultTables"
-      :defaultRows="defaultRows"
-      :defaultColumns="defaultColumns"
-      :defaultValueFilter="defaultValueFilter"
-      :fields="fieldList"
-      @updateFilter="updateFilter"
-      @updateTables="updateTables"
-      @updateRows="updateRows"
-      @updateColumns="updateColumns"
-      @updateAggregatorName="updateAggregatorName"
-      @updateVals="updateVals"
-    ></VuePivottableUi>
+    <div id="innertable">
+      <VuePivottableUi
+        :data="pivotData"
+        :renderer-name="rendererName"
+        :showRenderers="rendererList"
+        :showAggregators="aggregatorList"
+        :defaultAggregatorName="defaultAggregatorName"
+        :defaultVals="defaultVals"
+        :defaultTables="defaultTables"
+        :defaultRows="defaultRows"
+        :defaultColumns="defaultColumns"
+        :defaultValueFilter="defaultValueFilter"
+        :fields="fieldList"
+        @updateFilter="updateFilter"
+        @updateTables="updateTables"
+        @updateRows="updateRows"
+        @updateColumns="updateColumns"
+        @updateAggregatorName="updateAggregatorName"
+        @updateVals="updateVals"
+      ></VuePivottableUi>
+    </div>
   </div>
 </template>
 <script>
@@ -54,18 +56,23 @@ export default {
     return {
       pivotData: tips,
       rendererName: "Table",
-      defaultAggregatorName: "Count Unique Values",
-      defaultVals: ["Tip"],
+      defaultAggregatorName: "Count",
+      defaultVals: [],
       defaultTables: ["Tip"],
       defaultRows: ["Meal"],
-      defaultColumns: ["Party Size"],
+      defaultColumns: [
+        "Payer Gender",
+        "Payer Smoker",
+        "Day of Week",
+        "Party Size",
+      ],
       defaultValueFilter: {
         "Total Bill": {},
         Tip: {},
         "Payer Gender": {},
         "Payer Smoker": {},
         "Day of Week": {},
-        Meal: { Dinner: true },
+        Meal: {},
         "Party Size": {},
       },
       fieldList: [
