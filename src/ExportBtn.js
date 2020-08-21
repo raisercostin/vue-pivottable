@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     exportFile(format) {
-      exportDocument('table.pvtTable', format);
+      exportDocument('.pvtOutput', 'table.pvtTable', format);
     },
   },
   render(h) {
@@ -69,10 +69,11 @@ export default {
   },
 };
 
-function exportDocument(className, format) {
+function exportDocument(parent, className, format) {
   format = format.toLowerCase();
   var fileName = 'Export';
   var table = $(className)[0];
+  var parent = $(parent)[0];
   $(className).attr('border', '1');
 
   if (format === 'xlsx') {
@@ -80,9 +81,7 @@ function exportDocument(className, format) {
     return XLSX.writeFile(wb, fileName + '.xlsx');
   } else if (format === 'png') {
     window.scrollTo(0, 0);
-    $(className).css('max-width', $('.pvtOutput').offsetWidth + 300);
-    $(className).css('max-height', $('.pvtOutput').offsetHeight + 300);
-    html2canvas(table, {
+    html2canvas(parent, {
       allowTaint: true,
       scrollY: -window.scrollY,
       scrollX: -window.scrollX
