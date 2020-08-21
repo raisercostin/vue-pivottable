@@ -68,6 +68,9 @@
   -moz-box-shadow: none !important;
   box-shadow: none !important;
 }
+#innertable {
+  overflow-y: auto;
+}
 .pvtUi {
   width: 100%;
   margin-top: 2%;

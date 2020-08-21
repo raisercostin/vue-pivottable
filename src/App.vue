@@ -1,24 +1,26 @@
 <template>
   <div id="app">
-    <VuePivottableUi
-      :data="pivotData"
-      :renderer-name="rendererName"
-      :showRenderers="rendererList"
-      :showAggregators="aggregatorList"
-      :defaultAggregatorName="defaultAggregatorName"
-      :defaultVals="defaultVals"
-      :defaultTables="defaultTables"
-      :defaultRows="defaultRows"
-      :defaultColumns="defaultColumns"
-      :defaultValueFilter="defaultValueFilter"
-      :fields="fieldList"
-      @updateFilter="updateFilter"
-      @updateTables="updateTables"
-      @updateRows="updateRows"
-      @updateColumns="updateColumns"
-      @updateAggregatorName="updateAggregatorName"
-      @updateVals="updateVals"
-    ></VuePivottableUi>
+    <div id="innertable">
+      <VuePivottableUi
+        :data="pivotData"
+        :renderer-name="rendererName"
+        :showRenderers="rendererList"
+        :showAggregators="aggregatorList"
+        :defaultAggregatorName="defaultAggregatorName"
+        :defaultVals="defaultVals"
+        :defaultTables="defaultTables"
+        :defaultRows="defaultRows"
+        :defaultColumns="defaultColumns"
+        :defaultValueFilter="defaultValueFilter"
+        :fields="fieldList"
+        @updateFilter="updateFilter"
+        @updateTables="updateTables"
+        @updateRows="updateRows"
+        @updateColumns="updateColumns"
+        @updateAggregatorName="updateAggregatorName"
+        @updateVals="updateVals"
+      ></VuePivottableUi>
+    </div>
   </div>
 </template>
 <script>

@@ -80,8 +80,8 @@ function exportDocument(className, format) {
     return XLSX.writeFile(wb, fileName + '.xlsx');
   } else if (format === 'png') {
     window.scrollTo(0, 0);
-    $(className).css('max-width', $(document).width() + 300);
-    $(className).css('max-height', $(document).height() + 300);
+    $(className).css('max-width', $('.pvtOutput').offsetWidth + 300);
+    $(className).css('max-height', $('.pvtOutput').offsetHeight + 300);
     html2canvas(table, {
       allowTaint: true,
       scrollY: -window.scrollY,
