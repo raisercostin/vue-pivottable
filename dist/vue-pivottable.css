@@ -248,8 +248,7 @@ table.pvtTable tbody tr td {
 }
 
 .pvtEmpty {
-  color: #BDC3C7;
-
+  color: #bdc3c7;
 }
 
 .pvtVals {
@@ -372,11 +371,11 @@ table.pvtTable tbody tr td {
 
 .remarkText {
   padding: 2% !important;
-  font-style: italic
+  font-style: italic;
 }
 
 .optionText {
-  font-weight: bold
+  font-weight: bold;
 }
 
 .pvtOptionsContainer {
@@ -386,11 +385,11 @@ table.pvtTable tbody tr td {
 }
 
 .pvtOptions {
-  margin-left: 50%
+  margin-left: 50%;
 }
 
 .pvtOption {
-  margin-left: 5%
+  margin-left: 5%;
 }
 
 .pvtFilterBox input,
@@ -424,7 +423,7 @@ table.pvtTable tbody tr td {
   -ms-user-select: none;
 }
 
-.pvtFilterBox input[type='text'] {
+.pvtFilterBox input[type="search"] {
   display: block;
   width: 100%;
   color: #2a3f5f;
@@ -437,12 +436,38 @@ table.pvtTable tbody tr td {
 }
 .OuterFilterBox {
   width: 600px;
-  height: 250px;
+  height: 300px;
   display: none;
   overflow-y: scroll;
   white-space: nowrap;
   font-size: 14px;
 }
+
+.pvtFilterSearchContainer {
+  padding: 2%;
+  padding-bottom: 0;
+}
+
+.pvtFilterSearch {
+  width: 60%;
+  color: #506784;
+  border: 1px solid;
+  border-color: #c8d4e3;
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 1%;
+}
+
+.recordNumberContainer {
+  text-align: right;
+  padding: 2%;
+}
+
+.recordNumber {
+  font-size: 12px;
+  
+}
+
 .pvtCheckContainer {
   text-align: left;
   font-size: 14px;
@@ -459,6 +484,10 @@ table.pvtTable tbody tr td {
   margin-bottom: 1px;
   padding: 3px;
   cursor: default;
+}
+
+.pvtCheckContainer p.selected.selectedOther {
+  background: #ebedef;
 }
 
 .pvtCheckContainer p.selected,
