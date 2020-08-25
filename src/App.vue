@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="padding:2%">
     <div id="innertable">
       <VuePivottableUi
         :data="pivotData"

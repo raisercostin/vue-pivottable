@@ -2,7 +2,7 @@ import defaultProps from './helper/defaultProps';
 import DraggableAttribute from './DraggableAttribute';
 import Dropdown from './Dropdown';
 import Single from './Single';
-import MultiDropDown from './MultiDropDown';
+import Header from './Header';
 import Pivottable from './Pivottable';
 import { PivotData, getSort, aggregators, sortAs } from './helper/utils';
 import draggable from 'vuedraggable';
@@ -577,8 +577,12 @@ export default {
     const aggregatorCell = this.aggregatorCell(aggregatorName, vals, h);
     const outputCell = this.outputCell(props, rendererName.indexOf('Chart') > -1, h);
 
-    return h('div', [
-      h(MultiDropDown, {
+    return h('div', 
+      {
+        staticClass: ["wrapper"]
+      },
+     [
+      h(Header, {
         props: {
           values: this.fields,
           defaultTables: this.defaultTables,
@@ -589,9 +593,6 @@ export default {
             { text: "Column", fields: this.colAttrs },
             { text: "Table", fields: this.unusedAttrs }
           ]
-        },
-        domProps: {
-          value: 'Select',
         },
         on: {
           input: (value) => {

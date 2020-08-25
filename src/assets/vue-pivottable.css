@@ -68,6 +68,11 @@
   -moz-box-shadow: none !important;
   box-shadow: none !important;
 }
+
+.wrapper {
+  margin-top:1%
+}
+
 #innertable {
   overflow-y: auto;
 }
@@ -181,7 +186,7 @@ table.pvtTable tbody tr td {
   padding-bottom: 0.5%;
   padding-top: 0.5%;
   position: absolute;
-  right: 10px;
+  left: 79%
 }
 
 .OuterExportFilterBox {
@@ -196,6 +201,24 @@ table.pvtTable tbody tr td {
   width: 100%;
   border: 0.5px solid white;
   padding: 7px;
+}
+
+.OuterTemplateDropDown {
+  -webkit-text-size-adjust: 100%;
+  font-size: 90%;
+  background: #f3f6fa;
+  border: 2px solid #c8d4e3;
+  padding: 0.8% 1% 0.8% 1%;
+  white-space: nowrap;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
 }
 
 .OuterDropDown {
@@ -214,6 +237,7 @@ table.pvtTable tbody tr td {
   -khtml-user-select: none;
   -ms-user-select: none;
   cursor: pointer;
+  margin-left:1%
 }
 
 .pvtDropdown {
@@ -385,7 +409,7 @@ table.pvtTable tbody tr td {
 }
 
 .pvtOptions {
-  margin-left: 50%;
+  margin-left: 40%;
 }
 
 .pvtOption {
@@ -408,7 +432,8 @@ table.pvtTable tbody tr td {
 }
 
 .pvtFilterBox,
-.OuterFilterBox {
+.OuterFilterBox,
+.OuterTemplateFilterBox {
   z-index: 100;
   border: 1px solid #506784;
   max-width: 600px;
@@ -435,7 +460,16 @@ table.pvtTable tbody tr td {
   padding: 3px;
 }
 .OuterFilterBox {
-  width: 600px;
+  width: 39.5%;
+  height: 300px;
+  display: none;
+  overflow-y: scroll;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.OuterTemplateFilterBox {
+  width: 26%;
   height: 300px;
   display: none;
   overflow-y: scroll;
@@ -449,7 +483,7 @@ table.pvtTable tbody tr td {
 }
 
 .pvtFilterSearch {
-  width: 60%;
+  width: 100%;
   color: #506784;
   border: 1px solid;
   border-color: #c8d4e3;
@@ -479,7 +513,8 @@ table.pvtTable tbody tr td {
 }
 
 .pvtCheckContainer p,
-.OuterFilterBox p {
+.OuterFilterBox p,
+.OuterTemplateFilterBox p {
   margin: 0;
   margin-bottom: 1px;
   padding: 3px;

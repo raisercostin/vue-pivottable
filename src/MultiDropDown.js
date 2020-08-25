@@ -1,113 +1,84 @@
-import $ from "jquery";
-import ExportBtn from "./ExportBtn";
-
 export default {
-  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs"],
-  created() {
-    $(document).off('click')
-    $(document)
-      .on("click", ".OuterDropDown", function () {
-        showCheckboxes();
-      });
-    $(document).on("click", function (event) {
-      hide(event);
-    });
-    this.init();
+  props: [
+    "values",
+    "defaultTables",
+    "defaultRows",
+    "defaultColumns",
+    "attrs",
+    "optionList",
+    "selectedOption",
+  ],
+  created() {    
+    this.options = this.optionList
+    this.optionSelected = this.selectedOption
   },
   watch: {
+    selectedOption() {
+      this.optionSelected = this.selectedOption;
+    },
+    optionList() {
+      this.options = this.optionList
+    },
     attrs() {
-      var list = this.attrs
+      var list = this.attrs;
       var current = this.options;
 
-      if (list[0].fields.length > 0 || list[1].fields.length > 0 || list[2].fields.length > 0) {
+      if (
+        list[0].fields.length > 0 ||
+        list[1].fields.length > 0 ||
+        list[2].fields.length > 0
+      ) {
         //map each each field in list
         Object.keys(list).map((option) => {
           list[option].fields.map((listitem) => {
             //check if listitem is not selected in options
-            var boolitem = current[option].fields.filter((field) => field.value == listitem && !field.selected)
-            var bool = boolitem.length > 0
+            var boolitem = current[option].fields.filter(
+              (field) => field.value == listitem && !field.selected
+            );
+            var bool = boolitem.length > 0;
             if (bool) {
               //check if it was selected b4
               if (boolitem[0].selectedOther) {
-                Object.keys(current).filter((x) => current[x].text != list[option].text)
+                Object.keys(current)
+                  .filter((x) => current[x].text != list[option].text)
                   .map((item) => {
-                    var bool2 = current[item].fields.filter((y) => y.value == listitem && y.selected).length > 0;
+                    var bool2 =
+                      current[item].fields.filter(
+                        (y) => y.value == listitem && y.selected
+                      ).length > 0;
                     if (bool2) {
-
                       //if true then we toggle the checkboxes for the other option that is selected
                       this.toggleOption(current[item].text);
-                      this.toggleValue(listitem)
+                      this.toggleValue(listitem);
                     }
-
-                  })
+                  });
               }
               //if true then we toggle the checkboxes
               this.toggleOption(current[option].text);
-              this.toggleValue(listitem)
+              this.toggleValue(listitem);
             }
-          })
-        })
+          });
+        });
       }
-    }
+    },
   },
   computed: {
     filtered() {
-      let list = this.options.filter((y) => y.text == this.optionSelected)[0]
+      let list = this.options.filter((y) => y.text == this.optionSelected)[0];
       if (this.filterText != "") {
-        
         var fields = list.fields.filter((x) => {
-            return x.value.toLowerCase().trim().includes(this.filterText.toLowerCase().trim())
-        })
-        console.log(fields)
-        return fields
-      } 
-      
-      return list.fields
+          return x.value
+            .toLowerCase()
+            .trim()
+            .includes(this.filterText.toLowerCase().trim());
+        });
+        return fields;
+      }
+
+      return list.fields;
     }
   },
   methods: {
-    init(clear = false) {
-      this.options = [
-        { text: "Row", fields: [] },
-        { text: "Column", fields: [] },
-        { text: "Table", fields: [] },
-      ]
-      if (!clear) {
-      this.options.map((x) => {
-        for (var index in this.values) {
-          x.fields.push({
-            value: this.values[index],
-            selected: this.selectedOrNot(x.text, this.values[index]),
-            selectedOther: this.selectedOrNotOthers(x.text, this.values[index]),
-          });
-        }
-      });
-    } else {
-      this.options.map((x) => {
-        for (var index in this.values) {
-          x.fields.push({
-            value: this.values[index],
-            selected: false,
-            selectedOther: false,
-          });
-        }
-      });
-    }
-      this.optionSelected = "Table"
-      this.generateReport();
-    },
-    selectedOrNot(type, val) {
-      if (type === 'Table') return this.defaultTables.indexOf(val) !== -1;
-      else if (type === 'Column') return this.defaultColumns.indexOf(val) !== -1;
-      else if (type === 'Row') return this.defaultRows.indexOf(val) !== -1;
-      else return false;
-    },
-    selectedOrNotOthers(type, val) {
-      if (type === 'Table') return (this.defaultColumns.indexOf(val) !== -1 || this.defaultRows.indexOf(val) !== -1);
-      else if (type === 'Column') return (this.defaultTables.indexOf(val) !== -1 || this.defaultRows.indexOf(val) !== -1);
-      else if (type === 'Row') return (this.defaultTables.indexOf(val) !== -1 || this.defaultColumns.indexOf(val) !== -1);
-      else return false;
-    },
     toggleValue(value) {
       //update current option filter
       this.options
@@ -126,9 +97,11 @@ export default {
               });
           }
         });
+        this.$emit("fieldsChange", this.options);
     },
     toggleOption(value) {
       this.optionSelected = value;
+      this.$emit("optionChange", this.optionSelected);
     },
     selectHelper(type) {
       var marked = [];
@@ -159,17 +132,16 @@ export default {
         .fields.filter((x) => x.selected == false && !x.selectedOther)
         .map((x) => {
           if (filter) {
-            var bool = this.filtered.filter((y) => x.value == y.value).length > 0
+            var bool =
+              this.filtered.filter((y) => x.value == y.value).length > 0;
             if (bool) {
               marked.push(x.value);
               x.selected = true;
             }
-            
           } else {
             marked.push(x.value);
             x.selected = true;
           }
-          
         });
 
       this.options
@@ -189,12 +161,12 @@ export default {
         .fields.filter((x) => x.selected == true && !x.selectedOther)
         .map((x) => {
           if (filter) {
-            var bool = this.filtered.filter((y) => x.value == y.value).length > 0
+            var bool =
+              this.filtered.filter((y) => x.value == y.value).length > 0;
             if (bool) {
               marked.push(x.value);
               x.selected = false;
             }
-            
           } else {
             marked.push(x.value);
             x.selected = false;
@@ -211,292 +183,223 @@ export default {
             });
         });
     },
-    generateReport() {
-      var list = []
-
-      this.options.map((option) => {
-        list.push({
-          type: option.text,
-          fields: option.fields.filter((item) => item.selected == true)
-            .map((x) => x.value)
-        })
-      })
-
-      this.$emit("input", list);
-    },
-    clearFields() {
-      this.init(true);
-      this.$emit("clear");
-    },
   },
   data() {
     return {
       options: null,
-      optionSelected: "Table",
-      filterText: ""
+      optionSelected: "",
+      filterText: "",
     };
   },
   render(h) {
-    return h(
-      "div",
-      {
-        staticClass: ["OuterBox"],
-      },
-      [
-        h(
-          //Drop Down List (with sample option)
-          "span",
-          {
-            staticClass: ["OuterDropDown"],
-          },
-          [
-            h(
-              "span",
-              {
-                attrs: {
-                  value: "Sample option",
+    return h("span", [
+      //Drop Down List (with sample option)
+      h(
+        "span",
+        {
+          staticClass: ["OuterDropDown"],
+        },
+        [
+          h(
+            "span",
+            {
+              attrs: {
+                value: "Sample option",
+              },
+            },
+            [
+              "Select Fields",
+              h(
+                "span",
+                {
+                  staticClass: ["OuterTriangle"],
                 },
-              },
-              [
-                "Select Column Fields",
-                h(
-                  "span",
-                  {
-                    staticClass: ["OuterTriangle"],
+                "  ▾"
+              ),
+            ]
+          ),
+        ]
+      ),
+      h(
+        //Actual Options
+        "div",
+        {
+          staticClass: ["OuterFilterBox"],
+        },
+        [
+          h(
+            "div",
+            {
+              staticClass: ["pvtFilterSearchContainer"],
+            },
+            [
+              h("input", {
+                staticClass: ["pvtFilterSearch"],
+                attrs: {
+                  type: "search",
+                  placeholder: "Filter Values",
+                },
+                domProps: {
+                  value: this.filterText,
+                },
+                on: {
+                  input: (e) => {
+                    this.filterText = e.target.value;
                   },
-                  "  ▾"
-                ),
-              ]
-            ),
-          ]
-        ),
-        h(
-          //Actual Options
-          "div",
-          {
-            staticClass: ["OuterFilterBox"],
-          },
-          [
-            h(
-              "div",
-              {
-                staticClass: ["pvtFilterSearchContainer"]
-              },
-              [
-                h('input', {
-                  staticClass: ['pvtFilterSearch'],
+                },
+              }),
+            ]
+          ),
+          h(
+            "div",
+            {
+              staticClass: ["pvtOptionsContainer"],
+            },
+            [
+              h(
+                "a",
+                {
+                  staticClass: ["pvtButton"],
                   attrs: {
-                    type: 'search',
-                    placeholder: 'Filter Values',
-                  },
-                  domProps: {
-                    value: this.filterText,
+                    role: "button",
                   },
                   on: {
-                    input: (e) => {
-                      this.filterText = e.target.value;
-                    },
+                    click: () =>
+                      this.filterText == ""
+                        ? this.selectAll()
+                        : this.selectAll(true),
                   },
-                }),
-              ]
-            ),
-            h(
-              "div",
-              {
-                staticClass: ["pvtOptionsContainer"],
-              },
-              [
-                h(
-                  "a",
-                  {
-                    staticClass: ["pvtButton"],
-                    attrs: {
-                      role: "button",
-                    },
-                    on: {
-                      click: () => this.filterText == "" ? this.selectAll() : this.selectAll(true),
-                    },
+                },
+                `Select All`
+              ),
+              h(
+                "a",
+                {
+                  staticClass: ["pvtButton"],
+                  attrs: {
+                    role: "button",
                   },
-                  `Select All`
-                ),
-                h(
-                  "a",
-                  {
-                    staticClass: ["pvtButton"],
-                    attrs: {
-                      role: "button",
-                    },
-                    on: {
-                      click: () => this.filterText == "" ? this.deselectAll() : this.deselectAll(true),
-                    },
+                  on: {
+                    click: () =>
+                      this.filterText == ""
+                        ? this.deselectAll()
+                        : this.deselectAll(true),
                   },
-                  `Deselect All`
-                ),
+                },
+                `Deselect All`
+              ),
 
-                h(
-                  "div",
-                  {
-                    staticClass: ["pvtOptions"],
-                  },
-                  [
-                    this.options.map((x) => {
-                      const checked = this.optionSelected == x.text;
-                      return h(
-                        "label",
-                        {
-                          class: {
-                            selected: checked,
-                          },
-                          attrs: {
-                            key: x.value,
-                          },
-                          staticClass: ["pvtOption"],
-                          on: {
-                            click: () => this.toggleOption(x.text),
-                          },
-                        },
-                        [
-                          h("input", {
-                            attrs: {
-                              type: "radio",
-                            },
-                            domProps: {
-                              checked: checked,
-                            },
-                          }),
-                          x.text,
-                        ]
-                      );
-                    }),
-                  ]
-                ),
-              ]
-            ),
-            h(
-              "p",
-              {
-                staticClass: ["remarkText"]
-              },
-              [
-                h("span", "Selecting fields for "),
-                h("span",
-                  {
-                    staticClass: ["optionText"]
-                  },
-                  this.optionSelected + "...")
-              ]
-            ),
-            h(
-              "div",
-              {
-                staticClass: ["pvtCheckContainer"],
-              },
-              [
-                this.filtered.map((x) => {
-                    const checked = x.selected;
+              h(
+                "div",
+                {
+                  staticClass: ["pvtOptions"],
+                },
+                [
+                  this.options.map((x) => {
+                    const checked = this.optionSelected == x.text;
                     return h(
-                      "p",
+                      "label",
                       {
                         class: {
-                          selected: x.selectedOther
-                            ? x.selectedOther
-                            : x.selected,
-                          selectedOther: x.selectedOther
+                          selected: checked,
                         },
                         attrs: {
                           key: x.value,
                         },
+                        staticClass: ["pvtOption"],
                         on: {
-                          click: () => this.toggleValue(x.value),
+                          click: () => this.toggleOption(x.text),
                         },
                       },
                       [
                         h("input", {
                           attrs: {
-                            type: "checkbox",
+                            type: "radio",
                           },
                           domProps: {
-                            checked: x.selectedOther
-                              ? x.selectedOther
-                              : x.selected,
-                            disabled: x.selectedOther,
+                            checked: checked,
                           },
                         }),
-                        x.value,
+                        x.text,
                       ]
                     );
                   }),
-              ]
-            ),
-            h(
-              "div", 
-              {
-                staticClass: ["recordNumberContainer"]
-              }, 
-              [
-              h("span",
+                ]
+              ),
+            ]
+          ),
+          h(
+            "p",
+            {
+              staticClass: ["remarkText"],
+            },
+            [
+              h("span", "Selecting fields for "),
+              h(
+                "span",
                 {
-                  staticClass: ["recordNumber"]
+                  staticClass: ["optionText"],
+                },
+                this.optionSelected + "..."
+              ),
+            ]
+          ),
+          h(
+            "div",
+            {
+              staticClass: ["pvtCheckContainer"],
+            },
+            [
+              this.filtered.map((x) => {
+                const checked = x.selected;
+                return h(
+                  "p",
+                  {
+                    class: {
+                      selected: x.selectedOther ? x.selectedOther : x.selected,
+                      selectedOther: x.selectedOther,
+                    },
+                    attrs: {
+                      key: x.value,
+                    },
+                    on: {
+                      click: () => this.toggleValue(x.value),
+                    },
+                  },
+                  [
+                    h("input", {
+                      attrs: {
+                        type: "checkbox",
+                      },
+                      domProps: {
+                        checked: x.selectedOther ? x.selectedOther : x.selected,
+                        disabled: x.selectedOther,
+                      },
+                    }),
+                    x.value,
+                  ]
+                );
+              }),
+            ]
+          ),
+          h(
+            "div",
+            {
+              staticClass: ["recordNumberContainer"],
+            },
+            [
+              h(
+                "span",
+                {
+                  staticClass: ["recordNumber"],
                 },
                 "Fields found: " + this.filtered.length
-              )
-              ]
-            )
-          ]
-        ),
-        h(
-          //Generate Button
-          "button",
-          {
-            staticClass: ["greenBtn exportBtn"],
-            attrs: {
-              role: "button",
-            },
-            on: {
-              click: () => this.generateReport(),
-            },
-          },
-          "Populate"
-        ),
-        h(
-          //Clear Fields Button
-          "button",
-          {
-            staticClass: ["clearbtn"],
-            attrs: {
-              role: "button",
-            },
-            on: {
-              click: () => this.clearFields(),
-            },
-          },
-          "Clear"
-        ),
-        h(ExportBtn)
-      ]
-    );
+              ),
+            ]
+          ),
+        ]
+      ),
+    ]);
   },
 };
 
-var expanded = false;
-
-function showCheckboxes() {
-  if (!expanded) {
-    $(".OuterFilterBox").show();
-    expanded = true;
-  } else {
-    $(".OuterFilterBox").hide();
-    expanded = false;
-  }
-}
-
-function hide(event) {
-  if (
-    $(".OuterDropDown") !== event.target &&
-    !$(".OuterFilterBox").has(event.target).length &&
-    !$(".OuterDropDown").has(event.target).length
-  ) {
-    $(".OuterFilterBox").hide();
-    expanded = false;
-  }
-}
