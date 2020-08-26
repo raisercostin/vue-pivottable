@@ -653,7 +653,10 @@ export default {
           },
         }),
         h(
-          "table",
+          "div", 
+          { staticClass: "tableWrapper"},
+          [
+         h("table",
           {
             staticClass: ["pvtUi"],
           },
@@ -666,6 +669,7 @@ export default {
           ]
         ),
         h(SaveBtn)
+          ])
       ]
     );
   },

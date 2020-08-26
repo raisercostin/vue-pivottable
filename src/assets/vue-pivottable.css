@@ -77,7 +77,6 @@
   overflow-y: auto;
   overflow-x: auto;
   height: 50vh;
-  width: 72vw
 }
 
 .pvtSave {
@@ -85,8 +84,14 @@
   float: right
 }
 
+.tableWrapper {
+  max-width:100%
+}
+
 .pvtUi {
-  width: 100%;
+  overflow:hidden;
+  table-layout: fixed;
+  width: 100%;   
   margin-top: 2%;
   color: #2a3f5f;
   font-family: Verdana;
@@ -111,7 +116,10 @@
   vertical-align: top;
   border: 1px solid #a2b1c6;
   width: 100%;
-  
+}
+
+td.pvtRenderers, td.pvtVals, td.pvtAxisContainer.pvtVertList.pvtRows {
+  width:25% !important;
 }
 
 table.pvtTable {
@@ -119,8 +127,6 @@ table.pvtTable {
   text-align: left;
   border-collapse: collapse;
   font-family: Verdana;
-  width: auto;
-
 }
 
 table.pvtTable thead tr th,
