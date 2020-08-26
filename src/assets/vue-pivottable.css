@@ -208,7 +208,9 @@ table.pvtTable tbody tr td {
   clear: both;
   width: 150px;
   position: absolute;
-  right: 10px;
+  right:0;
+  margin-right:8px;
+  padding-right: 2%
 }
 
 .OuterExportFilterBox button {
