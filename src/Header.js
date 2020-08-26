@@ -8,18 +8,15 @@ export default {
   created() {
     $(document).off("click");
     $(document).on("click", function(event) {
-      console.log(event.target);
       if (
-        $(".OuterTemplateDropDown").has(event.target).length &&
-        fieldexpanded
-      ) {
+        $(".OuterTemplateDropDown").has(event.target).length && fieldexpanded) {
         hidefield(event);
         showSelections();
       } else if ($(".OuterDropDown").has(event.target).length && tempexpanded) {
         hidetemp(event);
         showCheckboxes();
-      } else if (!$(".OuterTemplateDropDown").has(event.target).length 
-        && !$(".OuterDropDown").has(event.target).length) {
+      } else if (!$(".OuterTemplate").has(event.target).length 
+        && !$(".Outer").has(event.target).length) {
         hidefield(event);
         hidetemp(event);
       } else if ($(".OuterDropDown").has(event.target).length) {
@@ -179,7 +176,6 @@ var fieldexpanded = false;
 var tempexpanded = false;
 
 function showCheckboxes() {
-    console.log(fieldexpanded)
   if (!fieldexpanded) {
     $(".OuterFilterBox").show();
     fieldexpanded = true;

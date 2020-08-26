@@ -8,16 +8,16 @@ export default {
     "optionList",
     "selectedOption",
   ],
-  created() {    
-    this.options = this.optionList
-    this.optionSelected = this.selectedOption
+  created() {
+    this.options = this.optionList;
+    this.optionSelected = this.selectedOption;
   },
   watch: {
     selectedOption() {
       this.optionSelected = this.selectedOption;
     },
     optionList() {
-      this.options = this.optionList
+      this.options = this.optionList;
     },
     attrs() {
       var list = this.attrs;
@@ -76,7 +76,7 @@ export default {
       }
 
       return list.fields;
-    }
+    },
   },
   methods: {
     toggleValue(value) {
@@ -97,7 +97,7 @@ export default {
               });
           }
         });
-        this.$emit("fieldsChange", this.options);
+      this.$emit("fieldsChange", this.options);
     },
     toggleOption(value) {
       this.optionSelected = value;
@@ -192,214 +192,223 @@ export default {
     };
   },
   render(h) {
-    return h("span", [
-      //Drop Down List (with sample option)
-      h(
-        "span",
-        {
-          staticClass: ["OuterDropDown"],
-        },
-        [
-          h(
-            "span",
-            {
-              attrs: {
-                value: "Sample option",
-              },
-            },
-            [
-              "Select Fields",
-              h(
-                "span",
-                {
-                  staticClass: ["OuterTriangle"],
-                },
-                "  ▾"
-              ),
-            ]
-          ),
-        ]
-      ),
-      h(
-        //Actual Options
-        "div",
-        {
-          staticClass: ["OuterFilterBox"],
-        },
-        [
-          h(
-            "div",
-            {
-              staticClass: ["pvtFilterSearchContainer"],
-            },
-            [
-              h("input", {
-                staticClass: ["pvtFilterSearch"],
+    return h(
+      "span",
+      {
+        staticClass: ["Outer"],
+      },
+      [
+        //Drop Down List (with sample option)
+        h(
+          "span",
+          {
+            staticClass: ["OuterDropDown"],
+          },
+          [
+            h(
+              "span",
+              {
                 attrs: {
-                  type: "search",
-                  placeholder: "Filter Values",
+                  value: "Sample option",
                 },
-                domProps: {
-                  value: this.filterText,
-                },
-                on: {
-                  input: (e) => {
-                    this.filterText = e.target.value;
-                  },
-                },
-              }),
-            ]
-          ),
-          h(
-            "div",
-            {
-              staticClass: ["pvtOptionsContainer"],
-            },
-            [
-              h(
-                "a",
-                {
-                  staticClass: ["pvtButton"],
-                  attrs: {
-                    role: "button",
-                  },
-                  on: {
-                    click: () =>
-                      this.filterText == ""
-                        ? this.selectAll()
-                        : this.selectAll(true),
-                  },
-                },
-                `Select All`
-              ),
-              h(
-                "a",
-                {
-                  staticClass: ["pvtButton"],
-                  attrs: {
-                    role: "button",
-                  },
-                  on: {
-                    click: () =>
-                      this.filterText == ""
-                        ? this.deselectAll()
-                        : this.deselectAll(true),
-                  },
-                },
-                `Deselect All`
-              ),
-
-              h(
-                "div",
-                {
-                  staticClass: ["pvtOptions"],
-                },
-                [
-                  this.options.map((x) => {
-                    const checked = this.optionSelected == x.text;
-                    return h(
-                      "label",
-                      {
-                        class: {
-                          selected: checked,
-                        },
-                        attrs: {
-                          key: x.value,
-                        },
-                        staticClass: ["pvtOption"],
-                        on: {
-                          click: () => this.toggleOption(x.text),
-                        },
-                      },
-                      [
-                        h("input", {
-                          attrs: {
-                            type: "radio",
-                          },
-                          domProps: {
-                            checked: checked,
-                          },
-                        }),
-                        x.text,
-                      ]
-                    );
-                  }),
-                ]
-              ),
-            ]
-          ),
-          h(
-            "p",
-            {
-              staticClass: ["remarkText"],
-            },
-            [
-              h("span", "Selecting fields for "),
-              h(
-                "span",
-                {
-                  staticClass: ["optionText"],
-                },
-                this.optionSelected + "..."
-              ),
-            ]
-          ),
-          h(
-            "div",
-            {
-              staticClass: ["pvtCheckContainer"],
-            },
-            [
-              this.filtered.map((x) => {
-                const checked = x.selected;
-                return h(
-                  "p",
+              },
+              [
+                "Select Fields",
+                h(
+                  "span",
                   {
-                    class: {
-                      selected: x.selectedOther ? x.selectedOther : x.selected,
-                      selectedOther: x.selectedOther,
+                    staticClass: ["OuterTriangle"],
+                  },
+                  "  ▾"
+                ),
+              ]
+            ),
+          ]
+        ),
+        h(
+          //Actual Options
+          "div",
+          {
+            staticClass: ["OuterFilterBox"],
+          },
+          [
+            h(
+              "div",
+              {
+                staticClass: ["pvtFilterSearchContainer"],
+              },
+              [
+                h("input", {
+                  staticClass: ["pvtFilterSearch"],
+                  attrs: {
+                    type: "search",
+                    placeholder: "Filter Values",
+                  },
+                  domProps: {
+                    value: this.filterText,
+                  },
+                  on: {
+                    input: (e) => {
+                      this.filterText = e.target.value;
                     },
+                  },
+                }),
+              ]
+            ),
+            h(
+              "div",
+              {
+                staticClass: ["pvtOptionsContainer"],
+              },
+              [
+                h(
+                  "a",
+                  {
+                    staticClass: ["pvtButton"],
                     attrs: {
-                      key: x.value,
+                      role: "button",
                     },
                     on: {
-                      click: () => this.toggleValue(x.value),
+                      click: () =>
+                        this.filterText == ""
+                          ? this.selectAll()
+                          : this.selectAll(true),
                     },
                   },
+                  `Select All`
+                ),
+                h(
+                  "a",
+                  {
+                    staticClass: ["pvtButton"],
+                    attrs: {
+                      role: "button",
+                    },
+                    on: {
+                      click: () =>
+                        this.filterText == ""
+                          ? this.deselectAll()
+                          : this.deselectAll(true),
+                    },
+                  },
+                  `Deselect All`
+                ),
+
+                h(
+                  "div",
+                  {
+                    staticClass: ["pvtOptions"],
+                  },
                   [
-                    h("input", {
-                      attrs: {
-                        type: "checkbox",
-                      },
-                      domProps: {
-                        checked: x.selectedOther ? x.selectedOther : x.selected,
-                        disabled: x.selectedOther,
-                      },
+                    this.options.map((x) => {
+                      const checked = this.optionSelected == x.text;
+                      return h(
+                        "label",
+                        {
+                          class: {
+                            selected: checked,
+                          },
+                          attrs: {
+                            key: x.value,
+                          },
+                          staticClass: ["pvtOption"],
+                          on: {
+                            click: () => this.toggleOption(x.text),
+                          },
+                        },
+                        [
+                          h("input", {
+                            attrs: {
+                              type: "radio",
+                            },
+                            domProps: {
+                              checked: checked,
+                            },
+                          }),
+                          x.text,
+                        ]
+                      );
                     }),
-                    x.value,
                   ]
-                );
-              }),
-            ]
-          ),
-          h(
-            "div",
-            {
-              staticClass: ["recordNumberContainer"],
-            },
-            [
-              h(
-                "span",
-                {
-                  staticClass: ["recordNumber"],
-                },
-                "Fields found: " + this.filtered.length
-              ),
-            ]
-          ),
-        ]
-      ),
-    ]);
+                ),
+              ]
+            ),
+            h(
+              "p",
+              {
+                staticClass: ["remarkText"],
+              },
+              [
+                h("span", "Selecting fields for "),
+                h(
+                  "span",
+                  {
+                    staticClass: ["optionText"],
+                  },
+                  this.optionSelected + "..."
+                ),
+              ]
+            ),
+            h(
+              "div",
+              {
+                staticClass: ["pvtCheckContainer"],
+              },
+              [
+                this.filtered.map((x) => {
+                  const checked = x.selected;
+                  return h(
+                    "p",
+                    {
+                      class: {
+                        selected: x.selectedOther
+                          ? x.selectedOther
+                          : x.selected,
+                        selectedOther: x.selectedOther,
+                      },
+                      attrs: {
+                        key: x.value,
+                      },
+                      on: {
+                        click: () => this.toggleValue(x.value),
+                      },
+                    },
+                    [
+                      h("input", {
+                        attrs: {
+                          type: "checkbox",
+                        },
+                        domProps: {
+                          checked: x.selectedOther
+                            ? x.selectedOther
+                            : x.selected,
+                          disabled: x.selectedOther,
+                        },
+                      }),
+                      x.value,
+                    ]
+                  );
+                }),
+              ]
+            ),
+            h(
+              "div",
+              {
+                staticClass: ["recordNumberContainer"],
+              },
+              [
+                h(
+                  "span",
+                  {
+                    staticClass: ["recordNumber"],
+                  },
+                  "Fields found: " + this.filtered.length
+                ),
+              ]
+            ),
+          ]
+        ),
+      ]
+    );
   },
 };
-

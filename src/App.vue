@@ -1,6 +1,5 @@
 <template>
   <div id="app" style="padding:2%">
-    <div id="innertable">
       <VuePivottableUi
         :data="pivotData"
         :renderer-name="rendererName"
@@ -21,7 +20,6 @@
         @updateVals="updateVals"
       ></VuePivottableUi>
     </div>
-  </div>
 </template>
 <script>
 import tips from "./tips";
