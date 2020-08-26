@@ -3,6 +3,7 @@ import DraggableAttribute from "./DraggableAttribute";
 import Dropdown from "./Dropdown";
 import Single from "./Single";
 import Header from "./Header";
+import SaveBtn from "./SaveBtn";
 import Pivottable from "./Pivottable";
 import { PivotData, getSort, aggregators, sortAs } from "./helper/utils";
 import draggable from "vuedraggable";
@@ -664,6 +665,7 @@ export default {
             ]),
           ]
         ),
+        h(SaveBtn)
       ]
     );
   },
