@@ -68,10 +68,30 @@
   -moz-box-shadow: none !important;
   box-shadow: none !important;
 }
-#innertable {
-  overflow-y: auto;
+
+.wrapper {
+  margin-top:1%
 }
+
+.innertable {
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 50vh;
+}
+
+.pvtSave {
+  margin-top: 2%;
+  float: right
+}
+
+.tableWrapper {
+  max-width:100%
+}
+
 .pvtUi {
+  overflow:hidden;
+  table-layout: fixed;
+  width: 100%;   
   margin-top: 2%;
   color: #2a3f5f;
   font-family: Verdana;
@@ -95,6 +115,11 @@
   padding: 6px;
   vertical-align: top;
   border: 1px solid #a2b1c6;
+  width: 100%;
+}
+
+td.pvtRenderers, td.pvtVals, td.pvtAxisContainer.pvtVertList.pvtRows {
+  width:25% !important;
 }
 
 table.pvtTable {
@@ -102,8 +127,6 @@ table.pvtTable {
   text-align: left;
   border-collapse: collapse;
   font-family: Verdana;
-  width: auto;
-  height: auto;
 }
 
 table.pvtTable thead tr th,
@@ -177,8 +200,7 @@ table.pvtTable tbody tr td {
   padding-right: 1%;
   padding-bottom: 0.5%;
   padding-top: 0.5%;
-  position: absolute;
-  right: 10px;
+  float:right
 }
 
 .OuterExportFilterBox {
@@ -186,13 +208,33 @@ table.pvtTable tbody tr td {
   clear: both;
   width: 150px;
   position: absolute;
-  right: 10px;
+  right:0;
+  margin-right:8px;
+  padding-right: 2%
 }
 
 .OuterExportFilterBox button {
   width: 100%;
   border: 0.5px solid white;
   padding: 7px;
+}
+
+.OuterTemplateDropDown {
+  -webkit-text-size-adjust: 100%;
+  font-size: 90%;
+  background: #f3f6fa;
+  border: 2px solid #c8d4e3;
+  padding: 0.8% 1% 0.8% 1%;
+  white-space: nowrap;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
 }
 
 .OuterDropDown {
@@ -211,6 +253,7 @@ table.pvtTable tbody tr td {
   -khtml-user-select: none;
   -ms-user-select: none;
   cursor: pointer;
+  margin-left:1%
 }
 
 .pvtDropdown {
@@ -382,11 +425,35 @@ table.pvtTable tbody tr td {
 }
 
 .pvtOptions {
-  margin-left: 50%;
+  margin-left: 40%;
 }
 
 .pvtOption {
   margin-left: 5%;
+}
+
+.pvtTabHeader {
+  background-color: #f1f1f1;
+  overflow: hidden;
+}
+
+.pvtTabBtn {
+  background-color: inherit;
+  width:50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 3%;
+  font-family: "Verdana"
+}
+
+.pvtTabBtn:hover {
+  background-color: #ddd;
+}
+
+.pvtTabBtn.active {
+  background-color: #ccc;
+  border-bottom: 2px solid black
 }
 
 .pvtFilterBox input,
@@ -405,7 +472,8 @@ table.pvtTable tbody tr td {
 }
 
 .pvtFilterBox,
-.OuterFilterBox {
+.OuterFilterBox,
+.OuterTemplateFilterBox {
   z-index: 100;
   border: 1px solid #506784;
   max-width: 600px;
@@ -432,7 +500,16 @@ table.pvtTable tbody tr td {
   padding: 3px;
 }
 .OuterFilterBox {
-  width: 600px;
+  width: 39.5%;
+  height: 300px;
+  display: none;
+  overflow-y: scroll;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.OuterTemplateFilterBox {
+  width: 26%;
   height: 300px;
   display: none;
   overflow-y: scroll;
@@ -446,7 +523,7 @@ table.pvtTable tbody tr td {
 }
 
 .pvtFilterSearch {
-  width: 60%;
+  width: 100%;
   color: #506784;
   border: 1px solid;
   border-color: #c8d4e3;
@@ -476,7 +553,8 @@ table.pvtTable tbody tr td {
 }
 
 .pvtCheckContainer p,
-.OuterFilterBox p {
+.OuterFilterBox p,
+.OuterTemplateFilterBox p {
   margin: 0;
   margin-bottom: 1px;
   padding: 3px;
@@ -492,6 +570,15 @@ table.pvtTable tbody tr td {
   background: #ebf0f8;
   min-width: 100%;
   width: max-content;
+}
+
+.templateOption {
+  padding: 3% !important;
+}
+
+.templateOption:hover {
+  cursor: pointer;
+  background-color: #dfe8f3
 }
 
 .pvtOnly {
