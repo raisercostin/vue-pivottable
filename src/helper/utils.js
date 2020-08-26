@@ -52,9 +52,7 @@ months['Dec'] = 12;
 months['No value'] = 13;
 
 const naturalSort = (as, bs) => {
-  //console.log(as)
   if (Object.keys(months).includes(as) && Object.keys(months).includes(bs)) {
-    //console.log(as + " " + bs)
     if (months[as] > months[bs]) {
       return 1;
     }
@@ -612,7 +610,6 @@ class PivotData {
     if (!this.sorted) {
       this.sorted = true
       const v = (r, c) => this.getAggregator(r, c).value()
-      console.log(this.rowKeys)
       switch (this.props.rowOrder) {
         case 'value_a_to_z':
           this.rowKeys.sort((a, b) => naturalSort(v(a, []), v(b, [])))
