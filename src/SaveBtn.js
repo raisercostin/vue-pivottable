@@ -11,6 +11,9 @@ export default {
         'button',
         {
           staticClass: ['pvtSave greenBtn'],
+          on: {
+            click: () => this.$emit("create")
+          }
         },
         'Save Template'
       ),
