@@ -1,15 +1,65 @@
 export default {
-  props: ["values"],
+  props: ["templates", "type"],
+  watch: {
+    templates() {
+      this.templateList = [
+        { type: "General", list: [] },
+        { type: "Personal", list: [] },
+      ];
+
+      this.templates.map((x) => {
+        
+        var template = {
+          name: x.templateName,
+          type: x.isPublic ? "General" : "Personal",
+          aggreatorName: x.aggreatorName,
+          vals: JSON.parse(x.values),
+          table: JSON.parse(x.tables),
+          row: JSON.parse(x.rows), 
+          column: JSON.parse(x.columns),
+          filter: JSON.parse(x.filters),
+          selected: false
+        }
+        template.selected = this.optionSelected[0] == template.type && this.optionSelected[1] == template.name;
+        this.templateList.filter((item) => item.type == template.type)
+        [0].list.push(template)
+      })
+    }
+  },
+  computed: {
+    selected() {
+      return this.optionSelected
+    }
+  }, 
   created() {
-    this.templates = [
-      { type: "General", list: ["Template 1", "Template 3"] },
-      { type: "Personal", list: ["Template 2"] },
-    ];
+    console.log(this.templates)
+    this.templates.map((x) => {
+      var template = {
+        id: x.id,
+        name: x.templateName,
+        type: x.isPublic ? "General" : "Personal",
+        aggreatorName: x.aggreatorName,
+        vals: JSON.parse(x.values),
+        table: JSON.parse(x.tables),
+        row: JSON.parse(x.rows), 
+        column: JSON.parse(x.columns),
+        filter: JSON.parse(x.filters),
+        selected: false
+      }
+      this.templateList.filter((item) => item.type == template.type)
+      [0].list.push(template)
+    })
+    
+   
   },
   data() {
     return {
-      templates: [],
+      templateList: [
+        { type: "General", list: [] },
+        { type: "Personal", list: [] },
+      ],
       templateSelected: "General",
+      optionSelected: []
     };
   },
   methods: {
@@ -22,6 +72,21 @@ export default {
       evt.currentTarget.className += " active";
       this.templateSelected = type;
     },
+    selectValue(details) {
+      this.optionSelected[0] = this.templateSelected;
+      this.optionSelected[1] = details.name;
+      this.optionSelected[2] = details.id;
+    
+      this.templateList.map((y) => {
+        y.list.map((x) => {
+          x.selected = false;
+      if (x.name == details.name && x.type == this.templateSelected) {
+        x.selected = true;
+      }
+    })
+      })                
+      this.$emit("selectTemp", details, this.optionSelected)
+    }
   },
   render(h) {
     return h(
@@ -70,7 +135,7 @@ export default {
                 staticClass: ["pvtTabHeader"],
               },
               [
-                this.templates.map((x) => {
+                this.templateList.map((x) => {
                   return h(
                     "button",
                     {
@@ -93,23 +158,42 @@ export default {
                 staticClass: ["pvtCheckContainer"],
               },
               [
-                this.templates
+                this.templateList
                   .filter((y) => y.type == this.templateSelected)[0]
-                  .list.map((x) => {
+                  .list.map((x) => { 
                     return h(
                       "p",
                       {
                         staticClass: ["templateOption"],
+                        class: {
+                          selected: x.selected
+                        },
                         attrs: {
-                          key: x,
+                          key: x.name,
                         },
                         on: {
-                          //click: () => this.toggleValue(x.value),
+                          click: () => this.selectValue(x),
                         },
                       },
-                      x
+                      x.name
                     );
                   }),
+              ]
+            ),
+            h(
+              "div",
+              {
+                staticClass: ["recordNumberContainer"],
+              },
+              [
+                h(
+                  "span",
+                  {
+                    staticClass: ["recordNumber"],
+                  },
+                  "Templates found: " + this.templateList
+                  .filter((y) => y.type == this.templateSelected)[0].list.length
+                ),
               ]
             ),
           ]

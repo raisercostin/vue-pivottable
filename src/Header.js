@@ -4,7 +4,7 @@ import MultiDropDown from "./MultiDropDown";
 import $ from "jquery";
 
 export default {
-  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs"],
+  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs", "templates"],
   created() {
     $(document).off("click");
     $(document).on("click", function(event) {
@@ -112,7 +112,14 @@ export default {
         staticClass: ["OuterBox"],
       },
       [
-        h(TemplateDropDown),
+        h(TemplateDropDown, {
+          props: {
+            templates: this.templates
+          },
+          on: {
+            selectTemp: (details, existing) => this.$emit("selectTemp", details, existing)
+          }
+        }),
         h(MultiDropDown, {
           props: {
             values: this.values,

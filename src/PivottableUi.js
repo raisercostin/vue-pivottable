@@ -99,6 +99,12 @@ export default {
         return [];
       },
     },
+    showTemplates: {
+      type: Array,
+      default: function() {
+        return [];
+      },
+    },
   },
   computed: {
     innerAggregatorName() {
@@ -173,6 +179,7 @@ export default {
         renderer: null,
         table: [],
       },
+      existing: [],
       dragging: false,
       currentOpen: "",
       attrValues: {},
@@ -208,7 +215,7 @@ export default {
   },
   watch: {
     data() {
-      this.init();
+      //this.init();
     },
     innerAggregatorName: {
       handler: function(newValue) {
@@ -281,6 +288,7 @@ export default {
       };
     },
     updateValueFilter({ attribute, valueFilter }) {
+      
       this.$set(this.propsData.valueFilter, attribute, valueFilter);
     },
     moveFilterBoxToTop({ attribute }) {
@@ -534,9 +542,8 @@ export default {
   render(h) {
     if (this.data.length < 1) return;
     const rendererName = this.propsData.rendererName || this.rendererName;
-    const aggregatorName =
-      this.propsData.aggregatorName || this.defaultAggregatorName;
-    const vals = this.propsData.vals;
+    const aggregatorName = this.propsData.aggregatorName != "" ? this.propsData.aggregatorName : this.defaultAggregatorName;
+    const vals = this.innerVals;
     const unusedAttrsCell = this.makeDnDCell(
       this.unusedAttrs,
       (e) => {
@@ -610,6 +617,7 @@ export default {
       valueFilter: this.propsData.valueFilter,
       rows: this.propsData.rows,
       cols: this.propsData.cols,
+      table: this.propsData.table,
       rendererName,
       aggregatorName,
       vals,
@@ -639,6 +647,7 @@ export default {
               { text: "Column", fields: this.colAttrs },
               { text: "Table", fields: this.unusedAttrs },
             ],
+            templates: this.showTemplates
           },
           on: {
             input: (value) => {
@@ -650,6 +659,14 @@ export default {
               //remove filters
               Object.keys(this.attrValues).map(this.assignValue);
             },
+            selectTemp: (details, existing) => {
+              this.propsData.rows = details.row;
+              this.propsData.cols = details.column;
+              this.propsData.table = details.table;
+              this.propsData.aggregatorName = details.aggreatorName;
+              this.propsData.vals = details.vals;
+              this.existing = existing
+            }
           },
         }),
         h(
@@ -668,7 +685,23 @@ export default {
             ]),
           ]
         ),
-        h(SaveBtn)
+        h(SaveBtn, {
+          on: {
+            create: () => {
+              var details = {
+                templateName: "",
+                isPublic: true,
+                aggreatorName: aggregatorName,
+                values: JSON.stringify(vals),
+                tables: JSON.stringify(this.unusedAttrs),
+                rows: JSON.stringify(this.rowAttrs),
+                columns: JSON.stringify(this.colAttrs),
+                filters: JSON.stringify(props.valueFilter)
+              }
+              this.$emit("showCreateModal", details, this.existing)
+            }
+          }
+        })
           ])
       ]
     );
