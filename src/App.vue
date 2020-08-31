@@ -1,25 +1,26 @@
 <template>
   <div id="app" style="padding:2%">
-      <VuePivottableUi
-        :data="pivotData"
-        :renderer-name="rendererName"
-        :showRenderers="rendererList"
-        :showAggregators="aggregatorList"
-        :defaultAggregatorName="defaultAggregatorName"
-        :defaultVals="defaultVals"
-        :defaultTables="defaultTables"
-        :defaultRows="defaultRows"
-        :defaultColumns="defaultColumns"
-        :defaultValueFilter="defaultValueFilter"
-        :fields="fieldList"
-        @updateFilter="updateFilter"
-        @updateTables="updateTables"
-        @updateRows="updateRows"
-        @updateColumns="updateColumns"
-        @updateAggregatorName="updateAggregatorName"
-        @updateVals="updateVals"
-      ></VuePivottableUi>
-    </div>
+    <VuePivottableUi
+      :data="pivotData"
+      :renderer-name="rendererName"
+      :showRenderers="rendererList"
+      :showAggregators="aggregatorList"
+      :defaultAggregatorName="defaultAggregatorName"
+      :defaultVals="defaultVals"
+      :defaultTables="defaultTables"
+      :defaultRows="defaultRows"
+      :defaultColumns="defaultColumns"
+      :defaultValueFilter="defaultValueFilter"
+      :fields="fieldList"
+      :showTemplates="templates"
+      @updateFilter="updateFilter"
+      @updateTables="updateTables"
+      @updateRows="updateRows"
+      @updateColumns="updateColumns"
+      @updateAggregatorName="updateAggregatorName"
+      @updateVals="updateVals"
+    ></VuePivottableUi>
+  </div>
 </template>
 <script>
 import tips from "./tips";
@@ -90,6 +91,17 @@ export default {
       selectedRows: [],
       selectedColumns: [],
       selectedFilter: {},
+      templates: [{
+        aggreatorName: "Count",
+        columns: "[]",
+        filters: "{}",
+        id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
+        isPublic: false,
+        rows: "[]",
+        tables: "[]",
+        templateName: "Temp 4",
+        values: "[]",
+      }],
     };
   },
 };
