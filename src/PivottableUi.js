@@ -670,6 +670,8 @@ export default {
             },
             clear: () => {
               //remove filters
+              this.existing = [];
+              console.log(this.existing)
               Object.keys(this.attrValues).map(this.assignValue);
             },
             selectTemp: (details, existing) => {
@@ -680,7 +682,8 @@ export default {
               this.propsData.vals = details.vals;
               this.existing = existing
             },
-            deleteTemp: (details) => {
+            deleteTemp: (details, existing) => {
+              this.existing = existing;
               this.$emit("showDeleteModal", details)
             }
           },

@@ -128,7 +128,7 @@ export default {
                 this.TempoptionSelected = [];
                 this.clearFields();
               }
-              this.$emit("deleteTemp", details)
+              this.$emit("deleteTemp", details, this.TempoptionSelected)
             }
 
           }
