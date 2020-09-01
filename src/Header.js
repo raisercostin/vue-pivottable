@@ -117,7 +117,13 @@ export default {
             templates: this.templates
           },
           on: {
-            selectTemp: (details, existing) => this.$emit("selectTemp", details, existing)
+            selectTemp: (details, existing) => {
+              this.$emit("selectTemp", details, existing)
+            },
+            delete: (details) => {
+              this.$emit("deleteTemp", details)
+            }
+
           }
         }),
         h(MultiDropDown, {

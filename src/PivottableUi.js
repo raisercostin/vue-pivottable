@@ -279,6 +279,19 @@ export default {
       this.unusedOrder = this.unusedAttrs;
       Object.keys(this.attrValues).map(this.assignValue);
     },
+    getDetails() {
+      var details = {
+        templateName: "",
+        isPublic: true,
+        aggreatorName: aggregatorName,
+        values: JSON.stringify(vals),
+        tables: JSON.stringify(this.unusedAttrs),
+        rows: JSON.stringify(this.rowAttrs),
+        columns: JSON.stringify(this.colAttrs),
+        filters: JSON.stringify(props.valueFilter)
+      }
+      return details
+    },
     assignValue(field) {
       this.$set(this.propsData.valueFilter, field, {});
     },
@@ -666,6 +679,9 @@ export default {
               this.propsData.aggregatorName = details.aggreatorName;
               this.propsData.vals = details.vals;
               this.existing = existing
+            },
+            delete: (details) => {
+              this.$emit("showDeleteModal", details)
             }
           },
         }),
@@ -688,17 +704,7 @@ export default {
         h(SaveBtn, {
           on: {
             create: () => {
-              var details = {
-                templateName: "",
-                isPublic: true,
-                aggreatorName: aggregatorName,
-                values: JSON.stringify(vals),
-                tables: JSON.stringify(this.unusedAttrs),
-                rows: JSON.stringify(this.rowAttrs),
-                columns: JSON.stringify(this.colAttrs),
-                filters: JSON.stringify(props.valueFilter)
-              }
-              this.$emit("showCreateModal", details, this.existing)
+              this.$emit("showCreateModal", this.getDetails(), this.existing)
             }
           }
         })

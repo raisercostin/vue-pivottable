@@ -1,3 +1,4 @@
+
 export default {
   props: ["templates", "type"],
   watch: {
@@ -171,11 +172,32 @@ export default {
                         attrs: {
                           key: x.name,
                         },
-                        on: {
-                          click: () => this.selectValue(x),
-                        },
+                        
                       },
-                      x.name
+                      [
+                        h(
+                          "span",
+                          {
+                            staticClass: ["optionName"],
+                            on: {
+                              click: () => this.selectValue(x),
+                            },
+                          },
+                          x.name
+                        ),
+                        h(
+                          "img",
+                          {
+                            staticClass: ["deleteIcon"],
+                            attrs: {
+                              src: require(`@/assets/bin.png`)
+                            },
+                            on: {
+                              click: () => this.$emit("delete", x)
+                            }
+                          }
+                        ) 
+                      ]
                     );
                   }),
               ]
