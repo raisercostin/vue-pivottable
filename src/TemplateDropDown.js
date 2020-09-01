@@ -190,7 +190,7 @@ export default {
                           {
                             staticClass: ["deleteIcon"],
                             attrs: {
-                              src: require(`@/assets/bin.png`)
+                              src: require(`@/assets/icon/bin.png`)
                             },
                             on: {
                               click: () => this.$emit("delete", x)
