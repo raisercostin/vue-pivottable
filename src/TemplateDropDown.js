@@ -1,6 +1,6 @@
 
 export default {
-  props: ["templates", "type"],
+  props: ["templates", "optionSelected"],
   watch: {
     templates() {
       this.templateList = [
@@ -11,6 +11,7 @@ export default {
       this.templates.map((x) => {
         
         var template = {
+          id: x.id,
           name: x.templateName,
           type: x.isPublic ? "General" : "Personal",
           aggreatorName: x.aggreatorName,
@@ -25,33 +26,15 @@ export default {
         this.templateList.filter((item) => item.type == template.type)
         [0].list.push(template)
       })
+    },
+    optionSelected() {
+      if (this.optionSelected.length == 0) {
+        this.init();
+      }
     }
   },
-  computed: {
-    selected() {
-      return this.optionSelected
-    }
-  }, 
   created() {
-    console.log(this.templates)
-    this.templates.map((x) => {
-      var template = {
-        id: x.id,
-        name: x.templateName,
-        type: x.isPublic ? "General" : "Personal",
-        aggreatorName: x.aggreatorName,
-        vals: JSON.parse(x.values),
-        table: JSON.parse(x.tables),
-        row: JSON.parse(x.rows), 
-        column: JSON.parse(x.columns),
-        filter: JSON.parse(x.filters),
-        selected: false
-      }
-      this.templateList.filter((item) => item.type == template.type)
-      [0].list.push(template)
-    })
-    
-   
+    this.init();
   },
   data() {
     return {
@@ -60,10 +43,33 @@ export default {
         { type: "Personal", list: [] },
       ],
       templateSelected: "General",
-      optionSelected: []
+
     };
   },
   methods: {
+    init() {
+      this.templateList = [
+        { type: "General", list: [] },
+        { type: "Personal", list: [] },
+      ];
+
+      this.templates.map((x) => {
+        var template = {
+          id: x.id,
+          name: x.templateName,
+          type: x.isPublic ? "General" : "Personal",
+          aggreatorName: x.aggreatorName,
+          vals: JSON.parse(x.values),
+          table: JSON.parse(x.tables),
+          row: JSON.parse(x.rows), 
+          column: JSON.parse(x.columns),
+          filter: JSON.parse(x.filters),
+          selected: false
+        }
+        this.templateList.filter((item) => item.type == template.type)
+        [0].list.push(template)
+      })
+    },
     switchTabs(evt, type) {
       var tabLinks;
       tabLinks = document.getElementsByClassName("pvtTabBtn");
@@ -74,9 +80,7 @@ export default {
       this.templateSelected = type;
     },
     selectValue(details) {
-      this.optionSelected[0] = this.templateSelected;
-      this.optionSelected[1] = details.name;
-      this.optionSelected[2] = details.id;
+      var existing = [this.templateSelected, details.name, details.id]
     
       this.templateList.map((y) => {
         y.list.map((x) => {
@@ -86,7 +90,7 @@ export default {
       }
     })
       })                
-      this.$emit("selectTemp", details, this.optionSelected)
+      this.$emit("selectTemp", details, existing)
     }
   },
   render(h) {
@@ -193,7 +197,9 @@ export default {
                               src: require(`@/assets/icon/bin.png`)
                             },
                             on: {
-                              click: () => this.$emit("delete", x)
+                              click: () => {
+                                this.$emit("delete", x)
+                              }
                             }
                           }
                         ) 

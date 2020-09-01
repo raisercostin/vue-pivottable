@@ -279,7 +279,7 @@ export default {
       this.unusedOrder = this.unusedAttrs;
       Object.keys(this.attrValues).map(this.assignValue);
     },
-    getDetails() {
+    getDetails(props, aggregatorName, vals) {
       var details = {
         templateName: "",
         isPublic: true,
@@ -680,7 +680,7 @@ export default {
               this.propsData.vals = details.vals;
               this.existing = existing
             },
-            delete: (details) => {
+            deleteTemp: (details) => {
               this.$emit("showDeleteModal", details)
             }
           },
@@ -704,7 +704,7 @@ export default {
         h(SaveBtn, {
           on: {
             create: () => {
-              this.$emit("showCreateModal", this.getDetails(), this.existing)
+              this.$emit("showCreateModal", this.getDetails(props, aggregatorName, vals), this.existing)
             }
           }
         })

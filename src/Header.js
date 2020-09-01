@@ -102,6 +102,7 @@ export default {
     },
     clearFields() {
       this.init(true);
+      this.TempoptionSelected = [];
       this.$emit("clear");
     },
   },
@@ -114,13 +115,19 @@ export default {
       [
         h(TemplateDropDown, {
           props: {
-            templates: this.templates
+            templates: this.templates,
+            optionSelected: this.TempoptionSelected
           },
           on: {
             selectTemp: (details, existing) => {
+              this.TempoptionSelected = existing;
               this.$emit("selectTemp", details, existing)
             },
             delete: (details) => {
+              if (details.name == this.TempoptionSelected[1] && details.type == this.TempoptionSelected[0]) {
+                this.TempoptionSelected = [];
+                this.clearFields();
+              }
               this.$emit("deleteTemp", details)
             }
 
@@ -181,6 +188,7 @@ export default {
     return {
       options: null,
       optionSelected: "Table",
+      TempoptionSelected: []
     };
   },
 };
