@@ -1,6 +1,23 @@
 * {
   box-sizing: border-box;
 }
+.deleteIcon {
+  width: 17px;
+  height: 17px;
+  padding: 1%;
+  vertical-align: middle;
+  float: right
+}
+
+.deleteIcon:hover {
+  cursor: pointer;
+}
+
+.optionName {
+  width: 90%;
+  display: inline-block
+}
+
 .OuterBox {
   display: inline;
   font-family: Verdana;
@@ -577,7 +594,6 @@ table.pvtTable tbody tr td {
 }
 
 .templateOption:hover {
-  cursor: pointer;
   background-color: #dfe8f3
 }
 
