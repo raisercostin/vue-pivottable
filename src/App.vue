@@ -13,6 +13,7 @@
       :defaultValueFilter="defaultValueFilter"
       :fields="fieldList"
       :showTemplates="templates"
+      :role="role"
       @updateFilter="updateFilter"
       @updateTables="updateTables"
       @updateRows="updateRows"
@@ -83,6 +84,7 @@ export default {
         "Meal",
         "Party Size",
       ],
+      role: true,
       rendererList: ["Table"], // Here to specify show renderer list
       aggregatorList: [], // Here to specify show aggregator list
       selectedAggregatorName: "",
@@ -93,36 +95,36 @@ export default {
       selectedFilter: {},
       templates: [{
         aggreatorName: "Count",
-        columns: "[]",
-        filters: "{}",
+        columns: '[]',
+        filters: '{ "Meal": {"Dinner" : true} }',
         id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
         isPublic: false,
-        rows: "[]",
-        tables: "[]",
-        templateName: "Temp 4",
-        values: "[]",
+        rows: '["Meal"]',
+        tables: '[]',
+        templateName: "Temp 4 lalalallalalalalalalalala",
+        values: '[]',
       },
       {
         aggreatorName: "Count",
-        columns: "[]",
-        filters: "{}",
+        columns: '[]',
+        filters: '[{ "Meal": ["Dinner"] }]',
         id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
         isPublic: false,
-        rows: "[]",
-        tables: "[]",
+        rows: '[]',
+        tables: '[]',
+        templateName: "Temp 5",
+        values: '[]',
+      },
+      {
+        aggreatorName: "Count",
+        columns: '[]',
+        filters: '[{ "Meal": ["Dinner"] }]',
+        id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
+        isPublic: false,
+        rows: '[]',
+        tables: '[]',
         templateName: "Temp 6",
-        values: "[]",
-      },
-      {
-        aggreatorName: "Count",
-        columns: "[]",
-        filters: "{}",
-        id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
-        isPublic: false,
-        rows: "[]",
-        tables: "[]",
-        templateName: "Temp 8",
-        values: "[]",
+        values: '[]',
       }],
     };
   },

@@ -1,31 +1,9 @@
 
 export default {
-  props: ["templates", "optionSelected"],
+  props: ["templates", "optionSelected", "role"],
   watch: {
     templates() {
-      this.templateList = [
-        { type: "General", list: [] },
-        { type: "Personal", list: [] },
-      ];
-
-      this.templates.map((x) => {
-        
-        var template = {
-          id: x.id,
-          name: x.templateName,
-          type: x.isPublic ? "General" : "Personal",
-          aggreatorName: x.aggreatorName,
-          vals: JSON.parse(x.values),
-          table: JSON.parse(x.tables),
-          row: JSON.parse(x.rows), 
-          column: JSON.parse(x.columns),
-          filter: JSON.parse(x.filters),
-          selected: false
-        }
-        template.selected = this.optionSelected[0] == template.type && this.optionSelected[1] == template.name;
-        this.templateList.filter((item) => item.type == template.type)
-        [0].list.push(template)
-      })
+      this.init();
     },
     optionSelected() {
       if (this.optionSelected.length == 0) {
@@ -43,7 +21,6 @@ export default {
         { type: "Personal", list: [] },
       ],
       templateSelected: "General",
-
     };
   },
   methods: {
@@ -66,8 +43,15 @@ export default {
           filter: JSON.parse(x.filters),
           selected: false
         }
-        this.templateList.filter((item) => item.type == template.type)
-        [0].list.push(template)
+
+        if (this.optionSelected.length > 0) {
+          template.selected = this.optionSelected[0] == template.type && this.optionSelected[1] == template.name;
+          this.templateList.filter((item) => item.type == template.type)
+          [0].list.push(template)
+        } else {
+          this.templateList.filter((item) => item.type == template.type)
+          [0].list.push(template)
+        }
       })
     },
     switchTabs(evt, type) {
@@ -115,6 +99,10 @@ export default {
                 },
               },
               [
+                this.optionSelected.length > 0 ?
+                this.optionSelected[1].length > 15 ?
+                this.optionSelected[1].substr(0, 15) + "..." :
+                this.optionSelected[1] :
                 "Select Templates",
                 h(
                   "span",
@@ -163,6 +151,19 @@ export default {
                 staticClass: ["pvtCheckContainer"],
               },
               [
+                this.templateList
+                  .filter((y) => y.type == this.templateSelected)[0].list.length == 0 ?
+                  h(
+                    "p",
+                    {
+                      staticClass: ["emptyState"]
+                    },
+                    this.templateSelected == "General" ? 
+                    this.role ? 
+                    "Drag and Drop the fields, the click on 'Save Template' to create your template." :
+                    "Only Administrators are allowed to create general templates" :
+                    "Drag and Drop the fields, the click on 'Save Template' to create your template."
+                  ) :
                 this.templateList
                   .filter((y) => y.type == this.templateSelected)[0]
                   .list.map((x) => { 

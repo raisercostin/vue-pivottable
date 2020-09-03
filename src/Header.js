@@ -4,7 +4,7 @@ import MultiDropDown from "./MultiDropDown";
 import $ from "jquery";
 
 export default {
-  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs", "templates"],
+  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs", "templates", "role"],
   created() {
     $(document).off("click");
     $(document).on("click", function(event) {
@@ -116,7 +116,8 @@ export default {
         h(TemplateDropDown, {
           props: {
             templates: this.templates,
-            optionSelected: this.TempoptionSelected
+            optionSelected: this.TempoptionSelected,
+            role: this.role
           },
           on: {
             selectTemp: (details, existing) => {

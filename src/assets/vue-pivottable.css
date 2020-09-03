@@ -1,6 +1,14 @@
 * {
   box-sizing: border-box;
 }
+
+.emptyState {
+  word-wrap: break-word;
+  white-space: normal;
+  text-align: center;
+  padding:5% !important
+}
+
 .deleteIcon {
   width: 17px;
   height: 17px;

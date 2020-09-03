@@ -105,6 +105,12 @@ export default {
         return [];
       },
     },
+    role: {
+      type: Boolean,
+      default: function() {
+        return false;
+      },
+    },
   },
   computed: {
     innerAggregatorName() {
@@ -290,6 +296,7 @@ export default {
         columns: JSON.stringify(this.colAttrs),
         filters: JSON.stringify(props.valueFilter)
       }
+      console.log(details)
       return details
     },
     assignValue(field) {
@@ -356,6 +363,8 @@ export default {
       if (items.length > 0) {
         arr = [
           items.map((x) => {
+            if (x == "Meal") console.log(this.propsData.valueFilter[x])
+            
             return h(DraggableAttribute, {
               props: {
                 sortable:
@@ -660,7 +669,8 @@ export default {
               { text: "Column", fields: this.colAttrs },
               { text: "Table", fields: this.unusedAttrs },
             ],
-            templates: this.showTemplates
+            templates: this.showTemplates,
+            role: this.role
           },
           on: {
             input: (value) => {
@@ -674,12 +684,13 @@ export default {
               console.log(this.existing)
               Object.keys(this.attrValues).map(this.assignValue);
             },
-            selectTemp: (details, existing) => {
+            selectTemp: (details, existing) => { 
               this.propsData.rows = details.row;
               this.propsData.cols = details.column;
               this.propsData.table = details.table;
               this.propsData.aggregatorName = details.aggreatorName;
               this.propsData.vals = details.vals;
+              this.propsData.valueFilter = details.filter;
               this.existing = existing
             },
             deleteTemp: (details, existing) => {
