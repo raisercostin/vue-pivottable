@@ -1,6 +1,6 @@
 
 export default {
-  props: ["templates", "optionSelected", "role"],
+  props: ["templates", "optionSelected", "role", "approved"],
   watch: {
     templates() {
       this.init();

@@ -225,37 +225,51 @@ export default {
     },
     innerAggregatorName: {
       handler: function(newValue) {
-        this.$emit("updateAggregatorName", newValue);
+        if (this.existing.length > 0 && !(this.existing[3].aggreatorName == newValue)) {
+          this.$emit("hasChanges", true);
+        } else if (this.existing.length == 0) { 
+          this.$emit("hasChanges", true);
+        }
       },
       deep: true,
     },
     innerVals: {
       handler: function(newValue) {
-        this.$emit("updateVals", newValue);
+        if (this.existing.length > 0 && !this.checkLists(this.existing[3].vals, newValue)) {
+          this.$emit("hasChanges", true);
+        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
     innerTables: {
       handler: function(newValue) {
-        this.$emit("updateTables", newValue);
+        if (this.existing.length > 0 && !this.checkLists(this.existing[3].table, newValue)) {
+          this.$emit("hasChanges", true);
+        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
     innerRows: {
       handler: function(newValue) {
-        this.$emit("updateRows", newValue);
+        if (this.existing.length > 0 && !this.checkLists(this.existing[3].row, newValue)) {
+          this.$emit("hasChanges", true);
+        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
     innerColumns: {
       handler: function(newValue) {
-        this.$emit("updateColumns", newValue);
+        if (this.existing.length > 0 && !this.checkLists(this.existing[3].column, newValue)) {
+          this.$emit("hasChanges", true);
+        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
     innerValueFilter: {
       handler: function(newValue) {
-        this.$emit("updateFilter", newValue);
+        if (this.existing.length > 0 && !this.checkDicts(this.existing[3].filter, newValue)) {
+          this.$emit("hasChanges", true);
+        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
@@ -285,6 +299,47 @@ export default {
       this.unusedOrder = this.unusedAttrs;
       Object.keys(this.attrValues).map(this.assignValue);
     },
+    checkLists(oldList, newList) {
+      var same = true;
+      oldList.map((x) => {
+        if(!newList.includes(x)) {
+          same = false;
+        }
+      })
+      newList.map((x) => {
+        if(!oldList.includes(x)) {
+          same = false;
+        }
+      })
+      return same;
+    },
+    checkDicts(oldDict, newDict) {
+      var same  = true;
+      Object.keys(oldDict).map((x) => {
+        Object.keys(oldDict[x]).map((y) => {
+          if (!Object.keys(newDict[x]).includes(y) ) {
+            same = false
+          }
+        })
+      })
+      Object.keys(newDict).map((x) => {
+        Object.keys(newDict[x]).map((y) => {
+          if (!Object.keys(oldDict[x]).includes(y) ) {
+            same = false
+          }
+        })
+      })
+      return same;
+    },
+    checkDict(val) {
+      var empty = true;
+      Object.keys(val).map((x) => {
+        if (Object.keys(val[x]).length > 0) {
+          empty = false;
+        }
+      });
+      return empty;
+    },
     getDetails(props, aggregatorName, vals) {
       var details = {
         templateName: "",
@@ -294,10 +349,10 @@ export default {
         tables: JSON.stringify(this.unusedAttrs),
         rows: JSON.stringify(this.rowAttrs),
         columns: JSON.stringify(this.colAttrs),
-        filters: JSON.stringify(props.valueFilter)
-      }
-      console.log(details)
-      return details
+        filters: JSON.stringify(props.valueFilter),
+      };
+      console.log(details);
+      return details;
     },
     assignValue(field) {
       this.$set(this.propsData.valueFilter, field, {});
@@ -308,7 +363,6 @@ export default {
       };
     },
     updateValueFilter({ attribute, valueFilter }) {
-      
       this.$set(this.propsData.valueFilter, attribute, valueFilter);
     },
     moveFilterBoxToTop({ attribute }) {
@@ -363,8 +417,6 @@ export default {
       if (items.length > 0) {
         arr = [
           items.map((x) => {
-            if (x == "Meal") console.log(this.propsData.valueFilter[x])
-            
             return h(DraggableAttribute, {
               props: {
                 sortable:
@@ -540,12 +592,12 @@ export default {
     },
     outputCell(props, isPlotlyRenderer, h) {
       return h(
-          "td",
-          {
-            staticClass: ["pvtOutput"],
-          },
-          [
-            h("div", { staticClass: ["innertable"] }, [
+        "td",
+        {
+          staticClass: ["pvtOutput"],
+        },
+        [
+          h("div", { staticClass: ["innertable"] }, [
             isPlotlyRenderer
               ? h(PlotlyRenderer[props.rendererName], {
                   props,
@@ -556,15 +608,18 @@ export default {
                     tableMaxWidth: this.tableMaxWidth,
                   },
                 }),
-              ])
-          ]
-        )
+          ]),
+        ]
+      );
     },
   },
   render(h) {
     if (this.data.length < 1) return;
     const rendererName = this.propsData.rendererName || this.rendererName;
-    const aggregatorName = this.propsData.aggregatorName != "" ? this.propsData.aggregatorName : this.defaultAggregatorName;
+    const aggregatorName =
+      this.propsData.aggregatorName != ""
+        ? this.propsData.aggregatorName
+        : this.defaultAggregatorName;
     const vals = this.innerVals;
     const unusedAttrsCell = this.makeDnDCell(
       this.unusedAttrs,
@@ -670,7 +725,8 @@ export default {
               { text: "Table", fields: this.unusedAttrs },
             ],
             templates: this.showTemplates,
-            role: this.role
+            role: this.role,
+            approved: this.approved,
           },
           on: {
             input: (value) => {
@@ -680,49 +736,54 @@ export default {
             },
             clear: () => {
               //remove filters
-              this.existing = [];
-              console.log(this.existing)
+              this.propsData.aggregatorName = this.defaultAggregatorName;
+              this.propsData.vals = [];
               Object.keys(this.attrValues).map(this.assignValue);
             },
-            selectTemp: (details, existing) => { 
+            selectTemp: (details, existing) => {
               this.propsData.rows = details.row;
               this.propsData.cols = details.column;
               this.propsData.table = details.table;
               this.propsData.aggregatorName = details.aggreatorName;
-              this.propsData.vals = details.vals;
+              this.propsData.vals = [...details.vals];
               this.propsData.valueFilter = details.filter;
-              this.existing = existing
+              existing.push(details)
+              this.existing = existing;
+              this.$emit("hasChanges", false)
             },
             deleteTemp: (details, existing) => {
+              existing.push(details)
               this.existing = existing;
-              this.$emit("showDeleteModal", details)
-            }
+              this.$emit("showDeleteModal", details);
+            },
           },
         }),
-        h(
-          "div", 
-          { staticClass: "tableWrapper"},
-          [
-         h("table",
-          {
-            staticClass: ["pvtUi"],
-          },
-          [
-            h("tbody", [
-              h("tr", [rendererCell, unusedAttrsCell]),
-              h("tr", [aggregatorCell, colAttrsCell]),
-              h("tr", [rowAttrsCell, outputCell]),
-            ]),
-          ]
-        ),
-        h(SaveBtn, {
-          on: {
-            create: () => {
-              this.$emit("showCreateModal", this.getDetails(props, aggregatorName, vals), this.existing)
-            }
-          }
-        })
-          ])
+        h("div", { staticClass: "tableWrapper" }, [
+          h(
+            "table",
+            {
+              staticClass: ["pvtUi"],
+            },
+            [
+              h("tbody", [
+                h("tr", [rendererCell, unusedAttrsCell]),
+                h("tr", [aggregatorCell, colAttrsCell]),
+                h("tr", [rowAttrsCell, outputCell]),
+              ]),
+            ]
+          ),
+          h(SaveBtn, {
+            on: {
+              create: () => {
+                this.$emit(
+                  "showCreateModal",
+                  this.getDetails(props, aggregatorName, vals),
+                  this.existing
+                );
+              },
+            },
+          }),
+        ]),
       ]
     );
   },

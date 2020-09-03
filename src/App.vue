@@ -14,12 +14,14 @@
       :fields="fieldList"
       :showTemplates="templates"
       :role="role"
+      :approved="approved"
       @updateFilter="updateFilter"
       @updateTables="updateTables"
       @updateRows="updateRows"
       @updateColumns="updateColumns"
       @updateAggregatorName="updateAggregatorName"
       @updateVals="updateVals"
+      @hasChanges="hasChanges"
     ></VuePivottableUi>
   </div>
 </template>
@@ -51,6 +53,14 @@ export default {
     updateFilter(val) {
       this.selectedFilter = JSON.stringify(val);
     },
+    hasChanges(val) {
+      if (val) {
+        console.log(val)
+        console.log("there is changes")
+      } else {
+        console.log("no change")
+      }
+    }
   },
   data() {
     return {
@@ -58,13 +68,10 @@ export default {
       rendererName: "Table",
       defaultAggregatorName: "Count",
       defaultVals: [],
-      defaultTables: ["Tip"],
-      defaultRows: ["Meal"],
+      defaultTables: [],
+      defaultRows: [],
       defaultColumns: [
-        "Payer Gender",
-        "Payer Smoker",
-        "Day of Week",
-        "Party Size",
+       
       ],
       defaultValueFilter: {
         "Total Bill": {},
@@ -85,6 +92,7 @@ export default {
         "Party Size",
       ],
       role: true,
+      approved: true,
       rendererList: ["Table"], // Here to specify show renderer list
       aggregatorList: [], // Here to specify show aggregator list
       selectedAggregatorName: "",
@@ -107,7 +115,7 @@ export default {
       {
         aggreatorName: "Count",
         columns: '[]',
-        filters: '[{ "Meal": ["Dinner"] }]',
+        filters: '{}',
         id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
         isPublic: false,
         rows: '[]',
@@ -118,7 +126,7 @@ export default {
       {
         aggreatorName: "Count",
         columns: '[]',
-        filters: '[{ "Meal": ["Dinner"] }]',
+        filters: '{}',
         id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
         isPublic: false,
         rows: '[]',
