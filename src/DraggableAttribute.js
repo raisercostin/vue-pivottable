@@ -345,7 +345,14 @@ export default {
             },
           },
           [
-            this.name,
+            h("span",
+              {
+                on: {
+                  click: this.toggleFilterBox.bind(this),
+                }
+              },
+              this.name
+            ),
             !this.disabled
               ? h(
                 'span',
@@ -353,7 +360,7 @@ export default {
                   staticClass: ['pvtTriangle'],
                   on: {
                     click: this.toggleFilterBox.bind(this),
-                  },
+                  }
                 },
                 '  ▾'
               )

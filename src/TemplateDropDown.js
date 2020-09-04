@@ -1,14 +1,12 @@
 
 export default {
-  props: ["templates", "optionSelected", "role", "approved"],
+  props: ["templates", "optionSelected", "role"],
   watch: {
     templates() {
       this.init();
     },
     optionSelected() {
-      if (this.optionSelected.length == 0) {
-        this.init();
-      }
+      this.init();
     }
   },
   created() {
@@ -44,8 +42,8 @@ export default {
           selected: false
         }
 
-        if (this.optionSelected.length > 0) {
-          template.selected = this.optionSelected[0] == template.type && this.optionSelected[1] == template.name;
+        if (Object.keys(this.optionSelected).length > 0) {
+          template.selected = (this.optionSelected.isPublic ? "General" : "Personal") == template.type && this.optionSelected.templateName == template.name;
           this.templateList.filter((item) => item.type == template.type)
           [0].list.push(template)
         } else {
@@ -64,8 +62,6 @@ export default {
       this.templateSelected = type;
     },
     selectValue(details) {
-      var existing = [this.templateSelected, details.name, details.id]
-    
       this.templateList.map((y) => {
         y.list.map((x) => {
           x.selected = false;
@@ -74,7 +70,7 @@ export default {
       }
     })
       })                
-      this.$emit("selectTemp", details, existing)
+      this.$emit("selectTemp", details)
     }
   },
   render(h) {
@@ -99,10 +95,10 @@ export default {
                 },
               },
               [
-                this.optionSelected.length > 0 ?
-                this.optionSelected[1].length > 15 ?
-                this.optionSelected[1].substr(0, 15) + "..." :
-                this.optionSelected[1] :
+                Object.keys(this.optionSelected).length > 0 ?
+                this.optionSelected.templateName.length > 15 ?
+                this.optionSelected.templateName.substr(0, 15) + "..." :
+                this.optionSelected.templateName :
                 "Select Templates",
                 h(
                   "span",
@@ -190,6 +186,7 @@ export default {
                           },
                           x.name
                         ),
+                        this.role ?
                         h(
                           "img",
                           {
@@ -203,7 +200,8 @@ export default {
                               }
                             }
                           }
-                        ) 
+                        ) :
+                        undefined
                       ]
                     );
                   }),

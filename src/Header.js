@@ -4,7 +4,7 @@ import MultiDropDown from "./MultiDropDown";
 import $ from "jquery";
 
 export default {
-  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs", "templates", "role", "approved"],
+  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs", "templates", "role", "clear", "existing"],
   created() {
     $(document).off("click");
     $(document).on("click", function(event) {
@@ -25,7 +25,23 @@ export default {
         showSelections();
       }
     });
-    this.init();
+    this.init(true);
+  },
+  watch: {
+    templates() {
+      console.log(this.clear)
+      if(this.clear) {
+        this.clearFields();
+        this.TempoptionSelected = {};
+      }
+    },
+    existing() {
+      console.log(this.existing)
+      if (Object.keys(this.existing).length > 0) {
+        this.TempoptionSelected = this.existing;
+        this.init();
+      }
+    }
   },
   methods: {
     init(clear = false) {
@@ -63,27 +79,27 @@ export default {
     },
 
     selectedOrNot(type, val) {
-      if (type === "Table") return this.defaultTables.indexOf(val) !== -1;
+      if (type === "Table") return this.TempoptionSelected.tables.indexOf(val) !== -1;
       else if (type === "Column")
-        return this.defaultColumns.indexOf(val) !== -1;
-      else if (type === "Row") return this.defaultRows.indexOf(val) !== -1;
+        return this.TempoptionSelected.columns.indexOf(val) !== -1;
+      else if (type === "Row") return this.TempoptionSelected.rows.indexOf(val) !== -1;
       else return false;
     },
     selectedOrNotOthers(type, val) {
       if (type === "Table")
         return (
-          this.defaultColumns.indexOf(val) !== -1 ||
-          this.defaultRows.indexOf(val) !== -1
+          this.TempoptionSelected.columns.indexOf(val) !== -1 ||
+          this.TempoptionSelected.rows.indexOf(val) !== -1
         );
       else if (type === "Column")
         return (
-          this.defaultTables.indexOf(val) !== -1 ||
-          this.defaultRows.indexOf(val) !== -1
+          this.TempoptionSelected.tables.indexOf(val) !== -1 ||
+          this.TempoptionSelected.rows.indexOf(val) !== -1
         );
       else if (type === "Row")
         return (
-          this.defaultTables.indexOf(val) !== -1 ||
-          this.defaultColumns.indexOf(val) !== -1
+          this.TempoptionSelected.tables.indexOf(val) !== -1 ||
+          this.TempoptionSelected.columns.indexOf(val) !== -1
         );
       else return false;
     },
@@ -117,18 +133,19 @@ export default {
             templates: this.templates,
             optionSelected: this.TempoptionSelected,
             role: this.role,
-            approved: this.approved
           },
           on: {
-            selectTemp: (details, existing) => {
-              this.TempoptionSelected = existing;
-              this.$emit("selectTemp", details, existing)
+            selectTemp: (details) => {
+              console.log("hi")
+              this.TempoptionSelected = details;
+              this.$emit("selectTemp", details)
             },
             delete: (details) => {
-              if (details.name == this.TempoptionSelected[1] && details.type == this.TempoptionSelected[0]) {
-                this.TempoptionSelected = [];
-                this.clearFields();
-              }
+              // if (details.name == this.TempoptionSelected[1] && details.type == this.TempoptionSelected[0]) {
+              //   this.TempoptionSelected = [];
+              //   this.clearFields();
+              // }
+              console.log(this.TempoptionSelected)
               this.$emit("deleteTemp", details, this.TempoptionSelected)
             }
 
@@ -189,7 +206,7 @@ export default {
     return {
       options: null,
       optionSelected: "Table",
-      TempoptionSelected: []
+      TempoptionSelected: {}
     };
   },
 };

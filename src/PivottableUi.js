@@ -111,6 +111,18 @@ export default {
         return false;
       },
     },
+    clear: {
+      type: Boolean,
+      default: function() {
+        return false;
+      },
+    },
+    createdArr: {
+      type: Array,
+      default: function() {
+        return false;
+      },
+    },
   },
   computed: {
     innerAggregatorName() {
@@ -185,7 +197,7 @@ export default {
         renderer: null,
         table: [],
       },
-      existing: [],
+      existing: {},
       dragging: false,
       currentOpen: "",
       attrValues: {},
@@ -223,11 +235,21 @@ export default {
     data() {
       //this.init();
     },
+    clear() {
+      if (this.clear) {
+        this.existing = []
+      }
+    },
+    createdArr() {
+      if (this.createdArr[0]) {
+        this.existing = this.createdArr[1]
+      }
+    },
     innerAggregatorName: {
       handler: function(newValue) {
-        if (this.existing.length > 0 && !(this.existing[3].aggreatorName == newValue)) {
+        if (Object.keys(this.existing).length > 0 && !(this.existing.aggreatorName == newValue)) {
           this.$emit("hasChanges", true);
-        } else if (this.existing.length == 0) { 
+        } else if (Object.keys(this.existing).length == 0 && newValue != this.defaultAggregatorName) { 
           this.$emit("hasChanges", true);
         }
       },
@@ -235,41 +257,41 @@ export default {
     },
     innerVals: {
       handler: function(newValue) {
-        if (this.existing.length > 0 && !this.checkLists(this.existing[3].vals, newValue)) {
+        if (Object.keys(this.existing).length > 0 && !this.checkLists(this.existing.values, newValue)) {
           this.$emit("hasChanges", true);
-        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
+        } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
     innerTables: {
       handler: function(newValue) {
-        if (this.existing.length > 0 && !this.checkLists(this.existing[3].table, newValue)) {
+        if (Object.keys(this.existing).length > 0 && !this.checkLists(this.existing.tables, newValue)) {
           this.$emit("hasChanges", true);
-        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
+        } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
     innerRows: {
       handler: function(newValue) {
-        if (this.existing.length > 0 && !this.checkLists(this.existing[3].row, newValue)) {
+        if (Object.keys(this.existing).length > 0 && !this.checkLists(this.existing.rows, newValue)) {
           this.$emit("hasChanges", true);
-        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
+        } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
     innerColumns: {
       handler: function(newValue) {
-        if (this.existing.length > 0 && !this.checkLists(this.existing[3].column, newValue)) {
+        if (Object.keys(this.existing).length > 0 && !this.checkLists(this.existing.columns, newValue)) {
           this.$emit("hasChanges", true);
-        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
+        } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
     innerValueFilter: {
       handler: function(newValue) {
-        if (this.existing.length > 0 && !this.checkDicts(this.existing[3].filter, newValue)) {
+        if (Object.keys(this.existing).length > 0 && !this.checkDicts(this.existing.filters, newValue)) {
           this.$emit("hasChanges", true);
-        } else if (this.existing.length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
+        } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
       },
       deep: true,
     },
@@ -345,14 +367,26 @@ export default {
         templateName: "",
         isPublic: true,
         aggreatorName: aggregatorName,
-        values: JSON.stringify(vals),
-        tables: JSON.stringify(this.unusedAttrs),
-        rows: JSON.stringify(this.rowAttrs),
-        columns: JSON.stringify(this.colAttrs),
-        filters: JSON.stringify(props.valueFilter),
+        values: vals,
+        tables: this.unusedAttrs,
+        rows: this.rowAttrs,
+        columns: this.colAttrs,
+        filters: props.valueFilter,
       };
-      console.log(details);
       return details;
+    },
+    setDetails(details) {
+      return {
+        id: details.id,
+        templateName: details.name,
+        isPublic: details.type == "General" ? true : false,
+        aggreatorName: details.aggreatorName,
+        values: details.vals,
+        tables: details.table,
+        rows: details.row,
+        columns: details.column,
+        filters: details.filter
+      };
     },
     assignValue(field) {
       this.$set(this.propsData.valueFilter, field, {});
@@ -726,7 +760,8 @@ export default {
             ],
             templates: this.showTemplates,
             role: this.role,
-            approved: this.approved,
+            clear: this.clear,
+            existing: this.existing
           },
           on: {
             input: (value) => {
@@ -739,22 +774,21 @@ export default {
               this.propsData.aggregatorName = this.defaultAggregatorName;
               this.propsData.vals = [];
               Object.keys(this.attrValues).map(this.assignValue);
+              this.$emit("hasChanges", false)
             },
-            selectTemp: (details, existing) => {
+            selectTemp: (details) => {
               this.propsData.rows = details.row;
               this.propsData.cols = details.column;
               this.propsData.table = details.table;
               this.propsData.aggregatorName = details.aggreatorName;
               this.propsData.vals = [...details.vals];
               this.propsData.valueFilter = details.filter;
-              existing.push(details)
-              this.existing = existing;
+              this.existing = this.setDetails(details);
               this.$emit("hasChanges", false)
             },
-            deleteTemp: (details, existing) => {
-              existing.push(details)
-              this.existing = existing;
-              this.$emit("showDeleteModal", details);
+            deleteTemp: (details, tempselected) => {
+              if (Object.keys(tempselected).length > 0) this.existing = tempselected;
+              this.$emit("showDeleteModal", details, tempselected);
             },
           },
         }),
