@@ -9,6 +9,28 @@
   padding:5% !important
 }
 
+.exportIcon {
+  width: 14%;
+  height: 14%;
+  margin-bottom:2%;
+  margin-right: 5%
+}
+
+.linkText {
+  -webkit-transition: none;
+  transition: none;
+  text-decoration: underline !important;
+  float:right;  
+  font-style: normal;
+  margin-right: 6%
+}
+
+.linkText:hover {
+  border: none;
+  color: #008357 !important;
+  cursor: pointer;
+}
+
 .deleteIcon {
   width: 17px;
   height: 17px;
@@ -31,6 +53,40 @@
   font-family: Verdana;
   color: #2a3f5f;
 }
+
+.exportbtn {
+  font-size: 1rem;
+  float: right;
+  margin-left: 1.5%;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: 1px solid transparent;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  background-color: #EBEDEF  !important;
+  color: #555 !important;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-bottom: 0.5%;
+  padding-top: 0.5%;
+}
+.exportbtn:hover,
+.exportbtn:focus,
+.exportbtn:active {
+  outline: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
 .clearbtn {
   font-size: 1rem;
   margin-left: 1.5%;

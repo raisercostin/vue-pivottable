@@ -213,7 +213,12 @@ export default {
                 },
               },
               [
-                "Select Fields",
+                h(
+                  "span",
+                  {
+                    staticClass: ["templateName"]
+                  },
+                "Select Fields"),
                 h(
                   "span",
                   {
@@ -347,6 +352,16 @@ export default {
                   },
                   this.optionSelected + "..."
                 ),
+                h(
+                  "a",
+                  {
+                    staticClass: ["linkText"],
+                    on: {
+                      click: () => this.$emit("clear")
+                    }
+                  },
+                  "Clear Filters"
+                )
               ]
             ),
             h(
