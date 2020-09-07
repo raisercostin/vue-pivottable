@@ -769,7 +769,7 @@ export default {
               this.propsData.cols = value[1].fields;
               this.propsData.table = value[2].fields;
             },
-            clear: () => {
+            reset: () => {
               //remove filters
               this.propsData.aggregatorName = this.defaultAggregatorName;
               this.propsData.vals = [];

@@ -17,6 +17,8 @@ export default {
         showCheckboxes();
       } else if (!$(".OuterTemplate").has(event.target).length 
         && !$(".Outer").has(event.target).length) {
+        $(".OuterDropDown").css("background-color", "white");
+        $(".OuterTemplateDropDown").css("background-color", "white");
         hidefield(event);
         hidetemp(event);
       } else if ($(".OuterDropDown").has(event.target).length) {
@@ -116,10 +118,15 @@ export default {
       });
       this.$emit("input", list);
     },
+    resetFields() {
+      this.init(true);
+      this.TempoptionSelected = {};
+      this.$emit("reset");
+    },
     clearFields() {
       this.init(true);
-      this.$emit("clear");
-    },
+      this.$emit("reset");
+    }
   },
   render(h) {
     return h(
@@ -136,7 +143,6 @@ export default {
           },
           on: {
             selectTemp: (details) => {
-              console.log("hi")
               this.TempoptionSelected = details;
               this.$emit("selectTemp", details)
             },
@@ -167,23 +173,27 @@ export default {
             },
             fieldsChange: (val) => {
               this.options = val;
+              this.generateReport();
             },
+            clear: () => {
+              this.clearFields();
+            }
           },
         }),
-        h(
-          //Generate Button
-          "button",
-          {
-            staticClass: ["greenBtn exportBtn"],
-            attrs: {
-              role: "button",
-            },
-            on: {
-              click: () => this.generateReport(),
-            },
-          },
-          "Populate"
-        ),
+        // h(
+        //   //Generate Button
+        //   "button",
+        //   {
+        //     staticClass: ["greenBtn"],
+        //     attrs: {
+        //       role: "button",
+        //     },
+        //     on: {
+        //       click: () => this.generateReport(),
+        //     },
+        //   },
+        //   "Populate"
+        // ),
         h(
           //Clear Fields Button
           "button",
@@ -193,10 +203,10 @@ export default {
               role: "button",
             },
             on: {
-              click: () => this.clearFields(),
+              click: () => this.resetFields(),
             },
           },
-          "Clear"
+          "Reset"
         ),
         h(ExportBtn),
       ]
@@ -216,9 +226,11 @@ var tempexpanded = false;
 
 function showCheckboxes() {
   if (!fieldexpanded) {
+    $(".OuterDropDown").css("background-color", "#ddd");
     $(".OuterFilterBox").show();
     fieldexpanded = true;
   } else {
+    $(".OuterDropDown").css("background-color", "white");
     $(".OuterFilterBox").hide();
     fieldexpanded = false;
   }
@@ -226,20 +238,24 @@ function showCheckboxes() {
 
 function showSelections() {
   if (!tempexpanded) {
+    $(".OuterTemplateDropDown").css("background-color", "#ddd");
     $(".OuterTemplateFilterBox").show();
     tempexpanded = true;
   } else {
+    $(".OuterTemplateDropDown").css("background-color", "white");
     $(".OuterTemplateFilterBox").hide();
     tempexpanded = false;
   }
 }
 
 function hidefield(event) {
+  $(".OuterDropDown").css("background-color", "white");
   $(".OuterFilterBox").hide();
   fieldexpanded = false;
 }
 
 function hidetemp(event) {
+  $(".OuterTemplateDropDown").css("background-color", "white");
   $(".OuterTemplateFilterBox").hide();
   tempexpanded = false;
 }

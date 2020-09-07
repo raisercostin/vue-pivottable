@@ -87,19 +87,15 @@ export default {
             staticClass: ["OuterTemplateDropDown"],
           },
           [
-            h(
-              "span",
-              {
-                attrs: {
-                  value: "Sample option",
-                },
-              },
-              [
+            
+                h(
+                  "span",
+                  {
+                    staticClass: ["templateName"]
+                  },
                 Object.keys(this.optionSelected).length > 0 ?
-                this.optionSelected.templateName.length > 15 ?
-                this.optionSelected.templateName.substr(0, 15) + "..." :
                 this.optionSelected.templateName :
-                "Select Templates",
+                "Select Templates"),
                 h(
                   "span",
                   {
@@ -107,8 +103,8 @@ export default {
                   },
                   "  ▾"
                 ),
-              ]
-            ),
+              
+            
           ]
         ),
         h(
@@ -156,9 +152,9 @@ export default {
                     },
                     this.templateSelected == "General" ? 
                     this.role ? 
-                    "Drag and Drop the fields, the click on 'Save Template' to create your template." :
+                    "Drag and Drop the fields, click on 'Save Template' to create your template." :
                     "Only Administrators are allowed to create general templates" :
-                    "Drag and Drop the fields, the click on 'Save Template' to create your template."
+                    "Drag and Drop the fields, click on 'Save Template' to create your template."
                   ) :
                 this.templateList
                   .filter((y) => y.type == this.templateSelected)[0]
@@ -186,7 +182,7 @@ export default {
                           },
                           x.name
                         ),
-                        this.role ?
+                        (this.role && this.templateSelected == "General") || (this.templateSelected == "Personal")  ?
                         h(
                           "img",
                           {

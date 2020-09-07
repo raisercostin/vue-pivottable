@@ -23,48 +23,66 @@ export default {
       h(
         'button',
         {
-          staticClass: ['OuterExportDropDown greenBtn'],
+          staticClass: ['exportbtn'],
+          on: {
+            click: () => {
+              this.exportFile('xlsx')
+            }
+          }
         },
-        'Select Export Column Fields  ▾'
-      ),
-      h(
-        'div',
-        {
-          staticClass: ['OuterExportFilterBox'],
-        },
-        [
-          h(
-            'button',
-            {
-              staticClass: ['greenBtn'],
-              on: {
-                click: () => this.exportFile('xlsx'),
-              },
+        [h(
+          "img",
+          {
+            staticClass: ["exportIcon"],
+            attrs: {
+              src: require(`@/assets/icon/Export-icon.png`)
             },
-            `Export XLSX`
-          ),
+          }
+        ),
           h(
-            'button',
-            {
-              staticClass: ['greenBtn'],
-              on: {
-                click: () => this.exportFile('pdf'),
-              },
-            },
-            `Export PDF`
-          ),
-          h(
-            'button',
-            {
-              staticClass: ['greenBtn'],
-              on: {
-                click: () => this.exportFile('png'),
-              },
-            },
-            `Export PNG`
-          ),
+            "span",
+            'Export to Excel'
+          )
         ]
       ),
+      // h(
+      //   'div',
+      //   {
+      //     staticClass: ['OuterExportFilterBox'],
+      //   },
+      //   [
+      //     h(
+      //       'button',
+      //       {
+      //         staticClass: ['greenBtn'],
+      //         on: {
+      //           click: () => this.exportFile('xlsx'),
+      //         },
+      //       },
+      //       `Export XLSX`
+      //     ),
+      //     h(
+      //       'button',
+      //       {
+      //         staticClass: ['greenBtn'],
+      //         on: {
+      //           click: () => this.exportFile('pdf'),
+      //         },
+      //       },
+      //       `Export PDF`
+      //     ),
+      //     h(
+      //       'button',
+      //       {
+      //         staticClass: ['greenBtn'],
+      //         on: {
+      //           click: () => this.exportFile('png'),
+      //         },
+      //       },
+      //       `Export PNG`
+      //     ),
+      //   ]
+      // ),
     ]);
   },
 };
