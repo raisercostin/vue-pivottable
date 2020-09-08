@@ -8,7 +8,6 @@ export default {
   created() {
     $(document).off("click");
     $(document).on("click", function(event) {
-      console.log($(".templateOption").has(event.target))
       if (
         $(".OuterTemplateDropDown").has(event.target).length && fieldexpanded) {
         hidefield();

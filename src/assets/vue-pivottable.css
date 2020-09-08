@@ -302,7 +302,6 @@ table.pvtTable tbody tr td {
 
 .OuterTemplateDropDown {
   -webkit-text-size-adjust: 100%;
-  font-size: 90%;
   background: #f3f6fa;
   border: 2px solid #c8d4e3;
   padding: 0.8% 1% 0.8% 1%;
@@ -320,7 +319,6 @@ table.pvtTable tbody tr td {
 
 .OuterDropDown {
   -webkit-text-size-adjust: 100%;
-  font-size: 90%;
   background: #f3f6fa;
   border: 2px solid #c8d4e3;
   padding: 0.8% 1% 0.8% 1%;
