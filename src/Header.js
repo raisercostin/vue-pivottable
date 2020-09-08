@@ -31,14 +31,12 @@ export default {
   },
   watch: {
     templates() {
-      console.log(this.clear)
       if(this.clear) {
         this.clearFields();
         this.TempoptionSelected = {};
       }
     },
     existing() {
-      console.log(this.existing)
       if (Object.keys(this.existing).length > 0) {
         this.TempoptionSelected = this.existing;
         this.init();
@@ -151,7 +149,6 @@ export default {
               //   this.TempoptionSelected = [];
               //   this.clearFields();
               // }
-              console.log(this.TempoptionSelected)
               this.$emit("deleteTemp", details, this.TempoptionSelected)
             }
 

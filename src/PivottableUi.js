@@ -773,6 +773,7 @@ export default {
               //remove filters
               this.propsData.aggregatorName = this.defaultAggregatorName;
               this.propsData.vals = [];
+              this.existing = {};
               Object.keys(this.attrValues).map(this.assignValue);
               this.$emit("hasChanges", false)
             },
