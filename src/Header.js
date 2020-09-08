@@ -8,19 +8,22 @@ export default {
   created() {
     $(document).off("click");
     $(document).on("click", function(event) {
+      console.log($(".templateOption").has(event.target))
       if (
         $(".OuterTemplateDropDown").has(event.target).length && fieldexpanded) {
-        hidefield(event);
+        hidefield();
         showSelections();
       } else if ($(".OuterDropDown").has(event.target).length && tempexpanded) {
-        hidetemp(event);
+        hidetemp();
         showCheckboxes();
+      } else if ($(".templateOption").has(event.target).length > 0) {
+        hidetemp();
       } else if (!$(".OuterTemplate").has(event.target).length 
         && !$(".Outer").has(event.target).length) {
         $(".OuterDropDown").css("background-color", "white");
         $(".OuterTemplateDropDown").css("background-color", "white");
-        hidefield(event);
-        hidetemp(event);
+        hidefield();
+        hidetemp();
       } else if ($(".OuterDropDown").has(event.target).length) {
         showCheckboxes();
       } else if ($(".OuterTemplateDropDown").has(event.target).length) {
@@ -245,13 +248,13 @@ function showSelections() {
   }
 }
 
-function hidefield(event) {
+function hidefield() {
   $(".OuterDropDown").css("background-color", "white");
   $(".OuterFilterBox").hide();
   fieldexpanded = false;
 }
 
-function hidetemp(event) {
+function hidetemp() {
   $(".OuterTemplateDropDown").css("background-color", "white");
   $(".OuterTemplateFilterBox").hide();
   tempexpanded = false;
