@@ -13,8 +13,8 @@
       :defaultValueFilter="defaultValueFilter"
       :fields="fieldList"
       :showTemplates="templates"
-      :role="role"
-      :approved="approved"
+      :roleCreate="roleCreate"
+      ::roleEditDelete="roleEditDelete"
       @updateFilter="updateFilter"
       @updateTables="updateTables"
       @updateRows="updateRows"
@@ -91,8 +91,8 @@ export default {
         "Meal",
         "Party Size",
       ],
-      role: true,
-      approved: true,
+      roleCreate: true,
+      roleEditDelete: true,
       rendererList: ["Table"], // Here to specify show renderer list
       aggregatorList: [], // Here to specify show aggregator list
       selectedAggregatorName: "",
