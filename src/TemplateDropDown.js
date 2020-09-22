@@ -1,6 +1,6 @@
 
 export default {
-  props: ["templates", "optionSelected", "role"],
+  props: ["templates", "optionSelected", "roleCreate", "roleEditDelete"],
   watch: {
     templates() {
       this.init();
@@ -15,16 +15,16 @@ export default {
   data() {
     return {
       templateList: [
-        { type: "General", list: [] },
+        { type: "Team", list: [] },
         { type: "Personal", list: [] },
       ],
-      templateSelected: "General",
+      templateSelected: "Team",
     };
   },
   methods: {
     init() {
       this.templateList = [
-        { type: "General", list: [] },
+        { type: "Team", list: [] },
         { type: "Personal", list: [] },
       ];
 
@@ -32,7 +32,7 @@ export default {
         var template = {
           id: x.id,
           name: x.templateName,
-          type: x.isPublic ? "General" : "Personal",
+          type: x.isPublic ? "Team" : "Personal",
           aggreatorName: x.aggreatorName,
           vals: JSON.parse(x.values),
           table: JSON.parse(x.tables),
@@ -43,7 +43,7 @@ export default {
         }
 
         if (Object.keys(this.optionSelected).length > 0) {
-          template.selected = (this.optionSelected.isPublic ? "General" : "Personal") == template.type && this.optionSelected.templateName == template.name;
+          template.selected = (this.optionSelected.isPublic ? "Team" : "Personal") == template.type && this.optionSelected.templateName == template.name;
           this.templateList.filter((item) => item.type == template.type)
           [0].list.push(template)
         } else {
@@ -150,10 +150,10 @@ export default {
                     {
                       staticClass: ["emptyState"]
                     },
-                    this.templateSelected == "General" ? 
-                    this.role ? 
+                    this.templateSelected == "Team" ? 
+                    this.roleCreate ? 
                     "Drag and Drop the fields, click on 'Save Template' to create your template." :
-                    "Only Administrators are allowed to create general templates" :
+                    "Only Administrators are allowed to create team templates" :
                     "Drag and Drop the fields, click on 'Save Template' to create your template."
                   ) :
                 this.templateList
@@ -182,25 +182,39 @@ export default {
                           },
                           x.name
                         ),
-                        (this.role && this.templateSelected == "General") || (this.templateSelected == "Personal")  ?
-                        h(
-                          "img",
-                          {
-                            staticClass: ["deleteIcon"],
-                            attrs: {
-                              src: require(`@/assets/icon/bin.png`)
-                            },
-                            on: {
-                              click: () => {
-                                this.$emit("delete", x)
+                        (this.roleEditDelete && this.templateSelected == "Team") || (this.templateSelected == "Personal")  ?
+                      h("span",
+                      {
+                        staticClass: ["tooltip-wrapper"],
+                      },[
+                          h(
+                            "img",
+                            {
+                              staticClass: ["deleteIcon"],
+                              attrs: {
+                                src: require(`@/assets/icon/bin.png`)
+                              },
+                              on: {
+                                click: () => {
+                                  this.$emit("delete", x)
+                                },
                               }
                             }
-                          }
-                        ) :
-                        undefined
+                          ),
+                          ])
+                          :
+                        undefined,
+                        
                       ]
                     );
                   }),
+                  h(
+                    "span",
+                    {
+                      staticClass: ["tooltiptext"]
+                    },
+                    "Delete"
+                  )
               ]
             ),
             h(

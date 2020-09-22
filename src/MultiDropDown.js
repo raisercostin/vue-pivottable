@@ -153,6 +153,7 @@ export default {
               if (marked.includes(x.value)) x.selectedOther = true;
             });
         });
+        this.$emit("fieldsChange", this.options);
     },
     deselectAll(filter = false) {
       var marked = [];
@@ -182,6 +183,7 @@ export default {
               if (marked.includes(x.value)) x.selectedOther = false;
             });
         });
+        this.$emit("fieldsChange", this.options);
     },
   },
   data() {

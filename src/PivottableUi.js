@@ -105,7 +105,13 @@ export default {
         return [];
       },
     },
-    role: {
+    roleCreate: {
+      type: Boolean,
+      default: function() {
+        return false;
+      },
+    },
+    roleEditDelete: {
       type: Boolean,
       default: function() {
         return false;
@@ -379,7 +385,7 @@ export default {
       return {
         id: details.id,
         templateName: details.name,
-        isPublic: details.type == "General" ? true : false,
+        isPublic: details.type == "Team" ? true : false,
         aggreatorName: details.aggreatorName,
         values: details.vals,
         tables: details.table,
@@ -759,7 +765,8 @@ export default {
               { text: "Table", fields: this.unusedAttrs },
             ],
             templates: this.showTemplates,
-            role: this.role,
+            roleCreate: this.roleCreate,
+            roleEditDelete: this.roleEditDelete,
             clear: this.clear,
             existing: this.existing
           },
@@ -809,12 +816,12 @@ export default {
           ),
           h(SaveBtn, {
             on: {
-              create: () => {
-                this.$emit(
-                  "showCreateModal",
-                  this.getDetails(props, aggregatorName, vals),
-                  this.existing
-                );
+              create: () => {   
+                  this.$emit(
+                    "showCreateModal",
+                    this.getDetails(props, aggregatorName, vals),
+                    this.existing
+                  );
               },
             },
           }),

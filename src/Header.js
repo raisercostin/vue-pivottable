@@ -4,9 +4,10 @@ import MultiDropDown from "./MultiDropDown";
 import $ from "jquery";
 
 export default {
-  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs", "templates", "role", "clear", "existing"],
+  props: ["values", "defaultTables", "defaultRows", "defaultColumns", "attrs", "templates", "roleCreate", "roleEditDelete", "clear", "existing"],
   created() {
     $(document).off("click");
+    $(document).off("mouseover");
     $(document).on("click", function(event) {
       if (
         $(".OuterTemplateDropDown").has(event.target).length && fieldexpanded) {
@@ -29,6 +30,16 @@ export default {
         showSelections();
       }
     });
+    $(document).on("mouseover", function(event) {
+      if ($(".tooltip-wrapper").has(event.target).length) {
+        var y = event.target.offsetTop - $(".pvtCheckContainer").scrollTop();
+        console.log(event)
+        $(".tooltiptext")[0].style.top = (y - 8) + 'px';
+        $(".tooltiptext")[0].style.visibility = "visible"
+      } else {
+        $(".tooltiptext")[0].style.visibility = "hidden"
+      }
+    })
     this.init(true);
   },
   watch: {
@@ -139,7 +150,8 @@ export default {
           props: {
             templates: this.templates,
             optionSelected: this.TempoptionSelected,
-            role: this.role,
+            roleCreate: this.roleCreate,
+            roleEditDelete: this.roleEditDelete,
           },
           on: {
             selectTemp: (details) => {
