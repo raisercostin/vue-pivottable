@@ -12,8 +12,10 @@ export default {
   methods: {
     createPivottable (h) {
       const props = this.$props
+      const scopedSlots = this.$scopedSlots
       return h(this.renderers, {
-        props
+        props,
+        scopedSlots
       })
     },
     createWrapperContainer (h) {
