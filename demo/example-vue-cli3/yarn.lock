@@ -11085,10 +11085,9 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-pivottable@^0.3.62:
+"vue-pivottable@https://github.com/dhl1402/vue-pivottable":
   version "0.3.64"
-  resolved "https://registry.yarnpkg.com/vue-pivottable/-/vue-pivottable-0.3.64.tgz#dd81b1a55bba0efe33ab20048f5f5f23203c144f"
-  integrity sha512-0n560f+1w1ikSbZ8OtjHFVIx5GAUAcAhJxgiVj3ep9wntFR3QsqlFgKrBVNbA4t9UEdWmL6YKHBD6lV7UHDekg==
+  resolved "https://github.com/dhl1402/vue-pivottable#ed3481e28c378d7c52d78f441307ef64f5921647"
   dependencies:
     core-js "^2.6.5"
     vue "^2.6.10"
