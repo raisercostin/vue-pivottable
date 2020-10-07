@@ -10,10 +10,21 @@
       :rows="rows"
       :cols="cols"
       :vals="vals"
-      row-order="value_a_to_z"
+      :rowOrder="rowOrder"
       :rowTotal="false"
       :colTotal="false"
-    />
+    >
+      <template v-slot:colHeaderSlot="{ key, label }">
+        {{ label }}
+        <div
+          class="sort"
+          v-if="['Friday', 'Saturday', 'Sunday', 'Thursday'].includes(label)"
+        >
+          <button @click="sort(key, 'asc')">&uarr;</button>
+          <button @click="sort(key, 'desc')">&darr;</button>
+        </div>
+      </template>
+    </vue-pivottable>
   </div>
 </template>
 
@@ -32,7 +43,16 @@ export default {
       aggregatorName: 'Sum',
       rows: ['Payer Gender', 'Party Size'],
       cols: ['Meal', 'Payer Smoker', 'Day of Week'],
-      vals: ['Total Bill']
+      vals: ['Total Bill'],
+      rowOrder: {
+        dimensions: ['Dinner', 'Non-Smoker', 'Friday'],
+        order: 'desc'
+      }
+    }
+  },
+  methods: {
+    sort (key, order) {
+      this.rowOrder = { dimensions: key, order }
     }
   }
 }
@@ -41,5 +61,8 @@ export default {
 <style>
 .pvtTable {
   width: 100%;
+}
+.sort button {
+  margin: 6px;
 }
 </style>

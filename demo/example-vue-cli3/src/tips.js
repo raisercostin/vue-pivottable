@@ -91,7 +91,7 @@ export default [
   [24.71, 5.85, 'Male', 'Non-Smoker', 'Thursday', 'Lunch', 2],
   [21.16, 3, 'Male', 'Non-Smoker', 'Thursday', 'Lunch', 2],
   [28.97, 3, 'Male', 'Smoker', 'Friday', 'Dinner', 2],
-  [22.49, 3.5, 'Male', 'Non-Smoker', 'Friday', 'Dinner', 2],
+  [2.49, 3.5, 'Male', 'Non-Smoker', 'Friday', 'Dinner', 2],
   [5.75, 1, 'Female', 'Smoker', 'Friday', 'Dinner', 2],
   [16.32, 4.3, 'Female', 'Smoker', 'Friday', 'Dinner', 2],
   [22.75, 3.25, 'Female', 'Non-Smoker', 'Friday', 'Dinner', 2],
