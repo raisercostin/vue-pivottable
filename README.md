@@ -15,7 +15,7 @@ It is a Vue port of the jQuery-based [PivotTable.js](https://pivottable.js.org/)
 
 ## Run Demo
 ```bash
-$ git clone https://github.com/Seungwoo321/vue-pivottable.git
+$ git clone https://github.com/dhl1402/vue-pivottable.git
 $ cd vue-pivottable/demo/example-vue-cli3/
 $ npm install
 $ npm run serve
