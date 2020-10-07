@@ -13,11 +13,10 @@ export default {
   methods: {
     createPivottable (h) {
       const props = this.$props
-      return h(this.rendererItems[this.rendererName], {
-        props: Object.assign(
-          props,
-          { localeStrings: props.locales[props.locale].localeStrings }
-        )
+      const scopedSlots = this.$scopedSlots
+      return h(this.renderers, {
+        props,
+        scopedSlots
       })
     },
     createWrapperContainer (h) {

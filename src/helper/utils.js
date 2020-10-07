@@ -1,4 +1,3 @@
-
 const addSeparators = function (nStr, thousandsSep, decimalSep) {
   const x = String(nStr).split('.')
   let x1 = x[0]
@@ -621,15 +620,20 @@ class PivotData {
     if (!this.sorted) {
       this.sorted = true
       const v = (r, c) => this.getAggregator(r, c).value()
-      switch (this.props.rowOrder) {
-        case 'value_a_to_z':
-          this.rowKeys.sort((a, b) => naturalSort(v(a, []), v(b, [])))
-          break
-        case 'value_z_to_a':
-          this.rowKeys.sort((a, b) => -naturalSort(v(a, []), v(b, [])))
-          break
-        default:
-          this.rowKeys.sort(this.arrSort(this.props.rows))
+      if (typeof this.props.rowOrder === 'object') {
+        const { dimensions, order } = this.props.rowOrder
+        this.rowKeys.sort((a, b) => (order === 'desc' ? -1 : 1) * naturalSort(v(a, dimensions), v(b, dimensions)))
+      } else {
+        switch (this.props.rowOrder) {
+          case 'value_a_to_z':
+            this.rowKeys.sort((a, b) => naturalSort(v(a, []), v(b, [])))
+            break
+          case 'value_z_to_a':
+            this.rowKeys.sort((a, b) => -naturalSort(v(a, []), v(b, [])))
+            break
+          default:
+            this.rowKeys.sort(this.arrSort(this.props.rows))
+        }
       }
       switch (this.props.colOrder) {
         case 'value_a_to_z':

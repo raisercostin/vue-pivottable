@@ -197,7 +197,7 @@ function makeRenderer (opts = {}) {
                       colSpan: x,
                       rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
                     }
-                  }, colKey[j])
+                  }, this.$scopedSlots.colHeaderSlot ? this.$scopedSlots.colHeaderSlot({ key: colKey, label: colKey[j] }) : colKey[j])
                 }),
                 j === 0 && this.rowTotal ? h('th', {
                   staticClass: ['pvtTotalLabel'],
