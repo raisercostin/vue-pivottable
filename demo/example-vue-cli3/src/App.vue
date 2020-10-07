@@ -44,10 +44,7 @@ export default {
       rows: ['Payer Gender', 'Party Size'],
       cols: ['Meal', 'Payer Smoker', 'Day of Week'],
       vals: ['Total Bill'],
-      rowOrder: {
-        dimensions: ['Dinner', 'Non-Smoker', 'Friday'],
-        order: 'desc'
-      }
+      rowOrder: 'key_a_to_z'
     }
   },
   methods: {
