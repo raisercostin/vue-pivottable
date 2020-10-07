@@ -160,14 +160,10 @@ function makeRenderer (opts = {}) {
               [
                 j === 0 && rowAttrs.length !== 0 ? h('th', {
                   attrs: {
-                    colSpan: rowAttrs.length,
+                    colSpan: rowAttrs.length + 1,
                     rowSpan: colAttrs.length
                   }
                 }) : undefined,
-
-                h('th', {
-                  staticClass: ['pvtAxisLabel']
-                }, c),
 
                 colKeys.map((colKey, i) => {
                   const x = this.spanSize(colKeys, i, j)
@@ -205,7 +201,7 @@ function makeRenderer (opts = {}) {
 
                 this.rowTotal
                   ? h('th', { staticClass: ['pvtTotalLabel'] }, colAttrs.length === 0 ? 'Totals' : null)
-                  : (colAttrs.length === 0 ? undefined : h('th', { staticClass: ['pvtTotalLabel'] }, null))
+                  : undefined
               ]
             ) : undefined
 
