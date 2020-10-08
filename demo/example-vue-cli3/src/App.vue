@@ -20,8 +20,8 @@
           class="sort"
           v-if="['Friday', 'Saturday', 'Sunday', 'Thursday'].includes(label)"
         >
-          <button @click="sort(key, 'asc')">&uarr;</button>
-          <button @click="sort(key, 'desc')">&darr;</button>
+          <button @click="sort(key.path, 'asc')">&uarr;</button>
+          <button @click="sort(key.path, 'desc')">&darr;</button>
         </div>
       </template>
     </vue-pivottable>
