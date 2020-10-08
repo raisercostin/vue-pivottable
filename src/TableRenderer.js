@@ -147,7 +147,7 @@ function makeRenderer (opts = {}) {
           }
           : null
       return h('table', {
-        staticClass: ['pvtTable']
+        staticClass: [`pvtTable${this.$props.class ? ` ${this.$props.class}` : ''}`]
       }, [
         h('thead',
           [
@@ -170,6 +170,10 @@ function makeRenderer (opts = {}) {
                   if (x === -1) {
                     return null
                   }
+                  const key = {
+                    col: c,
+                    path: colKey.slice(0, j + 1)
+                  }
                   return h('th', {
                     staticClass: ['pvtColLabel'],
                     attrs: {
@@ -177,7 +181,7 @@ function makeRenderer (opts = {}) {
                       colSpan: x,
                       rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
                     }
-                  }, this.$scopedSlots.colHeaderSlot ? this.$scopedSlots.colHeaderSlot({ key: colKey, label: colKey[j] }) : colKey[j])
+                  }, this.$scopedSlots.colHeaderSlot ? this.$scopedSlots.colHeaderSlot({ key, label: colKey[j] }) : colKey[j])
                 }),
                 j === 0 && this.rowTotal ? h('th', {
                   staticClass: ['pvtTotalLabel'],
@@ -194,9 +198,10 @@ function makeRenderer (opts = {}) {
                   return h('th', {
                     staticClass: ['pvtAxisLabel'],
                     attrs: {
-                      key: `rowAttr${i}`
+                      key: `rowAttr${i}`,
+                      colspan: 2
                     }
-                  }, r)
+                  }, this.$scopedSlots.rowAxisLabelSlot ? this.$scopedSlots.rowAxisLabelSlot({ label: r }) : r)
                 }),
 
                 this.rowTotal
