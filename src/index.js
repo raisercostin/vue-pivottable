@@ -1,5 +1,5 @@
 import VuePivottable from './Pivottable'
-import VuePivottableUi from './PivottableUi'
+// import VuePivottableUi from './PivottableUi'
 import TableRenderer from './TableRenderer'
 
 import {
@@ -31,8 +31,8 @@ const Renderer = {
 }
 
 const components = {
-  VuePivottable,
-  VuePivottableUi
+  VuePivottable
+  // VuePivottableUi
 }
 
 if (typeof window !== 'undefined' && window.Vue) window.Vue.use(VuePivottable)
