@@ -245,6 +245,7 @@ function makeRenderer (opts = {}) {
                   if (x === -1) {
                     return null
                   }
+                  const formatter = this.$props.formatter[rowAttrs[j]]
                   return h('th', {
                     staticClass: ['pvtRowLabel'],
                     attrs: {
@@ -252,7 +253,7 @@ function makeRenderer (opts = {}) {
                       rowSpan: x,
                       colSpan: j === rowAttrs.length - 1 && colAttrs.length !== 0 ? 2 : 1
                     }
-                  }, text)
+                  }, formatter ? formatter(txt) : txt)
                 }),
 
                 colKeys.map((colKey, j) => {
@@ -266,7 +267,7 @@ function makeRenderer (opts = {}) {
                     on: this.tableOptions.clickCallback ? {
                       click: getClickHandler(aggregator.value(), rowKey, colKey)
                     } : {}
-                  }, aggregator.format(aggregator.value()))
+                  }, this.$props.formatter.VALUE ? this.$props.formatter.VALUE(aggregator.value()) : aggregator.format(aggregator.value()))
                 }),
 
                 this.rowTotal ? h('td', {
