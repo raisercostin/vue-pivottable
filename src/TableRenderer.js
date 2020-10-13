@@ -170,10 +170,7 @@ function makeRenderer (opts = {}) {
                   if (x === -1) {
                     return null
                   }
-                  const key = {
-                    col: c,
-                    path: colKey.slice(0, j + 1)
-                  }
+                  const path = colKey.slice(0, j + 1)
                   return h('th', {
                     staticClass: ['pvtColLabel'],
                     attrs: {
@@ -181,7 +178,7 @@ function makeRenderer (opts = {}) {
                       colSpan: x,
                       rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
                     }
-                  }, this.$scopedSlots.colHeaderSlot ? this.$scopedSlots.colHeaderSlot({ key, label: colKey[j] }) : colKey[j])
+                  }, this.$scopedSlots.colHeaderSlot ? this.$scopedSlots.colHeaderSlot({ key: c, value: colKey[j], path }) : colKey[j])
                 }),
                 j === 0 && this.rowTotal ? h('th', {
                   staticClass: ['pvtTotalLabel'],
@@ -201,7 +198,7 @@ function makeRenderer (opts = {}) {
                       key: `rowAttr${i}`,
                       colspan: 2
                     }
-                  }, this.$scopedSlots.rowAxisLabelSlot ? this.$scopedSlots.rowAxisLabelSlot({ label: r }) : r)
+                  }, this.$scopedSlots.rowAxisLabelSlot ? this.$scopedSlots.rowAxisLabelSlot({ key: r }) : r)
                 }),
 
                 this.rowTotal
