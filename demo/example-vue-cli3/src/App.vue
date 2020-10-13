@@ -14,14 +14,14 @@
       :rowTotal="false"
       :colTotal="false"
     >
-      <template v-slot:colHeaderSlot="{ key, label }">
-        {{ label }}
+      <template v-slot:colHeaderSlot="{ path, value }">
+        {{ value }}
         <div
           class="sort"
-          v-if="['Friday', 'Saturday', 'Sunday', 'Thursday'].includes(label)"
+          v-if="['Friday', 'Saturday', 'Sunday', 'Thursday'].includes(value)"
         >
-          <button @click="sort(key.path, 'asc')">&uarr;</button>
-          <button @click="sort(key.path, 'desc')">&darr;</button>
+          <button @click="sort(path, 'asc')">&uarr;</button>
+          <button @click="sort(path, 'desc')">&darr;</button>
         </div>
       </template>
     </vue-pivottable>
@@ -48,8 +48,8 @@ export default {
     }
   },
   methods: {
-    sort (key, order) {
-      this.rowOrder = { dimensions: key, order }
+    sort (path, order) {
+      this.rowOrder = { path, order }
     }
   }
 }

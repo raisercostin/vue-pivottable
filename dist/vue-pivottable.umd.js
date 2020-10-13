@@ -4961,10 +4961,10 @@ function () {
 
         if (this.props.rowOrder && typeof_typeof(this.props.rowOrder) === 'object') {
           var _this$props$rowOrder = this.props.rowOrder,
-              dimensions = _this$props$rowOrder.dimensions,
+              path = _this$props$rowOrder.path,
               order = _this$props$rowOrder.order;
           this.rowKeys.sort(function (a, b) {
-            return (order === 'desc' ? -1 : 1) * naturalSort(v(a, dimensions), v(b, dimensions));
+            return (order === 'desc' ? -1 : 1) * naturalSort(v(a, path), v(b, path));
           });
         } else {
           switch (this.props.rowOrder) {
@@ -5442,10 +5442,7 @@ function makeRenderer() {
             return null;
           }
 
-          var key = {
-            col: c,
-            path: colKey.slice(0, j + 1)
-          };
+          var path = colKey.slice(0, j + 1);
           return h('th', {
             staticClass: ['pvtColLabel'],
             attrs: {
@@ -5454,8 +5451,9 @@ function makeRenderer() {
               rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
             }
           }, _this.$scopedSlots.colHeaderSlot ? _this.$scopedSlots.colHeaderSlot({
-            key: key,
-            label: colKey[j]
+            key: c,
+            value: colKey[j],
+            path: path
           }) : colKey[j]);
         }), j === 0 && _this.rowTotal ? h('th', {
           staticClass: ['pvtTotalLabel'],
@@ -5471,7 +5469,7 @@ function makeRenderer() {
             colspan: 2
           }
         }, _this.$scopedSlots.rowAxisLabelSlot ? _this.$scopedSlots.rowAxisLabelSlot({
-          label: r
+          key: r
         }) : r);
       }), this.rowTotal ? h('th', {
         staticClass: ['pvtTotalLabel']

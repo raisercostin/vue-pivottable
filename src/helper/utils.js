@@ -582,8 +582,8 @@ class PivotData {
       this.sorted = true
       const v = (r, c) => this.getAggregator(r, c).value()
       if (this.props.rowOrder && typeof this.props.rowOrder === 'object') {
-        const { dimensions, order } = this.props.rowOrder
-        this.rowKeys.sort((a, b) => (order === 'desc' ? -1 : 1) * naturalSort(v(a, dimensions), v(b, dimensions)))
+        const { path, order } = this.props.rowOrder
+        this.rowKeys.sort((a, b) => (order === 'desc' ? -1 : 1) * naturalSort(v(a, path), v(b, path)))
       } else {
         switch (this.props.rowOrder) {
           case 'value_a_to_z':
