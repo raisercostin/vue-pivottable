@@ -5237,6 +5237,10 @@ utils_PivotData.defaultProps = {
       validator: function validator(value) {
         return ['key_a_to_z', 'value_a_to_z', 'value_z_to_a'].indexOf(value) !== -1;
       }
+    },
+    formatter: {
+      type: Object,
+      default: {}
     }
   }
 });
@@ -5328,8 +5332,8 @@ function makeRenderer() {
       var colAttrs = pivotData.props.cols;
       var rowAttrs = pivotData.props.rows;
       var rowKeys = pivotData.getRowKeys();
-      var colKeys = pivotData.getColKeys();
-      var grandTotalAggregator = pivotData.getAggregator([], []); // eslint-disable-next-line no-unused-vars
+      var colKeys = pivotData.getColKeys(); // const grandTotalAggregator = pivotData.getAggregator([], [])
+      // eslint-disable-next-line no-unused-vars
 
       var valueCellColors = function valueCellColors() {}; // eslint-disable-next-line no-unused-vars
 
@@ -5414,19 +5418,89 @@ function makeRenderer() {
           return _this.tableOptions.clickCallback(e, value, filters, pivotData);
         };
       } : null;
-      return h('table', {
-        staticClass: ["pvtTable".concat(this.$props.class ? " ".concat(this.$props.class) : '')]
-      }, [h('thead', [colAttrs.map(function (c, j) {
+      var leftWidth = 105 * rowAttrs.length;
+      var leftOuterWidth = leftWidth + 10;
+      var colgroup = h('colgroup', colKeys.map(function (_, i) {
+        return h('col', {
+          style: {
+            width: "".concat(_this.$props.valueCellSize || 93, "px")
+          },
+          attrs: {
+            key: "colGroup".concat(i)
+          }
+        });
+      }));
+      return h('div', {
+        staticClass: ['tbl_sc_wrap']
+      }, [h('div', {
+        staticClass: ['left'],
+        style: {
+          width: "".concat(leftWidth, "px")
+        }
+      }, [h('div', [h('table', {
+        staticClass: ['tbl_st_col bd_line']
+      }, [h('thead', [h('th', {
+        staticClass: ['colspan'],
+        attrs: {
+          colSpan: rowAttrs.length
+        }
+      })]), h('tbody', [h('tr', [rowAttrs.map(function (r, i) {
+        return h('th', {
+          staticClass: ['pvtAxisLabel txt_center'],
+          attrs: {
+            key: "rowAttr".concat(i),
+            scope: 'col'
+          }
+        }, _this.$scopedSlots.rowAxisLabelSlot ? _this.$scopedSlots.rowAxisLabelSlot({
+          key: r
+        }) : r);
+      })])])])]), h('div', {
+        staticClass: ['scroll_left'],
+        style: {
+          width: "".concat(leftOuterWidth + 5, "px")
+        },
+        ref: 'left'
+      }, [h('table', {
+        staticClass: ['tbl_st_row bd_line']
+      }, [h('tbody', rowKeys.map(function (rowKey, i) {
+        return h('tr', {
+          attrs: {
+            key: "rowKeyRow".concat(i)
+          }
+        }, rowKey.map(function (txt, j) {
+          var x = _this.spanSize(rowKeys, i, j);
+
+          if (x === -1) {
+            return null;
+          }
+
+          var formatter = _this.$props.formatter[rowAttrs[j]];
+          return h('th', {
+            attrs: {
+              key: "rowKeyLabel".concat(i, "-").concat(j),
+              scope: 'col',
+              rowSpan: x
+            }
+          }, formatter ? formatter(txt) : txt);
+        }));
+      }))])])]), h('div', {
+        style: {
+          width: "calc(100% - ".concat(leftOuterWidth, "px)")
+        },
+        staticClass: ['right']
+      }, [h('div', {
+        staticClass: ['inner']
+      }, [h('div', {
+        staticClass: ['tbl_section scroll_x_wrap scroll_top'],
+        ref: 'top'
+      }, [h('table', {
+        staticClass: ['tbl_st_col bd_line']
+      }, [colgroup, h('tbody', colAttrs.map(function (c, j) {
         return h('tr', {
           attrs: {
             key: "colAttrs".concat(j)
           }
-        }, [j === 0 && rowAttrs.length !== 0 ? h('th', {
-          attrs: {
-            colSpan: rowAttrs.length + 1,
-            rowSpan: colAttrs.length
-          }
-        }) : undefined, colKeys.map(function (colKey, i) {
+        }, colKeys.map(function (colKey, i) {
           var x = _this.spanSize(colKeys, i, j);
 
           if (x === -1) {
@@ -5435,60 +5509,36 @@ function makeRenderer() {
 
           var path = colKey.slice(0, j + 1);
           return h('th', {
-            staticClass: ['pvtColLabel'],
             attrs: {
               key: "colKey".concat(i),
-              colSpan: x,
-              rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
+              scope: 'colgroup',
+              colSpan: x
             }
           }, _this.$scopedSlots.colHeaderSlot ? _this.$scopedSlots.colHeaderSlot({
             key: c,
             value: colKey[j],
             path: path
           }) : colKey[j]);
-        }), j === 0 && _this.rowTotal ? h('th', {
-          staticClass: ['pvtTotalLabel'],
-          attrs: {
-            rowSpan: colAttrs.length + (rowAttrs.length === 0 ? 0 : 1)
+        }));
+      }))])])]), h('div', [h('div', {
+        staticClass: ['tbl_section scroll_wrap scroll_con'],
+        on: {
+          scroll: function scroll(e) {
+            _this.$refs.left.scrollTop = e.target.scrollTop;
+            _this.$refs.top.scrollLeft = e.target.scrollLeft;
           }
-        }, 'Totals') : undefined]);
-      }), rowAttrs.length !== 0 ? h('tr', [rowAttrs.map(function (r, i) {
-        return h('th', {
-          staticClass: ['pvtAxisLabel'],
-          attrs: {
-            key: "rowAttr".concat(i),
-            colspan: 2
-          }
-        }, _this.$scopedSlots.rowAxisLabelSlot ? _this.$scopedSlots.rowAxisLabelSlot({
-          key: r
-        }) : r);
-      }), this.rowTotal ? h('th', {
-        staticClass: ['pvtTotalLabel']
-      }, colAttrs.length === 0 ? 'Totals' : null) : undefined]) : undefined]), h('tbody', [rowKeys.map(function (rowKey, i) {
-        var totalAggregator = pivotData.getAggregator(rowKey, []);
+        }
+      }, [h('table', {
+        staticClass: ['tbl_st_col bd_line']
+      }, [colgroup, h('tbody', [rowKeys.map(function (rowKey, i) {
         return h('tr', {
           attrs: {
             key: "rowKeyRow".concat(i)
           }
-        }, [rowKey.map(function (txt, j) {
-          var x = _this.spanSize(rowKeys, i, j);
-
-          if (x === -1) {
-            return null;
-          }
-
-          return h('th', {
-            staticClass: ['pvtRowLabel'],
-            attrs: {
-              key: "rowKeyLabel".concat(i, "-").concat(j),
-              rowSpan: x,
-              colSpan: j === rowAttrs.length - 1 && colAttrs.length !== 0 ? 2 : 1
-            }
-          }, 'xxx');
-        }), colKeys.map(function (colKey, j) {
+        }, colKeys.map(function (colKey, j) {
           var aggregator = pivotData.getAggregator(rowKey, colKey);
           return h('td', {
-            staticClass: ['pvVal'],
+            staticClass: ['txt_right'],
             style: valueCellColors(rowKey, colKey, aggregator.value()),
             attrs: {
               key: "pvtVal".concat(i, "-").concat(j)
@@ -5496,37 +5546,147 @@ function makeRenderer() {
             on: getClickHandler ? {
               click: getClickHandler(aggregator.value(), rowKey, colKey)
             } : {}
-          }, aggregator.format(aggregator.value()));
-        }), _this.rowTotal ? h('td', {
-          staticClass: ['pvtTotal'],
-          style: colTotalColors(totalAggregator.value()),
-          on: getClickHandler ? {
-            click: getClickHandler(totalAggregator.value(), rowKey, [null])
-          } : {}
-        }, totalAggregator.format(totalAggregator.value())) : undefined]);
-      }), h('tr', [this.colTotal ? h('th', {
-        staticClass: ['pvtTotalLabel'],
-        attrs: {
-          colSpan: rowAttrs.length + (colAttrs.length === 0 ? 0 : 1)
-        }
-      }, 'Totals') : undefined, this.colTotal ? colKeys.map(function (colKey, i) {
-        var totalAggregator = pivotData.getAggregator([], colKey);
-        return h('td', {
-          staticClass: ['pvtTotal'],
-          style: rowTotalColors(totalAggregator.value()),
-          attrs: {
-            key: "total".concat(i)
-          },
-          on: getClickHandler ? {
-            click: getClickHandler(totalAggregator.value(), [null], colKey)
-          } : {}
-        }, totalAggregator.format(totalAggregator.value()));
-      }) : undefined, this.colTotal && this.rowTotal ? h('td', {
-        staticClass: ['pvtGrandTotal'],
-        on: getClickHandler ? {
-          click: getClickHandler(grandTotalAggregator.value(), [null], [null])
-        } : {}
-      }, grandTotalAggregator.format(grandTotalAggregator.value())) : undefined])])]);
+          }, _this.$props.formatter.VALUE ? _this.$props.formatter.VALUE(aggregator.value()) : aggregator.format(aggregator.value()));
+        }));
+      })])])])])])]);
+      /* eslint-disable-next-line */
+      // return h('table', {
+      //   staticClass: [`pvtTable${this.$props.class ? ` ${this.$props.class}` : ''}`]
+      // }, [
+      //   h('thead',
+      //     [
+      //       colAttrs.map((c, j) => {
+      //         return h('tr', {
+      //           attrs: {
+      //             key: `colAttrs${j}`
+      //           }
+      //         },
+      //         [
+      //           j === 0 && rowAttrs.length !== 0 ? h('th', {
+      //             attrs: {
+      //               colSpan: rowAttrs.length + 1,
+      //               rowSpan: colAttrs.length
+      //             }
+      //           }) : undefined,
+      //           colKeys.map((colKey, i) => {
+      //             const x = this.spanSize(colKeys, i, j)
+      //             if (x === -1) {
+      //               return null
+      //             }
+      //             const path = colKey.slice(0, j + 1)
+      //             return h('th', {
+      //               staticClass: ['pvtColLabel'],
+      //               attrs: {
+      //                 key: `colKey${i}`,
+      //                 colSpan: x,
+      //                 rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
+      //               }
+      //             }, this.$scopedSlots.colHeaderSlot ? this.$scopedSlots.colHeaderSlot({ key: c, value: colKey[j], path }) : colKey[j])
+      //           }),
+      //           j === 0 && this.rowTotal ? h('th', {
+      //             staticClass: ['pvtTotalLabel'],
+      //             attrs: {
+      //               rowSpan: colAttrs.length + (rowAttrs.length === 0 ? 0 : 1)
+      //             }
+      //           }, 'Totals') : undefined
+      //         ])
+      //       }),
+      //       rowAttrs.length !== 0 ? h('tr',
+      //         [
+      //           rowAttrs.map((r, i) => {
+      //             return h('th', {
+      //               staticClass: ['pvtAxisLabel'],
+      //               attrs: {
+      //                 key: `rowAttr${i}`,
+      //                 colspan: 2
+      //               }
+      //             }, this.$scopedSlots.rowAxisLabelSlot ? this.$scopedSlots.rowAxisLabelSlot({ key: r }) : r)
+      //           }),
+      //           this.rowTotal
+      //             ? h('th', { staticClass: ['pvtTotalLabel'] }, colAttrs.length === 0 ? 'Totals' : null)
+      //             : undefined
+      //         ]
+      //       ) : undefined
+      //     ]
+      //   ),
+      //   h('tbody',
+      //     [
+      //       rowKeys.map((rowKey, i) => {
+      //         const totalAggregator = pivotData.getAggregator(rowKey, [])
+      //         return h('tr', {
+      //           attrs: {
+      //             key: `rowKeyRow${i}`
+      //           }
+      //         },
+      //         [
+      //           rowKey.map((txt, j) => {
+      //             const x = this.spanSize(rowKeys, i, j)
+      //             if (x === -1) {
+      //               return null
+      //             }
+      //             const formatter = this.$props.formatter[rowAttrs[j]]
+      //             return h('th', {
+      //               staticClass: ['pvtRowLabel'],
+      //               attrs: {
+      //                 key: `rowKeyLabel${i}-${j}`,
+      //                 rowSpan: x,
+      //                 colSpan: j === rowAttrs.length - 1 && colAttrs.length !== 0 ? 2 : 1
+      //               }
+      //             }, formatter ? formatter(txt) : txt)
+      //           }),
+      //           colKeys.map((colKey, j) => {
+      //             const aggregator = pivotData.getAggregator(rowKey, colKey)
+      //             return h('td', {
+      //               staticClass: ['pvVal'],
+      //               style: valueCellColors(rowKey, colKey, aggregator.value()),
+      //               attrs: {
+      //                 key: `pvtVal${i}-${j}`
+      //               },
+      //               on: getClickHandler ? {
+      //                 click: getClickHandler(aggregator.value(), rowKey, colKey)
+      //               } : {}
+      //             }, this.$props.formatter.VALUE ? this.$props.formatter.VALUE(aggregator.value()) : aggregator.format(aggregator.value()))
+      //           }),
+      //           this.rowTotal ? h('td', {
+      //             staticClass: ['pvtTotal'],
+      //             style: colTotalColors(totalAggregator.value()),
+      //             on: getClickHandler ? {
+      //               click: getClickHandler(totalAggregator.value(), rowKey, [null])
+      //             } : {}
+      //           }, totalAggregator.format(totalAggregator.value())) : undefined
+      //         ])
+      //       }),
+      //       h('tr',
+      //         [
+      //           this.colTotal ? h('th', {
+      //             staticClass: ['pvtTotalLabel'],
+      //             attrs: {
+      //               colSpan: rowAttrs.length + (colAttrs.length === 0 ? 0 : 1)
+      //             }
+      //           }, 'Totals') : undefined,
+      //           this.colTotal ? colKeys.map((colKey, i) => {
+      //             const totalAggregator = pivotData.getAggregator([], colKey)
+      //             return h('td', {
+      //               staticClass: ['pvtTotal'],
+      //               style: rowTotalColors(totalAggregator.value()),
+      //               attrs: {
+      //                 key: `total${i}`
+      //               },
+      //               on: getClickHandler ? {
+      //                 click: getClickHandler(totalAggregator.value(), [null], colKey)
+      //               } : {}
+      //             }, totalAggregator.format(totalAggregator.value()))
+      //           }) : undefined,
+      //           this.colTotal && this.rowTotal ? h('td', {
+      //             staticClass: ['pvtGrandTotal'],
+      //             on: getClickHandler ? {
+      //               click: getClickHandler(grandTotalAggregator.value(), [null], [null])
+      //             } : {}
+      //           }, grandTotalAggregator.format(grandTotalAggregator.value())) : undefined
+      //         ]
+      //       )
+      //     ])
+      // ])
     }
   };
   return TableRenderer;
