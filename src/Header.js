@@ -31,9 +31,6 @@ export default {
       }
     });
     $(document).on("mouseover", function (event) {
-      if ($(".tooltiptext") === null) {
-        $(document).off("mouseover");
-      }
       if ($(".tooltip-wrapper").has(event.target).length) {
         var y = event.target.offsetTop - $(".pvtCheckContainer").scrollTop();
         console.log(event)
@@ -44,6 +41,10 @@ export default {
       }
     })
     this.init(true);
+  },
+  beforeDestroy() {
+    $(document).off("click");
+    $(document).off("mouseover");
   },
   watch: {
     templates() {
