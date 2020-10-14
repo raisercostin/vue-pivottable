@@ -8,7 +8,7 @@ export default {
   created() {
     $(document).off("click");
     $(document).off("mouseover");
-    $(document).on("click", function(event) {
+    $(document).on("click", function (event) {
       if (
         $(".OuterTemplateDropDown").has(event.target).length && fieldexpanded) {
         hidefield();
@@ -18,7 +18,7 @@ export default {
         showCheckboxes();
       } else if ($(".templateOption").has(event.target).length > 0) {
         hidetemp();
-      } else if (!$(".OuterTemplate").has(event.target).length 
+      } else if (!$(".OuterTemplate").has(event.target).length
         && !$(".Outer").has(event.target).length) {
         $(".OuterDropDown").css("background-color", "white");
         $(".OuterTemplateDropDown").css("background-color", "white");
@@ -30,7 +30,10 @@ export default {
         showSelections();
       }
     });
-    $(document).on("mouseover", function(event) {
+    $(document).on("mouseover", function (event) {
+      if ($(".tooltiptext") === null) {
+        $(document).off("mouseover");
+      }
       if ($(".tooltip-wrapper").has(event.target).length) {
         var y = event.target.offsetTop - $(".pvtCheckContainer").scrollTop();
         console.log(event)
@@ -44,7 +47,7 @@ export default {
   },
   watch: {
     templates() {
-      if(this.clear) {
+      if (this.clear) {
         this.clearFields();
         this.TempoptionSelected = {};
       }
