@@ -73,7 +73,7 @@ function makeRenderer (opts = {}) {
       const rowAttrs = pivotData.props.rows
       const rowKeys = pivotData.getRowKeys()
       const colKeys = pivotData.getColKeys()
-      const grandTotalAggregator = pivotData.getAggregator([], [])
+      // const grandTotalAggregator = pivotData.getAggregator([], [])
 
       // eslint-disable-next-line no-unused-vars
       let valueCellColors = () => { }
@@ -146,154 +146,370 @@ function makeRenderer (opts = {}) {
               )
           }
           : null
-      return h('table', {
-        staticClass: [`pvtTable${this.$props.class ? ` ${this.$props.class}` : ''}`]
-      }, [
-        h('thead',
+      const leftWidth = 105 * rowAttrs.length
+      const leftOuterWidth = leftWidth + 10
+      const colgroup = h(
+        'colgroup',
+        colKeys.map((_, i) => {
+          return h('col', {
+            style: { width: `${this.$props.valueCellSize || 93}px` },
+            attrs: {
+              key: `colGroup${i}`
+            }
+          })
+        })
+      )
+      return h('div', { staticClass: ['tbl_sc_wrap'] }, [
+        h(
+          'div',
+          { staticClass: ['left'], style: { width: `${leftWidth}px` } },
           [
-            colAttrs.map((c, j) => {
-              return h('tr', {
-                attrs: {
-                  key: `colAttrs${j}`
-                }
+            h('div', [
+              h('table', { staticClass: ['tbl_st_col bd_line'] }, [
+                h('thead', [
+                  h('th', {
+                    staticClass: ['colspan'],
+                    attrs: { colSpan: rowAttrs.length }
+                  })
+                ]),
+                h('tbody', [
+                  h('tr', [
+                    rowAttrs.map((r, i) => {
+                      return h(
+                        'th',
+                        {
+                          staticClass: ['pvtAxisLabel txt_center'],
+                          attrs: {
+                            key: `rowAttr${i}`,
+                            scope: 'col'
+                          }
+                        },
+                        this.$scopedSlots.rowAxisLabelSlot
+                          ? this.$scopedSlots.rowAxisLabelSlot({ key: r })
+                          : r
+                      )
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            h(
+              'div',
+              {
+                staticClass: ['scroll_left'],
+                style: { width: `${leftOuterWidth + 5}px` },
+                ref: 'left'
               },
               [
-                j === 0 && rowAttrs.length !== 0 ? h('th', {
-                  attrs: {
-                    colSpan: rowAttrs.length + 1,
-                    rowSpan: colAttrs.length
-                  }
-                }) : undefined,
-
-                colKeys.map((colKey, i) => {
-                  const x = this.spanSize(colKeys, i, j)
-                  if (x === -1) {
-                    return null
-                  }
-                  const path = colKey.slice(0, j + 1)
-                  return h('th', {
-                    staticClass: ['pvtColLabel'],
-                    attrs: {
-                      key: `colKey${i}`,
-                      colSpan: x,
-                      rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
-                    }
-                  }, this.$scopedSlots.colHeaderSlot ? this.$scopedSlots.colHeaderSlot({ key: c, value: colKey[j], path }) : colKey[j])
-                }),
-                j === 0 && this.rowTotal ? h('th', {
-                  staticClass: ['pvtTotalLabel'],
-                  attrs: {
-                    rowSpan: colAttrs.length + (rowAttrs.length === 0 ? 0 : 1)
-                  }
-                }, 'Totals') : undefined
-              ])
-            }),
-
-            rowAttrs.length !== 0 ? h('tr',
-              [
-                rowAttrs.map((r, i) => {
-                  return h('th', {
-                    staticClass: ['pvtAxisLabel'],
-                    attrs: {
-                      key: `rowAttr${i}`,
-                      colspan: 2
-                    }
-                  }, this.$scopedSlots.rowAxisLabelSlot ? this.$scopedSlots.rowAxisLabelSlot({ key: r }) : r)
-                }),
-
-                this.rowTotal
-                  ? h('th', { staticClass: ['pvtTotalLabel'] }, colAttrs.length === 0 ? 'Totals' : null)
-                  : undefined
-              ]
-            ) : undefined
-
-          ]
-        ),
-
-        h('tbody',
-          [
-            rowKeys.map((rowKey, i) => {
-              const totalAggregator = pivotData.getAggregator(rowKey, [])
-              return h('tr', {
-                attrs: {
-                  key: `rowKeyRow${i}`
-                }
-              },
-              [
-                rowKey.map((txt, j) => {
-                  const x = this.spanSize(rowKeys, i, j)
-                  if (x === -1) {
-                    return null
-                  }
-                  const formatter = this.$props.formatter[rowAttrs[j]]
-                  return h('th', {
-                    staticClass: ['pvtRowLabel'],
-                    attrs: {
-                      key: `rowKeyLabel${i}-${j}`,
-                      rowSpan: x,
-                      colSpan: j === rowAttrs.length - 1 && colAttrs.length !== 0 ? 2 : 1
-                    }
-                  }, formatter ? formatter(txt) : txt)
-                }),
-
-                colKeys.map((colKey, j) => {
-                  const aggregator = pivotData.getAggregator(rowKey, colKey)
-                  return h('td', {
-                    staticClass: ['pvVal'],
-                    style: valueCellColors(rowKey, colKey, aggregator.value()),
-                    attrs: {
-                      key: `pvtVal${i}-${j}`
-                    },
-                    on: getClickHandler ? {
-                      click: getClickHandler(aggregator.value(), rowKey, colKey)
-                    } : {}
-                  }, this.$props.formatter.VALUE ? this.$props.formatter.VALUE(aggregator.value()) : aggregator.format(aggregator.value()))
-                }),
-
-                this.rowTotal ? h('td', {
-                  staticClass: ['pvtTotal'],
-                  style: colTotalColors(totalAggregator.value()),
-                  on: getClickHandler ? {
-                    click: getClickHandler(totalAggregator.value(), rowKey, [null])
-                  } : {}
-                }, totalAggregator.format(totalAggregator.value())) : undefined
-              ])
-            }),
-
-            h('tr',
-              [
-                this.colTotal ? h('th', {
-                  staticClass: ['pvtTotalLabel'],
-                  attrs: {
-                    colSpan: rowAttrs.length + (colAttrs.length === 0 ? 0 : 1)
-                  }
-                }, 'Totals') : undefined,
-
-                this.colTotal ? colKeys.map((colKey, i) => {
-                  const totalAggregator = pivotData.getAggregator([], colKey)
-                  return h('td', {
-                    staticClass: ['pvtTotal'],
-                    style: rowTotalColors(totalAggregator.value()),
-                    attrs: {
-                      key: `total${i}`
-                    },
-                    on: getClickHandler ? {
-                      click: getClickHandler(totalAggregator.value(), [null], colKey)
-                    } : {}
-                  }, totalAggregator.format(totalAggregator.value()))
-                }) : undefined,
-
-                this.colTotal && this.rowTotal ? h('td', {
-                  staticClass: ['pvtGrandTotal'],
-                  on: getClickHandler ? {
-                    click: getClickHandler(grandTotalAggregator.value(), [null], [null])
-                  } : {}
-                }, grandTotalAggregator.format(grandTotalAggregator.value())) : undefined
+                h('table', { staticClass: ['tbl_st_row bd_line'] }, [
+                  h(
+                    'tbody',
+                    rowKeys.map((rowKey, i) => {
+                      return h(
+                        'tr',
+                        {
+                          attrs: {
+                            key: `rowKeyRow${i}`
+                          }
+                        },
+                        rowKey.map((txt, j) => {
+                          const x = this.spanSize(rowKeys, i, j)
+                          if (x === -1) {
+                            return null
+                          }
+                          const formatter = this.$props.formatter[rowAttrs[j]]
+                          return h(
+                            'th',
+                            {
+                              attrs: {
+                                key: `rowKeyLabel${i}-${j}`,
+                                scope: 'col',
+                                rowSpan: x
+                              }
+                            },
+                            formatter ? formatter(txt) : txt
+                          )
+                        })
+                      )
+                    })
+                  )
+                ])
               ]
             )
-          ])
-
+          ]
+        ),
+        h(
+          'div',
+          {
+            style: { width: `calc(100% - ${leftOuterWidth}px)` },
+            staticClass: ['right']
+          },
+          [
+            h('div', { staticClass: ['inner'] }, [
+              h(
+                'div',
+                { staticClass: ['tbl_section scroll_x_wrap scroll_top'], ref: 'top' },
+                [
+                  h('table', { staticClass: ['tbl_st_col bd_line'] }, [
+                    colgroup,
+                    h(
+                      'tbody',
+                      colAttrs.map((c, j) => {
+                        return h(
+                          'tr',
+                          {
+                            attrs: {
+                              key: `colAttrs${j}`
+                            }
+                          },
+                          colKeys.map((colKey, i) => {
+                            const x = this.spanSize(colKeys, i, j)
+                            if (x === -1) {
+                              return null
+                            }
+                            const path = colKey.slice(0, j + 1)
+                            return h(
+                              'th',
+                              {
+                                attrs: {
+                                  key: `colKey${i}`,
+                                  scope: 'colgroup',
+                                  colSpan: x
+                                }
+                              },
+                              this.$scopedSlots.colHeaderSlot
+                                ? this.$scopedSlots.colHeaderSlot({
+                                  key: c,
+                                  value: colKey[j],
+                                  path
+                                })
+                                : colKey[j]
+                            )
+                          })
+                        )
+                      })
+                    )
+                  ])
+                ]
+              )
+            ]),
+            h('div', [
+              h(
+                'div',
+                {
+                  staticClass: ['tbl_section scroll_wrap scroll_con'],
+                  on: {
+                    scroll: (e) => {
+                      this.$refs.left.scrollTop = e.target.scrollTop
+                      this.$refs.top.scrollLeft = e.target.scrollLeft
+                    }
+                  }
+                },
+                [
+                  h('table', { staticClass: ['tbl_st_col bd_line'] }, [
+                    colgroup,
+                    h('tbody', [
+                      rowKeys.map((rowKey, i) => {
+                        return h(
+                          'tr',
+                          {
+                            attrs: {
+                              key: `rowKeyRow${i}`
+                            }
+                          },
+                          colKeys.map((colKey, j) => {
+                            const aggregator = pivotData.getAggregator(
+                              rowKey,
+                              colKey
+                            )
+                            return h(
+                              'td',
+                              {
+                                staticClass: ['txt_right'],
+                                style: valueCellColors(
+                                  rowKey,
+                                  colKey,
+                                  aggregator.value()
+                                ),
+                                attrs: {
+                                  key: `pvtVal${i}-${j}`
+                                },
+                                on: getClickHandler
+                                  ? {
+                                    click: getClickHandler(
+                                      aggregator.value(),
+                                      rowKey,
+                                      colKey
+                                    )
+                                  }
+                                  : {}
+                              },
+                              this.$props.formatter.VALUE
+                                ? this.$props.formatter.VALUE(
+                                  aggregator.value()
+                                )
+                                : aggregator.format(aggregator.value())
+                            )
+                          })
+                        )
+                      })
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
       ])
+      /* eslint-disable-next-line */
+      // return h('table', {
+      //   staticClass: [`pvtTable${this.$props.class ? ` ${this.$props.class}` : ''}`]
+      // }, [
+      //   h('thead',
+      //     [
+      //       colAttrs.map((c, j) => {
+      //         return h('tr', {
+      //           attrs: {
+      //             key: `colAttrs${j}`
+      //           }
+      //         },
+      //         [
+      //           j === 0 && rowAttrs.length !== 0 ? h('th', {
+      //             attrs: {
+      //               colSpan: rowAttrs.length + 1,
+      //               rowSpan: colAttrs.length
+      //             }
+      //           }) : undefined,
+
+      //           colKeys.map((colKey, i) => {
+      //             const x = this.spanSize(colKeys, i, j)
+      //             if (x === -1) {
+      //               return null
+      //             }
+      //             const path = colKey.slice(0, j + 1)
+      //             return h('th', {
+      //               staticClass: ['pvtColLabel'],
+      //               attrs: {
+      //                 key: `colKey${i}`,
+      //                 colSpan: x,
+      //                 rowSpan: j === colAttrs.length - 1 && rowAttrs.length !== 0 ? 2 : 1
+      //               }
+      //             }, this.$scopedSlots.colHeaderSlot ? this.$scopedSlots.colHeaderSlot({ key: c, value: colKey[j], path }) : colKey[j])
+      //           }),
+      //           j === 0 && this.rowTotal ? h('th', {
+      //             staticClass: ['pvtTotalLabel'],
+      //             attrs: {
+      //               rowSpan: colAttrs.length + (rowAttrs.length === 0 ? 0 : 1)
+      //             }
+      //           }, 'Totals') : undefined
+      //         ])
+      //       }),
+
+      //       rowAttrs.length !== 0 ? h('tr',
+      //         [
+      //           rowAttrs.map((r, i) => {
+      //             return h('th', {
+      //               staticClass: ['pvtAxisLabel'],
+      //               attrs: {
+      //                 key: `rowAttr${i}`,
+      //                 colspan: 2
+      //               }
+      //             }, this.$scopedSlots.rowAxisLabelSlot ? this.$scopedSlots.rowAxisLabelSlot({ key: r }) : r)
+      //           }),
+
+      //           this.rowTotal
+      //             ? h('th', { staticClass: ['pvtTotalLabel'] }, colAttrs.length === 0 ? 'Totals' : null)
+      //             : undefined
+      //         ]
+      //       ) : undefined
+
+      //     ]
+      //   ),
+
+      //   h('tbody',
+      //     [
+      //       rowKeys.map((rowKey, i) => {
+      //         const totalAggregator = pivotData.getAggregator(rowKey, [])
+      //         return h('tr', {
+      //           attrs: {
+      //             key: `rowKeyRow${i}`
+      //           }
+      //         },
+      //         [
+      //           rowKey.map((txt, j) => {
+      //             const x = this.spanSize(rowKeys, i, j)
+      //             if (x === -1) {
+      //               return null
+      //             }
+      //             const formatter = this.$props.formatter[rowAttrs[j]]
+      //             return h('th', {
+      //               staticClass: ['pvtRowLabel'],
+      //               attrs: {
+      //                 key: `rowKeyLabel${i}-${j}`,
+      //                 rowSpan: x,
+      //                 colSpan: j === rowAttrs.length - 1 && colAttrs.length !== 0 ? 2 : 1
+      //               }
+      //             }, formatter ? formatter(txt) : txt)
+      //           }),
+
+      //           colKeys.map((colKey, j) => {
+      //             const aggregator = pivotData.getAggregator(rowKey, colKey)
+      //             return h('td', {
+      //               staticClass: ['pvVal'],
+      //               style: valueCellColors(rowKey, colKey, aggregator.value()),
+      //               attrs: {
+      //                 key: `pvtVal${i}-${j}`
+      //               },
+      //               on: getClickHandler ? {
+      //                 click: getClickHandler(aggregator.value(), rowKey, colKey)
+      //               } : {}
+      //             }, this.$props.formatter.VALUE ? this.$props.formatter.VALUE(aggregator.value()) : aggregator.format(aggregator.value()))
+      //           }),
+
+      //           this.rowTotal ? h('td', {
+      //             staticClass: ['pvtTotal'],
+      //             style: colTotalColors(totalAggregator.value()),
+      //             on: getClickHandler ? {
+      //               click: getClickHandler(totalAggregator.value(), rowKey, [null])
+      //             } : {}
+      //           }, totalAggregator.format(totalAggregator.value())) : undefined
+      //         ])
+      //       }),
+
+      //       h('tr',
+      //         [
+      //           this.colTotal ? h('th', {
+      //             staticClass: ['pvtTotalLabel'],
+      //             attrs: {
+      //               colSpan: rowAttrs.length + (colAttrs.length === 0 ? 0 : 1)
+      //             }
+      //           }, 'Totals') : undefined,
+
+      //           this.colTotal ? colKeys.map((colKey, i) => {
+      //             const totalAggregator = pivotData.getAggregator([], colKey)
+      //             return h('td', {
+      //               staticClass: ['pvtTotal'],
+      //               style: rowTotalColors(totalAggregator.value()),
+      //               attrs: {
+      //                 key: `total${i}`
+      //               },
+      //               on: getClickHandler ? {
+      //                 click: getClickHandler(totalAggregator.value(), [null], colKey)
+      //               } : {}
+      //             }, totalAggregator.format(totalAggregator.value()))
+      //           }) : undefined,
+
+      //           this.colTotal && this.rowTotal ? h('td', {
+      //             staticClass: ['pvtGrandTotal'],
+      //             on: getClickHandler ? {
+      //               click: getClickHandler(grandTotalAggregator.value(), [null], [null])
+      //             } : {}
+      //           }, grandTotalAggregator.format(grandTotalAggregator.value())) : undefined
+      //         ]
+      //       )
+      //     ])
+
+      // ])
     }
   }
   return TableRenderer
