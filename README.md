@@ -55,24 +55,6 @@ _vue template_
   </div>
 </template>
 ```
-or 
-* vue-pivottable-ui
-```html
-<template>
-  <div id="app">
-    <h3>Pivottable Demo</h3>
-    <vue-pivottable-ui
-        :data="pivotData"
-        aggregatorName='Sum'
-        rendererName='Table Heatmap'
-        :rows="['Payer Gender']"
-        :cols="['Party Size']"
-        :vals="['Total Bill']"
-    >
-    </vue-pivottable-ui>
-  </div>
-</template>
-```
 
 ### Component style
 app.vue
@@ -89,26 +71,15 @@ app.vue
         :vals="['Total Bill']"
     >
     </vue-pivottable>
-    <h3>Pivottable Ui Demo</h3>
-    <vue-pivottable-ui
-        :data="pivotData"
-        aggregatorName='Sum'
-        rendererName='Table Heatmap'
-        :rows="['Payer Gender']"
-        :cols="['Party Size']"
-        :vals="['Total Bill']"
-    >
-    </vue-pivottable-ui>
   </div>
 </template>
 
 <script>
-import { VuePivottable, VuePivottableUi } from 'vue-pivottable'
+import { VuePivottable } from 'vue-pivottable'
 import 'vue-pivottable/dist/vue-pivottable.css'
 export default {
     components: {
-        VuePivottable,
-        VuePivottableUi
+        VuePivottable
     }
 }
 </script>
@@ -139,6 +110,10 @@ export default {
 |sortonlyFromDragDrop|`Array` <br> [] | contains attribute names to sort from the drag'n'drop of the UI (has not `react-pivottable`)
 |disabledFromDragDrop|`Array` <br> [] |contains attribute names to disable from the drag'n'drop portion of the UI (has not `react-pivottable`)
 |menuLimit|`Number` <br> 500| maximum number of values to list in the double-click menu
+|formatter|`Object` <br> | formatter for value cell and row header
+|valueCellWidth|`Number`<br> 93 |
+|rowHeaderWidth|`Number`<br> 105 |
+|rowAxisLabelHeight|`Number` <br> |
 
 ## Inspired
 * [plotly/react-pivottable](https://github.com/plotly/react-pivottable) - React-based pivot table library
