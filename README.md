@@ -152,6 +152,10 @@ export default {
     </tr>
   </tbody>
 </table>
+|formatter|`Object` <br> | formatter for value cell and row header
+|valueCellWidth|`Number`<br> 93 |
+|rowHeaderWidth|`Number`<br> 105 |
+|rowAxisLabelHeight|`Number` <br> |
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
