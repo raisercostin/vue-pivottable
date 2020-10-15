@@ -5169,6 +5169,7 @@ utils_PivotData.defaultProps = {
 
 // CONCATENATED MODULE: ./src/helper/defaultProps.js
 
+
 /* harmony default export */ var defaultProps = ({
   props: {
     data: {
@@ -5241,6 +5242,18 @@ utils_PivotData.defaultProps = {
     formatter: {
       type: Object,
       default: {}
+    },
+    valueCellWidth: {
+      type: Number,
+      required: false
+    },
+    rowHeaderWidth: {
+      type: Number,
+      required: false
+    },
+    rowAxisLabelHeight: {
+      type: Number,
+      required: false
     }
   }
 });
@@ -5423,7 +5436,7 @@ function makeRenderer() {
       var colgroup = h('colgroup', colKeys.map(function (_, i) {
         return h('col', {
           style: {
-            width: "".concat(_this.$props.valueCellSize || 93, "px")
+            width: "".concat(_this.$props.valueCellWidth || 93, "px")
           },
           attrs: {
             key: "colGroup".concat(i)
@@ -5448,7 +5461,7 @@ function makeRenderer() {
         return h('th', {
           staticClass: ['pvtAxisLabel txt_center'],
           style: _this.$props.rowAxisLabelHeight && {
-            height: _this.$props.rowAxisLabelHeight
+            height: "".concat(_this.$props.rowAxisLabelHeight, "px")
           },
           attrs: {
             key: "rowAttr".concat(i),
@@ -5484,7 +5497,11 @@ function makeRenderer() {
 
           var formatter = _this.$props.formatter[rowAttrs[j]];
           return h('th', {
-            staticClass: ['txt_ellipsis'],
+            style: {
+              overflow: 'hidden',
+              'text-overflow': 'ellipsis',
+              'white-space': 'nowrap'
+            },
             attrs: {
               key: "rowKeyLabel".concat(i, "-").concat(j),
               scope: 'col',

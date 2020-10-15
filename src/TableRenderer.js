@@ -152,7 +152,7 @@ function makeRenderer (opts = {}) {
         'colgroup',
         colKeys.map((_, i) => {
           return h('col', {
-            style: { width: `${this.$props.valueCellSize || 93}px` },
+            style: { width: `${this.$props.valueCellWidth || 93}px` },
             attrs: {
               key: `colGroup${i}`
             }
@@ -186,7 +186,7 @@ function makeRenderer (opts = {}) {
                           'th',
                           {
                             staticClass: ['pvtAxisLabel txt_center'],
-                            style: this.$props.rowAxisLabelHeight && { height: this.$props.rowAxisLabelHeight },
+                            style: this.$props.rowAxisLabelHeight && { height: `${this.$props.rowAxisLabelHeight}px` },
                             attrs: {
                               key: `rowAttr${i}`,
                               scope: 'col'
@@ -234,7 +234,7 @@ function makeRenderer (opts = {}) {
                             return h(
                               'th',
                               {
-                                staticClass: ['txt_ellipsis'],
+                                style: { overflow: 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap' },
                                 attrs: {
                                   key: `rowKeyLabel${i}-${j}`,
                                   scope: 'col',
