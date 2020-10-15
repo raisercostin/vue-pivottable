@@ -186,7 +186,7 @@ function makeRenderer (opts = {}) {
                           'th',
                           {
                             staticClass: ['pvtAxisLabel txt_center'],
-                            style: this.props.rowAxisLabelHeight && { height: this.props.rowAxisLabelHeight },
+                            style: this.$props.rowAxisLabelHeight && { height: this.$props.rowAxisLabelHeight },
                             attrs: {
                               key: `rowAttr${i}`,
                               scope: 'col'
