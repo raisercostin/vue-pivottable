@@ -70,6 +70,18 @@ export default {
     formatter: {
       type: Object,
       default: {}
+    },
+    valueCellWidth: {
+      type: Number,
+      required: false
+    },
+    rowHeaderWidth: {
+      type: Number,
+      required: false
+    },
+    rowAxisLabelHeight: {
+      type: Number,
+      required: false
     }
   }
 }
