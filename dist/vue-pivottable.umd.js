@@ -5456,8 +5456,8 @@ function makeRenderer() {
       })]), h('tbody', [h('tr', [rowAttrs.map(function (r, i) {
         return h('th', {
           staticClass: ['pvtAxisLabel txt_center'],
-          style: _this.props.rowAxisLabelHeight && {
-            height: _this.props.rowAxisLabelHeight
+          style: _this.$props.rowAxisLabelHeight && {
+            height: _this.$props.rowAxisLabelHeight
           },
           attrs: {
             key: "rowAttr".concat(i),
