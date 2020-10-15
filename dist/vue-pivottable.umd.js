@@ -5427,7 +5427,7 @@ function makeRenderer() {
           return _this.tableOptions.clickCallback(e, value, filters, pivotData);
         };
       } : null;
-      var leftWidth = 105 * rowAttrs.length;
+      var leftWidth = (this.$props.rowHeaderWidth || 105) * rowAttrs.length;
       var leftOuterWidth = leftWidth + 10;
       var colgroup = h('colgroup', colKeys.map(function (_, i) {
         return h('col', {
@@ -5456,6 +5456,9 @@ function makeRenderer() {
       })]), h('tbody', [h('tr', [rowAttrs.map(function (r, i) {
         return h('th', {
           staticClass: ['pvtAxisLabel txt_center'],
+          style: _this.props.rowAxisLabelHeight && {
+            height: _this.props.rowAxisLabelHeight
+          },
           attrs: {
             key: "rowAttr".concat(i),
             scope: 'col'
@@ -5490,6 +5493,7 @@ function makeRenderer() {
 
           var formatter = _this.$props.formatter[rowAttrs[j]];
           return h('th', {
+            staticClass: ['txt_ellipsis'],
             attrs: {
               key: "rowKeyLabel".concat(i, "-").concat(j),
               scope: 'col',
