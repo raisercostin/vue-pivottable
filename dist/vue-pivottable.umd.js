@@ -5440,7 +5440,7 @@ function makeRenderer() {
         });
       }));
       return h('div', {
-        staticClass: ['tbl_sc_wrap']
+        staticClass: ["tbl_sc_wrap".concat(this.$props.class ? " ".concat(this.$props.class) : '')]
       }, [h('div', {
         staticClass: ['left'],
         style: {
@@ -5468,7 +5468,12 @@ function makeRenderer() {
         style: {
           width: "".concat(leftOuterWidth + 5, "px")
         },
-        ref: 'left'
+        ref: 'left',
+        on: {
+          scroll: function scroll(e) {
+            _this.$refs.content.scrollTop = e.target.scrollTop;
+          }
+        }
       }, [h('table', {
         staticClass: ['tbl_st_row bd_line']
       }, [h('tbody', rowKeys.map(function (rowKey, i) {
@@ -5501,7 +5506,12 @@ function makeRenderer() {
         staticClass: ['inner']
       }, [h('div', {
         staticClass: ['tbl_section scroll_x_wrap scroll_top'],
-        ref: 'top'
+        ref: 'top',
+        on: {
+          scroll: function scroll(e) {
+            _this.$refs.content.scrollLeft = e.target.scrollLeft;
+          }
+        }
       }, [h('table', {
         staticClass: ['tbl_st_col bd_line']
       }, [colgroup, h('tbody', colAttrs.map(function (c, j) {
@@ -5531,6 +5541,7 @@ function makeRenderer() {
         }));
       }))])])]), h('div', [h('div', {
         staticClass: ['tbl_section scroll_wrap scroll_con'],
+        ref: 'content',
         on: {
           scroll: function scroll(e) {
             _this.$refs.left.scrollTop = e.target.scrollTop;
