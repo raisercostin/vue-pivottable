@@ -5578,7 +5578,7 @@ function makeRenderer() {
             on: getClickHandler ? {
               click: getClickHandler(aggregator.value(), rowKey, colKey)
             } : {}
-          }, _this.$props.formatter.VALUE ? _this.$props.formatter.VALUE(aggregator.value()) : aggregator.format(aggregator.value()));
+          }, _this.$props.formatter.VALUE ? _this.$props.formatter.VALUE(aggregator.value()) : aggregator.value());
         }));
       })])])])])])]);
       /* eslint-disable-next-line */
