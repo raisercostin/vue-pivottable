@@ -146,7 +146,7 @@ function makeRenderer (opts = {}) {
               )
           }
           : null
-      const leftWidth = 105 * rowAttrs.length
+      const leftWidth = (this.$props.rowHeaderWidth || 105) * rowAttrs.length
       const leftOuterWidth = leftWidth + 10
       const colgroup = h(
         'colgroup',
@@ -186,6 +186,7 @@ function makeRenderer (opts = {}) {
                           'th',
                           {
                             staticClass: ['pvtAxisLabel txt_center'],
+                            style: this.props.rowAxisLabelHeight && { height: this.props.rowAxisLabelHeight },
                             attrs: {
                               key: `rowAttr${i}`,
                               scope: 'col'
@@ -233,6 +234,7 @@ function makeRenderer (opts = {}) {
                             return h(
                               'th',
                               {
+                                staticClass: ['txt_ellipsis'],
                                 attrs: {
                                   key: `rowKeyLabel${i}-${j}`,
                                   scope: 'col',
