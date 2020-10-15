@@ -369,7 +369,7 @@ function makeRenderer (opts = {}) {
                                 },
                                 this.$props.formatter.VALUE
                                   ? this.$props.formatter.VALUE(aggregator.value())
-                                  : aggregator.format(aggregator.value())
+                                  : aggregator.value()
                               )
                             })
                           )
