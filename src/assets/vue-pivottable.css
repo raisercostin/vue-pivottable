@@ -82,8 +82,6 @@ table th.tit_stats .stats_nav .icon:first-child {margin-left:0}
 .guide_txt.sender {width:calc(67.2% - 233px);margin-left:7px}
 .toggle_wrap tr.show{display:table-row !important;}
 .toggle_wrap td{position:relative;}
-.toggle_wrap td .btn_toggle{position:absolute;top:50%;right:11px;width:36px;height:36px;margin-top:-18px;background:url(../image/common/ico_rolldown.png) 0 0/contain no-repeat;border:0;border-radius:0;color:transparent;}
-.toggle_wrap td .btn_toggle.toggle_on{background-image:url(../image/common/ico_rollup.png);}
 
 .tbl_sc_wrap{overflow:hidden;}
 .tbl_sc_wrap .left{float:left; padding-bottom:15px;background:#f2f2f2;}
