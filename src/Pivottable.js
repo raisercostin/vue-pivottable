@@ -30,7 +30,7 @@ export default {
         this.createPivottable(h)
       ])
     },
-    exportXls (filename = 'pivot_data.xls') {
+    exportXls ({ filename }) {
       const tableHtml = `
         <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
           <head>
@@ -57,7 +57,7 @@ export default {
       const downloadLink = document.createElement('a')
       document.body.appendChild(downloadLink)
       downloadLink.href = `data:application/vnd.ms-excel;base64,${window.btoa(unescape(encodeURIComponent(tableHtml)))}`
-      downloadLink.download = filename
+      downloadLink.download = filename || 'pivot_data.xls'
       downloadLink.click()
     }
   },
