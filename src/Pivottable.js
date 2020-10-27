@@ -5,6 +5,12 @@ export default {
   mixins: [
     defaultProps
   ],
+  data () {
+    return {
+      mountRawTable: false,
+      rawTableObserver: null
+    }
+  },
   computed: {
     rendererItems () {
       return this.renderers || Object.assign({}, TableRenderer)
@@ -15,7 +21,7 @@ export default {
       const props = this.$props
       const scopedSlots = this.$scopedSlots
       return h(this.renderers, {
-        props,
+        props: { ...props, mountRawTable: this.mountRawTable },
         scopedSlots
       })
     },
@@ -32,6 +38,10 @@ export default {
       ])
     },
     exportXls ({ filename }) {
+      this.mountRawTable = true
+      const rawTableId = `pivottable${this.$vnode.key}`
+      this.rawTableObserver = new MutationObserver(() => {
+        if (document.getElementById(rawTableId)) {
       const tableHtml = `
         <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
           <head>
@@ -51,7 +61,7 @@ export default {
             <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
           </head>
           <body>
-            ${document.getElementById(`pivottable${this.$vnode.key}`).outerHTML}
+                ${document.getElementById(rawTableId).outerHTML}
           </body>
         </html>
       `
@@ -60,6 +70,11 @@ export default {
       downloadLink.href = `data:application/vnd.ms-excel;base64,${window.btoa(unescape(encodeURIComponent(tableHtml)))}`
       downloadLink.download = filename || 'pivot_data.xls'
       downloadLink.click()
+          this.mountRawTable = false
+          this.rawTableObserver.disconnect()
+    }
+      })
+      this.rawTableObserver.observe(document.body, { childList: true, subtree: true })
     }
   },
   render (h) {
