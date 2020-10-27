@@ -24,6 +24,10 @@ function makeRenderer (opts = {}) {
         default: function () {
           return {}
         }
+      },
+      mountRawTable: {
+        type: Boolean,
+        default: false
       }
     },
     methods: {
@@ -320,7 +324,7 @@ function makeRenderer (opts = {}) {
           ]
         },
         [
-          rawTable,
+          this.$props.mountRawTable ? rawTable : undefined,
           h(
             'div',
             { staticClass: ['left'], style: { width: `${leftWidth}px` } },
