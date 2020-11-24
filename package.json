@@ -39,6 +39,7 @@
     "docs:deploy": "sh packages/docs/deploy-docs.sh"
   },
   "dependencies": {
+    "v-tooltip": "^2.0.3",
     "vue": "^2.6.10",
     "vuedraggable": "^2.23.0"
   },

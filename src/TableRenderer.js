@@ -1,3 +1,5 @@
+import { VTooltip } from 'v-tooltip'
+
 import { PivotData } from './helper/utils'
 import defaultProps from './helper/defaultProps'
 function redColorScaleGenerator (values) {
@@ -13,6 +15,7 @@ function makeRenderer (opts = {}) {
   const TableRenderer = {
     name: opts.name,
     mixins: [defaultProps],
+    directives: { VTooltip },
     props: {
       heatmapMode: String,
       tableColorScaleGenerator: {
@@ -387,6 +390,7 @@ function makeRenderer (opts = {}) {
                               return null
                             }
                             const formatter = this.$props.formatter[rowAttrs[j]]
+                            const formattedTxt = formatter ? formatter(txt) : txt
                             return h(
                               'th',
                               {
@@ -397,7 +401,17 @@ function makeRenderer (opts = {}) {
                                   rowSpan: x
                                 }
                               },
-                              formatter ? formatter(txt) : txt
+                              [
+                                h('span', {
+                                  directives: [
+                                    {
+                                      name: 'v-tooltip',
+                                      value: formattedTxt
+                                    }
+                                  ]
+                                },
+                                formattedTxt)
+                              ]
                             )
                           })
                         )
