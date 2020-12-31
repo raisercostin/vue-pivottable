@@ -36,7 +36,33 @@ const numberFormat = function (optsIn) {
 const rx = /(\d+)|(\D+)/g
 const rd = /\d/
 const rz = /^0/
+
+const months = {
+  'Jan': 1,
+  'Feb': 2,
+  'Mar': 3,
+  'Apr': 4,
+  'May': 5,
+  'Jun': 6,
+  'Jul': 7,
+  'Aug': 8,
+  'Sep': 9,
+  'Oct': 10,
+  'Nov': 11,
+  'Dec': 12
+}
 const naturalSort = (as, bs) => {
+  if (Object.keys(months).includes(as) && Object.keys(months).includes(bs)) {
+    if (months[as] > months[bs]) {
+      return 1
+    }
+    if (as === null || bs === null) {
+      return -1
+    } else if (months[as] < months[bs]) {
+      return -1
+    }
+    return 0
+  }
   // nulls first
   if (bs !== null && as === null) {
     return -1
