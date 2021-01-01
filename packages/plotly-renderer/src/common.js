@@ -111,6 +111,13 @@ export default {
       validator: function (value) {
         return value >= 0
       }
+    },
+    height: {
+      type: Number,
+      default: 0,
+      validator: function (value) {
+        return value >= 0
+      }
     }
   },
   methods: {

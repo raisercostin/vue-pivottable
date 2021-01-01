@@ -24,9 +24,9 @@ export default {
       return h('div', {
         style: {
           display: 'block',
-          width: '100%',
-          'overflow-x': 'auto',
-          'max-width': this.tableMaxWidth ? `${this.tableMaxWidth}px` : undefined
+          'width': '100%',
+          'overflow-y': 'auto',
+          'height': `${this.height}px`
         }
       }, [
         this.createPivottable(h)
@@ -34,9 +34,6 @@ export default {
     }
   },
   render (h) {
-    return this.createWrapperContainer(h)
-  },
-  renderError (h, error) {
-    return this.renderError(h)
+    return this.height > 0 ? this.createWrapperContainer(h) : this.createPivottable(h)
   }
 }
