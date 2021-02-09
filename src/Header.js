@@ -131,10 +131,12 @@ export default {
       });
 
       list.map((o) => {
-        if (o.type === 'Row') {
-          o.fields = o.fields.map((object, i) => this.TempoptionSelected.rows[i]);
-        } else if (o.type === 'Column') {
-          o.fields = o.fields.map((object, i) => this.TempoptionSelected.columns[i]);
+        if (o.fields.length > 0 && this.TempoptionSelected.hasOwnProperty('rows') && this.TempoptionSelected.hasOwnProperty('columns')) {
+          if (o.type === 'Row' && o.fields.length == this.TempoptionSelected.rows.length) {
+            o.fields = o.fields.map((object, i) => this.TempoptionSelected.rows[i]);
+          } else if (o.type === 'Column' && o.fields.length == this.TempoptionSelected.columns.length) {
+            o.fields = o.fields.map((object, i) => this.TempoptionSelected.columns[i]);
+          }
         }
       })
       this.$emit("input", list);
@@ -169,10 +171,6 @@ export default {
               this.$emit("selectTemp", details)
             },
             delete: (details) => {
-              // if (details.name == this.TempoptionSelected[1] && details.type == this.TempoptionSelected[0]) {
-              //   this.TempoptionSelected = [];
-              //   this.clearFields();
-              // }
               this.$emit("deleteTemp", details, this.TempoptionSelected)
             }
 
@@ -201,20 +199,6 @@ export default {
             }
           },
         }),
-        // h(
-        //   //Generate Button
-        //   "button",
-        //   {
-        //     staticClass: ["greenBtn"],
-        //     attrs: {
-        //       role: "button",
-        //     },
-        //     on: {
-        //       click: () => this.generateReport(),
-        //     },
-        //   },
-        //   "Populate"
-        // ),
         h(
           //Clear Fields Button
           "button",
