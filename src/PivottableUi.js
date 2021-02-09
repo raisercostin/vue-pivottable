@@ -18,68 +18,68 @@ export default {
     tableMaxWidth: {
       type: Number,
       default: 0,
-      validator: function(value) {
+      validator: function (value) {
         return value >= 0;
       },
     },
     hiddenAttributes: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     hiddenFromAggregators: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     defaultAggregatorName: String,
     defaultVals: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     defaultTables: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     defaultColumns: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     defaultRows: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     defaultValueFilter: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       },
     },
     fields: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     sortonlyFromDragDrop: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     disabledFromDragDrop: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
@@ -89,46 +89,40 @@ export default {
     },
     showRenderers: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     showAggregators: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     showTemplates: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       },
     },
     roleCreate: {
       type: Boolean,
-      default: function() {
+      default: function () {
         return false;
       },
     },
     roleEditDelete: {
       type: Boolean,
-      default: function() {
+      default: function () {
         return false;
       },
     },
     clear: {
       type: Boolean,
-      default: function() {
+      default: function () {
         return false;
       },
-    },
-    createdArr: {
-      type: Array,
-      default: function() {
-        return false;
-      },
-    },
+    }
   },
   computed: {
     innerAggregatorName() {
@@ -238,31 +232,23 @@ export default {
     this.init();
   },
   watch: {
-    data() {
-      //this.init();
-    },
     clear() {
       if (this.clear) {
         this.existing = []
       }
     },
-    createdArr() {
-      if (this.createdArr[0]) {
-        this.existing = this.createdArr[1]
-      }
-    },
     innerAggregatorName: {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (Object.keys(this.existing).length > 0 && !(this.existing.aggreatorName == newValue)) {
           this.$emit("hasChanges", true);
-        } else if (Object.keys(this.existing).length == 0 && newValue != this.defaultAggregatorName) { 
+        } else if (Object.keys(this.existing).length == 0 && newValue != this.defaultAggregatorName) {
           this.$emit("hasChanges", true);
         }
       },
       deep: true,
     },
     innerVals: {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (Object.keys(this.existing).length > 0 && !this.checkLists(this.existing.values, newValue)) {
           this.$emit("hasChanges", true);
         } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
@@ -270,7 +256,7 @@ export default {
       deep: true,
     },
     innerTables: {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (Object.keys(this.existing).length > 0 && !this.checkLists(this.existing.tables, newValue)) {
           this.$emit("hasChanges", true);
         } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
@@ -278,7 +264,7 @@ export default {
       deep: true,
     },
     innerRows: {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (Object.keys(this.existing).length > 0 && !this.checkLists(this.existing.rows, newValue)) {
           this.$emit("hasChanges", true);
         } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
@@ -286,7 +272,7 @@ export default {
       deep: true,
     },
     innerColumns: {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (Object.keys(this.existing).length > 0 && !this.checkLists(this.existing.columns, newValue)) {
           this.$emit("hasChanges", true);
         } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
@@ -294,7 +280,7 @@ export default {
       deep: true,
     },
     innerValueFilter: {
-      handler: function(newValue) {
+      handler: function (newValue) {
         if (Object.keys(this.existing).length > 0 && !this.checkDicts(this.existing.filters, newValue)) {
           this.$emit("hasChanges", true);
         } else if (Object.keys(this.existing).length == 0 && newValue.length > 0) this.$emit("hasChanges", true);
@@ -304,7 +290,7 @@ export default {
   },
   mounted() {
     var self = this;
-    $(document).on("click", function(event) {
+    $(document).on("click", function (event) {
       if (
         $(".pvtAttr") !== event.target &&
         !$(".pvtAttr").has(event.target).length
@@ -330,29 +316,29 @@ export default {
     checkLists(oldList, newList) {
       var same = true;
       oldList.map((x) => {
-        if(!newList.includes(x)) {
+        if (!newList.includes(x)) {
           same = false;
         }
       })
       newList.map((x) => {
-        if(!oldList.includes(x)) {
+        if (!oldList.includes(x)) {
           same = false;
         }
       })
       return same;
     },
     checkDicts(oldDict, newDict) {
-      var same  = true;
+      var same = true;
       Object.keys(oldDict).map((x) => {
         Object.keys(oldDict[x]).map((y) => {
-          if (!Object.keys(newDict[x]).includes(y) ) {
+          if (!Object.keys(newDict[x]).includes(y)) {
             same = false
           }
         })
       })
       Object.keys(newDict).map((x) => {
         Object.keys(newDict[x]).map((y) => {
-          if (!Object.keys(oldDict[x]).includes(y) ) {
+          if (!Object.keys(oldDict[x]).includes(y)) {
             same = false
           }
         })
@@ -420,7 +406,7 @@ export default {
       const attrValues = {};
       const materializedInput = [];
       let recordsProcessed = 0;
-      PivotData.forEachRecord(this.data, this.derivedAttributes, function(
+      PivotData.forEachRecord(this.data, this.derivedAttributes, function (
         record
       ) {
         materializedInput.push(record);
@@ -509,126 +495,125 @@ export default {
     rendererCell(rendererName, h) {
       return this.$slots.rendererCell
         ? h(
-            "td",
-            {
-              staticClass: ["pvtRenderers pvtVals pvtText"],
-            },
-            this.$slots.rendererCell
-          )
+          "td",
+          {
+            staticClass: ["pvtRenderers pvtVals pvtText"],
+          },
+          this.$slots.rendererCell
+        )
         : h(
-            "td",
-            {
-              staticClass: ["pvtRenderers"],
-            },
-            [
-              h(Object.keys(this.renderers).length > 1 ? Dropdown : Single, {
-                props: {
-                  values: Object.keys(this.renderers),
+          "td",
+          {
+            staticClass: ["pvtRenderers"],
+          },
+          [
+            h(Object.keys(this.renderers).length > 1 ? Dropdown : Single, {
+              props: {
+                values: Object.keys(this.renderers),
+              },
+              domProps: {
+                value: rendererName,
+              },
+              on: {
+                input: (value) => {
+                  this.propUpdater("rendererName")(value);
+                  this.propUpdater("renderer", this.renderers[value]);
                 },
-                domProps: {
-                  value: rendererName,
-                },
-                on: {
-                  input: (value) => {
-                    debugger;
-                    this.propUpdater("rendererName")(value);
-                    this.propUpdater("renderer", this.renderers[value]);
-                  },
-                },
-              }),
-            ]
-          );
+              },
+            }),
+          ]
+        );
     },
     aggregatorCell(aggregatorName, vals, h) {
       return this.$slots.aggregatorCell
         ? h(
-            "td",
-            {
-              staticClass: ["pvtVals pvtText"],
-            },
-            this.$slots.aggregatorCell
-          )
+          "td",
+          {
+            staticClass: ["pvtVals pvtText"],
+          },
+          this.$slots.aggregatorCell
+        )
         : h(
-            "td",
-            {
-              staticClass: ["pvtVals"],
-            },
-            [
-              h("div", [
-                h(Dropdown, {
-                  style: {
-                    display: "inline-block",
+          "td",
+          {
+            staticClass: ["pvtVals"],
+          },
+          [
+            h("div", [
+              h(Dropdown, {
+                style: {
+                  display: "inline-block",
+                },
+                props: {
+                  values: Object.keys(this.customAggregators),
+                },
+                domProps: {
+                  value: aggregatorName,
+                },
+                on: {
+                  input: (value) => {
+                    this.propUpdater("aggregatorName")(value);
                   },
+                },
+              }),
+              h(
+                "a",
+                {
+                  staticClass: ["pvtRowOrder"],
+                  attrs: {
+                    role: "button",
+                  },
+                  on: {
+                    click: () => {
+                      this.propUpdater("rowOrder")(
+                        this.sortIcons[this.propsData.rowOrder].next
+                      );
+                    },
+                  },
+                },
+                this.sortIcons[this.propsData.rowOrder].rowSymbol
+              ),
+              h(
+                "a",
+                {
+                  staticClass: ["pvtColOrder"],
+                  attrs: {
+                    role: "button",
+                  },
+                  on: {
+                    click: () => {
+                      this.propUpdater("colOrder")(
+                        this.sortIcons[this.propsData.colOrder].next
+                      );
+                    },
+                  },
+                },
+                this.sortIcons[this.propsData.colOrder].colSymbol
+              ),
+            ]),
+            this.numValsAllowed > 0
+              ? new Array(this.numValsAllowed).fill().map((n, i) => [
+                h(Dropdown, {
                   props: {
-                    values: Object.keys(this.customAggregators),
+                    values: Object.keys(this.attrValues).filter(
+                      (e) =>
+                        !this.hiddenAttributes.includes(e) &&
+                        !this.hiddenFromAggregators.includes(e)
+                    ),
                   },
                   domProps: {
-                    value: aggregatorName,
+                    value: vals[i],
                   },
                   on: {
                     input: (value) => {
-                      this.propUpdater("aggregatorName")(value);
+                      this.propsData.vals.splice(i, 1, value);
                     },
                   },
                 }),
-                h(
-                  "a",
-                  {
-                    staticClass: ["pvtRowOrder"],
-                    attrs: {
-                      role: "button",
-                    },
-                    on: {
-                      click: () => {
-                        this.propUpdater("rowOrder")(
-                          this.sortIcons[this.propsData.rowOrder].next
-                        );
-                      },
-                    },
-                  },
-                  this.sortIcons[this.propsData.rowOrder].rowSymbol
-                ),
-                h(
-                  "a",
-                  {
-                    staticClass: ["pvtColOrder"],
-                    attrs: {
-                      role: "button",
-                    },
-                    on: {
-                      click: () => {
-                        this.propUpdater("colOrder")(
-                          this.sortIcons[this.propsData.colOrder].next
-                        );
-                      },
-                    },
-                  },
-                  this.sortIcons[this.propsData.colOrder].colSymbol
-                ),
-              ]),
-              this.numValsAllowed > 0
-                ? new Array(this.numValsAllowed).fill().map((n, i) => [
-                    h(Dropdown, {
-                      props: {
-                        values: Object.keys(this.attrValues).filter(
-                          (e) =>
-                            !this.hiddenAttributes.includes(e) &&
-                            !this.hiddenFromAggregators.includes(e)
-                        ),
-                      },
-                      domProps: {
-                        value: vals[i],
-                      },
-                      on: {
-                        input: (value) => {
-                          this.propsData.vals.splice(i, 1, value);
-                        },
-                      },
-                    }),
-                  ])
-                : undefined,
-            ]
-          );
+              ])
+              : undefined,
+          ]
+        );
     },
     outputCell(props, isPlotlyRenderer, h) {
       return h(
@@ -640,14 +625,14 @@ export default {
           h("div", { staticClass: ["innertable"] }, [
             isPlotlyRenderer
               ? h(PlotlyRenderer[props.rendererName], {
-                  props,
-                })
+                props,
+              })
               : h(Pivottable, {
-                  props: {
-                    ...props,
-                    tableMaxWidth: this.tableMaxWidth,
-                  },
-                }),
+                props: {
+                  ...props,
+                  tableMaxWidth: this.tableMaxWidth,
+                },
+              }),
           ]),
         ]
       );
@@ -816,12 +801,12 @@ export default {
           ),
           h(SaveBtn, {
             on: {
-              create: () => {   
-                  this.$emit(
-                    "showCreateModal",
-                    this.getDetails(props, aggregatorName, vals),
-                    this.existing
-                  );
+              create: () => {
+                this.$emit(
+                  "showCreateModal",
+                  this.getDetails(props, aggregatorName, vals),
+                  this.existing
+                );
               },
             },
           }),

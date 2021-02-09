@@ -33,7 +33,6 @@ export default {
     $(document).on("mouseover", function (event) {
       if ($(".tooltip-wrapper").has(event.target).length) {
         var y = event.target.offsetTop - $(".pvtCheckContainer").scrollTop();
-        console.log(event)
         $(".tooltiptext")[0].style.top = (y - 8) + 'px';
         $(".tooltiptext")[0].style.visibility = "visible"
       } else {
@@ -122,7 +121,6 @@ export default {
     },
     generateReport() {
       var list = [];
-
       this.options.map((option) => {
         list.push({
           type: option.text,
@@ -131,6 +129,14 @@ export default {
             .map((x) => x.value),
         });
       });
+
+      list.map((o) => {
+        if (o.type === 'Row') {
+          o.fields = o.fields.map((object, i) => this.TempoptionSelected.rows[i]);
+        } else if (o.type === 'Column') {
+          o.fields = o.fields.map((object, i) => this.TempoptionSelected.columns[i]);
+        }
+      })
       this.$emit("input", list);
     },
     resetFields() {

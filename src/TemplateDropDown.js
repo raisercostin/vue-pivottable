@@ -36,7 +36,7 @@ export default {
           aggreatorName: x.aggreatorName,
           vals: JSON.parse(x.values),
           table: JSON.parse(x.tables),
-          row: JSON.parse(x.rows), 
+          row: JSON.parse(x.rows),
           column: JSON.parse(x.columns),
           filter: JSON.parse(x.filters),
           selected: false
@@ -65,11 +65,11 @@ export default {
       this.templateList.map((y) => {
         y.list.map((x) => {
           x.selected = false;
-      if (x.name == details.name && x.type == this.templateSelected) {
-        x.selected = true;
-      }
-    })
-      })                
+          if (x.name == details.name && x.type == this.templateSelected) {
+            x.selected = true;
+          }
+        })
+      })
       this.$emit("selectTemp", details)
     }
   },
@@ -87,24 +87,24 @@ export default {
             staticClass: ["OuterTemplateDropDown"],
           },
           [
-            
-                h(
-                  "span",
-                  {
-                    staticClass: ["templateName"]
-                  },
-                Object.keys(this.optionSelected).length > 0 ?
+
+            h(
+              "span",
+              {
+                staticClass: ["templateName"]
+              },
+              Object.keys(this.optionSelected).length > 0 ?
                 this.optionSelected.templateName :
                 "Select Templates"),
-                h(
-                  "span",
-                  {
-                    staticClass: ["OuterTriangle"],
-                  },
-                  "  ▾"
-                ),
-              
-            
+            h(
+              "span",
+              {
+                staticClass: ["OuterTriangle"],
+              },
+              "  ▾"
+            ),
+
+
           ]
         ),
         h(
@@ -150,71 +150,71 @@ export default {
                     {
                       staticClass: ["emptyState"]
                     },
-                    this.templateSelected == "Team" ? 
-                    this.roleCreate ? 
-                    "Drag and Drop the fields, click on 'Save Template' to create your template." :
-                    "Only Administrators are allowed to create team templates" :
-                    "Drag and Drop the fields, click on 'Save Template' to create your template."
+                    this.templateSelected == "Team" ?
+                      this.roleCreate ?
+                        "Drag and Drop the fields, click on 'Save Template' to create your template." :
+                        "Only Administrators are allowed to create team templates" :
+                      "Drag and Drop the fields, click on 'Save Template' to create your template."
                   ) :
-                this.templateList
-                  .filter((y) => y.type == this.templateSelected)[0]
-                  .list.map((x) => { 
-                    return h(
-                      "p",
-                      {
-                        staticClass: ["templateOption"],
-                        class: {
-                          selected: x.selected
-                        },
-                        attrs: {
-                          key: x.name,
-                        },
-                        
-                      },
-                      [
-                        h(
-                          "span",
-                          {
-                            staticClass: ["optionName"],
-                            on: {
-                              click: () => this.selectValue(x),
-                            },
+                  this.templateList
+                    .filter((y) => y.type == this.templateSelected)[0]
+                    .list.map((x) => {
+                      return h(
+                        "p",
+                        {
+                          staticClass: ["templateOption"],
+                          class: {
+                            selected: x.selected
                           },
-                          x.name
-                        ),
-                        (this.roleEditDelete && this.templateSelected == "Team") || (this.templateSelected == "Personal")  ?
-                      h("span",
-                      {
-                        staticClass: ["tooltip-wrapper"],
-                      },[
+                          attrs: {
+                            key: x.name,
+                          },
+
+                        },
+                        [
                           h(
-                            "img",
+                            "span",
                             {
-                              staticClass: ["deleteIcon"],
-                              attrs: {
-                                src: require(`@/assets/icon/bin.png`)
-                              },
+                              staticClass: ["optionName"],
                               on: {
-                                click: () => {
-                                  this.$emit("delete", x)
-                                },
-                              }
-                            }
+                                click: () => this.selectValue(x),
+                              },
+                            },
+                            x.name
                           ),
-                          ])
-                          :
-                        undefined,
-                        
-                      ]
-                    );
-                  }),
-                  h(
-                    "span",
-                    {
-                      staticClass: ["tooltiptext"]
-                    },
-                    "Delete"
-                  )
+                          (this.roleEditDelete && this.templateSelected == "Team") || (this.templateSelected == "Personal") ?
+                            h("span",
+                              {
+                                staticClass: ["tooltip-wrapper"],
+                              }, [
+                              h(
+                                "img",
+                                {
+                                  staticClass: ["deleteIcon"],
+                                  attrs: {
+                                    src: require(`@/assets/icon/bin.png`)
+                                  },
+                                  on: {
+                                    click: () => {
+                                      this.$emit("delete", x)
+                                    },
+                                  }
+                                }
+                              ),
+                            ])
+                            :
+                            undefined,
+
+                        ]
+                      );
+                    }),
+                h(
+                  "span",
+                  {
+                    staticClass: ["tooltiptext"]
+                  },
+                  "Delete"
+                )
               ]
             ),
             h(
@@ -229,7 +229,7 @@ export default {
                     staticClass: ["recordNumber"],
                   },
                   "Templates found: " + this.templateList
-                  .filter((y) => y.type == this.templateSelected)[0].list.length
+                    .filter((y) => y.type == this.templateSelected)[0].list.length
                 ),
               ]
             ),

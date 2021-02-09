@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="padding:2%">
+  <div id="app" style="padding: 2%">
     <VuePivottableUi
       :data="pivotData"
       :renderer-name="rendererName"
@@ -55,12 +55,12 @@ export default {
     },
     hasChanges(val) {
       if (val) {
-        console.log(val)
-        console.log("there is changes")
+        console.log(val);
+        console.log("there is changes");
       } else {
-        console.log("no change")
+        console.log("no change");
       }
-    }
+    },
   },
   data() {
     return {
@@ -70,9 +70,7 @@ export default {
       defaultVals: [],
       defaultTables: [],
       defaultRows: [],
-      defaultColumns: [
-       
-      ],
+      defaultColumns: [],
       defaultValueFilter: {
         "Total Bill": {},
         Tip: {},
@@ -101,39 +99,41 @@ export default {
       selectedRows: [],
       selectedColumns: [],
       selectedFilter: {},
-      templates: [{
-        aggreatorName: "Count",
-        columns: '[]',
-        filters: '{ "Meal": {"Dinner" : true} }',
-        id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
-        isPublic: false,
-        rows: '["Meal"]',
-        tables: '[]',
-        templateName: "Temp 4 lalalallalalalalalalalala",
-        values: '[]',
-      },
-      {
-        aggreatorName: "Count",
-        columns: '[]',
-        filters: '{}',
-        id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
-        isPublic: false,
-        rows: '[]',
-        tables: '[]',
-        templateName: "Temp 5",
-        values: '[]',
-      },
-      {
-        aggreatorName: "Count",
-        columns: '[]',
-        filters: '{}',
-        id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
-        isPublic: false,
-        rows: '[]',
-        tables: '[]',
-        templateName: "Temp 6",
-        values: '[]',
-      }],
+      templates: [
+        {
+          aggreatorName: "Count",
+          columns: '["Payer Gender","Tip"]',
+          filters: '{ "Meal": {"Dinner" : true} }',
+          id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
+          isPublic: false,
+          rows: '["Payer Smoker", "Meal", "Day of Week"]',
+          tables: "[]",
+          templateName: "Temp 4 lalalallalalalalalalalala",
+          values: "[]",
+        },
+        {
+          aggreatorName: "Count",
+          columns: "[]",
+          filters: "{}",
+          id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
+          isPublic: false,
+          rows: "[]",
+          tables: "[]",
+          templateName: "Temp 5",
+          values: "[]",
+        },
+        {
+          aggreatorName: "Count",
+          columns: "[]",
+          filters: "{}",
+          id: "b6a2ec8c-cfbe-4db2-1425-08d84d954082",
+          isPublic: false,
+          rows: "[]",
+          tables: "[]",
+          templateName: "Temp 6",
+          values: "[]",
+        },
+      ],
     };
   },
 };
