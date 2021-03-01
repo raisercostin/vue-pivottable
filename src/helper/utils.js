@@ -675,12 +675,10 @@ class PivotData {
   }
 
   getColKeys () {
-    this.sortKeys()
     return this.colKeys
   }
 
   getRowKeys () {
-    this.sortKeys()
     return this.rowKeys
   }
 

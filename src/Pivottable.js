@@ -26,6 +26,7 @@ export default {
           display: 'block',
           'width': '100%',
           'overflow-y': 'auto',
+          'overflow-x': 'scroll',
           'height': `${this.height}px`
         }
       }, [
