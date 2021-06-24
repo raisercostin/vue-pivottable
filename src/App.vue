@@ -2,6 +2,7 @@
   <div id="app" style="padding: 2%">
     <VuePivottableUi
       :data="pivotData"
+      :editingUrl="editingUrl"
       :renderer-name="rendererName"
       :showRenderers="rendererList"
       :showAggregators="aggregatorList"
@@ -14,7 +15,7 @@
       :fields="fieldList"
       :showTemplates="templates"
       :roleCreate="roleCreate"
-      ::roleEditDelete="roleEditDelete"
+      :roleEditDelete="roleEditDelete"
       @updateFilter="updateFilter"
       @updateTables="updateTables"
       @updateRows="updateRows"
@@ -72,6 +73,7 @@ export default {
       defaultRows: [],
       defaultColumns: [],
       defaultValueFilter: {
+        "Name": {},
         "Total Bill": {},
         Tip: {},
         "Payer Gender": {},
@@ -81,6 +83,7 @@ export default {
         "Party Size": {},
       },
       fieldList: [
+        "Name",
         "Total Bill",
         "Tip",
         "Payer Gender",
@@ -89,6 +92,7 @@ export default {
         "Meal",
         "Party Size",
       ],
+      editingUrl: 'https://www.google.com',
       roleCreate: true,
       roleEditDelete: true,
       rendererList: ["Table"], // Here to specify show renderer list

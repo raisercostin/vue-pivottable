@@ -105,6 +105,12 @@ export default {
         return [];
       },
     },
+    editingUrl: {
+      type: String,
+      default: function () {
+        return "";
+      },
+    },
     roleCreate: {
       type: Boolean,
       default: function () {

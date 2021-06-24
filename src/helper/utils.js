@@ -539,6 +539,9 @@ class PivotData {
       this.props.vals
     )
     this.tree = {}
+    this.namePosition = this.props.rows.indexOf('Name')
+    this.allData = inputProps.data
+    this.editingUrl = this.props.editingUrl
     this.rowKeys = []
     this.colKeys = []
     this.rowTotals = {}
@@ -641,6 +644,10 @@ class PivotData {
   getRowKeys() {
     this.sortKeys()
     return this.rowKeys
+  }
+
+  getData() {
+    return this.allData;
   }
 
   processRecord(record) {
