@@ -28,6 +28,9 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: npm ci
+      - name: Update package name for publishing
+        run: |
+          sed -i 's/"name": "vue-pivottable"/"name": "@raisercostin\/vue-pivottable"/' package.json
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
