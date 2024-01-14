@@ -1,5 +1,14 @@
 export default [
-  ['Total Bill', 'Tip', 'Payer Gender', 'Payer Smoker', 'Day of Week', 'Meal', 'Party Size', 'Unused 1'],
+  [
+    'Total Bill',
+    'Tip',
+    'Payer Gender',
+    'Payer Smoker',
+    'Day of Week',
+    'Meal',
+    'Party Size',
+    'Unused 1'
+  ],
   [16.99, 1.01, 'Female', 'Non-Smoker', 'Sunday', 'Dinner', 2, 'test'],
   [10.34, 1.66, 'Male', 'Non-Smoker', 'Sunday', 'Dinner', 3, 'test'],
   [21.01, 3.5, 'Male', 'Non-Smoker', 'Sunday', 'Dinner', 3, 'test'],

@@ -9,7 +9,10 @@ footer: MIT Licensed | Copyright © 2018-present Seungwoo Lee
 ```vue
 <template>
   <vue-pivottable-ui
-    :data="[{color: 'blue', shape: 'circle'},{color: 'red', shape: 'triangle'}]"
+    :data="[
+      { color: 'blue', shape: 'circle' },
+      { color: 'red', shape: 'triangle' }
+    ]"
     :rows="['color']"
     :cols="['shape']"
   >

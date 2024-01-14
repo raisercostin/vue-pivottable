@@ -21,7 +21,7 @@ table.pvtUi td {
   padding: 0.75rem;
   overflow-x: auto;
 }
-table.pvtUi>tbody td:nth-child(1) {
+table.pvtUi > tbody td:nth-child(1) {
   width: 25%;
 }
 
@@ -30,7 +30,7 @@ table.pvtUi>tbody td:nth-child(1) {
   user-select: none;
   margin: 0;
   border: 1px solid #d8d6de;
-  border-radius: .357rem;
+  border-radius: 0.357rem;
   background-color: inherit;
   background-color: inherit;
   background-position: calc(100% - 12px) 13px, calc(100% - 20px) 13px, 100% 0;
@@ -96,7 +96,7 @@ table.pvtTable {
   width: 100%;
   text-align: left;
   border-collapse: collapse;
-  font-size: .857rem;
+  font-size: 0.857rem;
 }
 table.pvtTable thead tr th {
   vertical-align: top;
@@ -109,7 +109,7 @@ table.pvtTable thead tr th,
 table.pvtTable tbody tr th,
 table.pvtTable tbody tr td {
   border: 1px solid #ebe9f1;
-  padding: .3rem .5rem;
+  padding: 0.3rem 0.5rem;
 }
 
 table.pvtTable tbody tr td {
@@ -239,10 +239,10 @@ table.pvtTable .pvtTotalLabel {
   outline: none;
   display: block;
   width: 100%;
-  border-radius: .375rem;
+  border-radius: 0.375rem;
   border-color: #ebe9f1;
   margin-bottom: 5px;
-  padding: .438rem 1rem
+  padding: 0.438rem 1rem;
 }
 
 /* pvtSearchContainer */
@@ -272,7 +272,7 @@ table.pvtTable .pvtTotalLabel {
   cursor: default;
 }
 
-.pvtCheckContainer p input[type="checkbox"] {
+.pvtCheckContainer p input[type='checkbox'] {
   margin-right: 0.5rem;
 }
 
@@ -288,4 +288,3 @@ table.pvtTable .pvtTotalLabel {
 .pvtCheckContainer p:hover.pvtOnlySpacer {
   display: none;
 }
-

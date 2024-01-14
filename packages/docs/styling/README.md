@@ -1,4 +1,3 @@
-
 # Styling
 
 ## How to Styling?
@@ -21,9 +20,8 @@ This is very simple. Import the style from the dist and then define a new style.
 ::: details
 
 ```css
-
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 /* pvtUi */
@@ -37,8 +35,8 @@ table.pvtUi {
   line-height: 24px;
   vertical-align: top;
   border: 1px solid #dee2e6;
-} 
-table.pvtUi > :not(caption)> * > * {
+}
+table.pvtUi > :not(caption) > * > * {
   border: 1px solid #dee2e6;
 }
 table.pvtUi td {
@@ -68,9 +66,7 @@ table.pvtUi > tbody td:nth-child(1) {
   background-position: right 0.75rem center;
   background-size: 16px 12px;
   border: 1px solid #ced4da;
-  transition:
-    border-color .15s ease-in-out,
-    box-shadow .15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   appearance: none;
   outline: none;
 }
@@ -91,13 +87,13 @@ table.pvtUi > tbody td:nth-child(1) {
   text-decoration: none;
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 }
 
 /* pivot Axis Container */
 .pvtUi .pvtAxisContainer.pvtHorizList li {
   display: inline-flex;
-  margin-left: .125rem;
+  margin-left: 0.125rem;
   flex-wrap: wrap;
 }
 .pvtUi .pvtAxisContainer.pvtVertList.pvtRows {
@@ -105,7 +101,7 @@ table.pvtUi > tbody td:nth-child(1) {
 }
 .pvtUi .pvtAxisContainer.pvtVertList.pvtRows li {
   display: flex;
-  margin-bottom: .125rem;
+  margin-bottom: 0.125rem;
 }
 .pvtUi .pvtAxisContainer li {
   align-items: stretch;
@@ -144,7 +140,7 @@ table.pvtUi > tbody td:nth-child(1) {
   border: 1px solid #dee2e6;
   max-width: 600px;
   min-width: 210px;
-  min-height: 100px;;
+  min-height: 100px;
   color: #000;
   padding: 12px 8px;
 }
@@ -183,7 +179,7 @@ table.pvtTable th {
   border-style: solid;
   border-width: 0;
 }
-table.pvtTable > :not(caption)> * > * {
+table.pvtTable > :not(caption) > * > * {
   padding: 0.5rem 0.5rem;
   background-color: transparent;
   border-bottom-width: 1px;
@@ -204,28 +200,28 @@ table.pvtTable th {
   display: block;
   min-height: 1.5rem;
   padding-left: 1.5em;
-  margin-bottom: .125rem;
+  margin-bottom: 0.125rem;
 }
 .pvtCheckContainer p:not(:first-child) {
-  margin-top: .125rem;
+  margin-top: 0.125rem;
 }
 .pvtCheckContainer p:last-child {
   margin-bottom: 0;
 }
-.pvtCheckContainer p input[type="checkbox"] {
-  border-radius: .25em;
+.pvtCheckContainer p input[type='checkbox'] {
+  border-radius: 0.25em;
   float: left;
   margin-left: -1.5em;
   width: 1em;
   height: 1em;
   vertical-align: top;
-  border: 1px solid rgba(0, 0, 0, .25);
+  border: 1px solid rgba(0, 0, 0, 0.25);
   background-color: #fff;
   background-position: center;
   background-size: contain;
   appearance: none;
 }
-.pvtCheckContainer p.selected input[type="checkbox"] {
+.pvtCheckContainer p.selected input[type='checkbox'] {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
   background-color: #0d6efd;
   border-color: #0d6efd;
@@ -233,7 +229,7 @@ table.pvtTable th {
 .pvtCheckContainer p .pvtOnly {
   cursor: pointer;
   position: absolute;
-  right: .75rem;
+  right: 0.75rem;
   color: #0d6efd;
   font-size: 1rem;
   font-weight: 400;
@@ -246,10 +242,8 @@ table.pvtTable th {
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 0.375rem;
-  transition: color .15s ease-in-out,
-    background-color .15s ease-in-out,
-    border-color .15s ease-in-out,
-    box-shadow .15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .pvtCheckContainer .pvtOnly:hover {
   color: #0a58ca;
@@ -257,7 +251,7 @@ table.pvtTable th {
 
 /* pvtSearch */
 .pvtSearch {
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   color: #6c757d;
   font-size: 1rem;
   font-weight: 400;
@@ -265,15 +259,13 @@ table.pvtTable th {
   border: 1px solid #ced4da;
   border-radius: 0.375rem;
   outline: none;
-  transition: color .15s ease-in-out,
-    background-color .15s ease-in-out,
-    border-color .15s ease-in-out,
-    box-shadow .15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 /* pvtButton */
 .pvtButton {
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   color: #6c757d;
   font-size: 1rem;
   font-weight: 400;
@@ -286,10 +278,8 @@ table.pvtTable th {
   cursor: pointer;
   border: 1px solid #6c757d;
   border-radius: 0.375rem;
-  transition: color .15s ease-in-out,
-    background-color .15s ease-in-out,
-    border-color .15s ease-in-out,
-    box-shadow .15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .pvtButton:hover,
 .pvtButton:active {
@@ -320,7 +310,7 @@ table.pvtTable th {
   text-decoration: none;
 }
 /* media css */
-@media screen and (max-width:576px) {
+@media screen and (max-width: 576px) {
   .pvtRenderers {
     width: 100%;
   }
@@ -376,7 +366,7 @@ table.pvtUi td {
   padding: 0.75rem;
   overflow-x: auto;
 }
-table.pvtUi>tbody td:nth-child(1) {
+table.pvtUi > tbody td:nth-child(1) {
   width: 25%;
 }
 
@@ -385,7 +375,7 @@ table.pvtUi>tbody td:nth-child(1) {
   user-select: none;
   margin: 0;
   border: 1px solid #d8d6de;
-  border-radius: .357rem;
+  border-radius: 0.357rem;
   background-color: inherit;
   background-color: inherit;
   background-position: calc(100% - 12px) 13px, calc(100% - 20px) 13px, 100% 0;
@@ -451,7 +441,7 @@ table.pvtTable {
   width: 100%;
   text-align: left;
   border-collapse: collapse;
-  font-size: .857rem;
+  font-size: 0.857rem;
 }
 table.pvtTable thead tr th {
   vertical-align: top;
@@ -464,7 +454,7 @@ table.pvtTable thead tr th,
 table.pvtTable tbody tr th,
 table.pvtTable tbody tr td {
   border: 1px solid #ebe9f1;
-  padding: .3rem .5rem;
+  padding: 0.3rem 0.5rem;
 }
 
 table.pvtTable tbody tr td {
@@ -594,10 +584,10 @@ table.pvtTable .pvtTotalLabel {
   outline: none;
   display: block;
   width: 100%;
-  border-radius: .375rem;
+  border-radius: 0.375rem;
   border-color: #ebe9f1;
   margin-bottom: 5px;
-  padding: .438rem 1rem
+  padding: 0.438rem 1rem;
 }
 
 /* pvtSearchContainer */
@@ -627,7 +617,7 @@ table.pvtTable .pvtTotalLabel {
   cursor: default;
 }
 
-.pvtCheckContainer p input[type="checkbox"] {
+.pvtCheckContainer p input[type='checkbox'] {
   margin-right: 0.5rem;
 }
 

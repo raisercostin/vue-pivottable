@@ -1,16 +1,16 @@
 import { debounce } from 'lodash'
 import { PivotUtilities } from 'vue-pivottable'
 import defaultProps from './common'
-function redColorScaleGenerator (values) {
+function redColorScaleGenerator(values) {
   const min = Math.min.apply(Math, values)
   const max = Math.max.apply(Math, values)
   return x => {
     // eslint-disable-next-line no-magic-numbers
-    const nonRed = 255 - Math.round(255 * (x - min) / (max - min))
+    const nonRed = 255 - Math.round((255 * (x - min)) / (max - min))
     return { backgroundColor: `rgb(255,${nonRed},${nonRed})` }
   }
 }
-function makeRenderer (opts = {}) {
+function makeRenderer(opts = {}) {
   const scrollRenderer = {
     name: opts.name,
     mixins: [defaultProps],
@@ -45,7 +45,7 @@ function makeRenderer (opts = {}) {
         }
       }
     },
-    data () {
+    data() {
       return {
         scrollEvent: null,
         colStart: 0,
@@ -54,27 +54,27 @@ function makeRenderer (opts = {}) {
         rowEnd: 100
       }
     },
-    created () {
+    created() {
       this.colEnd = this.colLimit
       this.rowEnd = this.rowLimit
     },
     computed: {
-      pivotData () {
+      pivotData() {
         const props = { ...this.$props, ...this.$attrs.props }
         return new PivotUtilities.PivotData(props)
       },
-      maxRows () {
+      maxRows() {
         return this.pivotData.getRowKeys().length - 1
       },
-      maxCols () {
+      maxCols() {
         return this.pivotData.getColKeys().length - 1
       },
-      loaded () {
+      loaded() {
         return this.rowEnd >= this.maxRows && this.colEnd >= this.maxCols
       }
     },
     methods: {
-      isOverlap (arr, i, j) {
+      isOverlap(arr, i, j) {
         if (j === 0) return -1
         if (arr[j].length - 1 === i) return -1
         if (i === 0) {
@@ -82,11 +82,15 @@ function makeRenderer (opts = {}) {
           else return -1
         }
         while (i > 0) {
-          if (arr[j][i] === arr[j - 1][i] && arr[j][i - 1] === arr[j - 1][i - 1]) i--
+          if (
+            arr[j][i] === arr[j - 1][i] &&
+            arr[j][i - 1] === arr[j - 1][i - 1]
+          )
+            i--
           else return -1
         }
       },
-      handleKeydownendEvent (e) {
+      handleKeydownendEvent(e) {
         if (e.code === 'PageDown') {
           this.handleScrollRender()
         }
@@ -97,7 +101,7 @@ function makeRenderer (opts = {}) {
           this.handleScrollRender()
         }
       },
-      handleScrollRender () {
+      handleScrollRender() {
         if (this.rowEnd <= this.maxRows) {
           this.rowEnd += this.rowLimit
         }
@@ -106,28 +110,44 @@ function makeRenderer (opts = {}) {
         }
       }
     },
-    mounted () {
-      window.addEventListener('scroll', debounce(this.handleScrollRender.bind(this), 1000))
-      window.addEventListener('keydown', debounce(this.handleKeydownendEvent.bind(this), 1000))
+    mounted() {
+      window.addEventListener(
+        'scroll',
+        debounce(this.handleScrollRender.bind(this), 1000)
+      )
+      window.addEventListener(
+        'keydown',
+        debounce(this.handleKeydownendEvent.bind(this), 1000)
+      )
     },
-    destroyed () {
+    destroyed() {
       window.removeEventListener('scroll', this.handleScrollRender)
       window.removeEventListener('keydown', this.handleKeydownendEvent)
     },
-    render (h) {
+    render(h) {
       if (!this.pivotData) {
         return this.computeError(h)
       }
-      const { rowStart, rowEnd, colStart, colEnd, isOverlap, pivotData, rowTotal, colTotal, localeStrings } = this
+      const {
+        rowStart,
+        rowEnd,
+        colStart,
+        colEnd,
+        isOverlap,
+        pivotData,
+        rowTotal,
+        colTotal,
+        localeStrings
+      } = this
       const { cols: colAttrs, rows: rowAttrs } = pivotData.props
       const rowKeys = pivotData.getRowKeys()
       const colKeys = pivotData.getColKeys()
       // eslint-disable-next-line no-unused-vars
-      let valueCellColors = () => { }
+      let valueCellColors = () => {}
       // eslint-disable-next-line no-unused-vars
-      let rowTotalColors = () => { }
+      let rowTotalColors = () => {}
       // eslint-disable-next-line no-unused-vars
-      let colTotalColors = () => { }
+      let colTotalColors = () => {}
       if (opts.heatmapMode) {
         const colorScaleGenerator = this.tableColorScaleGenerator
         const rowTotalValues = colKeys.map(x =>
@@ -197,68 +217,81 @@ function makeRenderer (opts = {}) {
           if (!colKeys.hasOwnProperty(j)) continue
           const x = isOverlap(colKeys, i, j)
           elements.push(
-            h('th', {
-              class: {
-                pvtColLabel: true
+            h(
+              'th',
+              {
+                class: {
+                  pvtColLabel: true
+                },
+                style: {
+                  'border-right': 'none',
+                  'border-left': x !== -1 ? 'none' : null
+                },
+                attrs: {
+                  rowspan:
+                    i === colAttrs.length - 1 && rowAttrs.length ? 2 : null
+                }
               },
-              style: {
-                'border-right': 'none',
-                'border-left': x !== -1 ? 'none' : null
-              },
-              attrs: {
-                rowspan: (i === colAttrs.length - 1) && rowAttrs.length ? 2 : null
-              }
-            }, x === -1 ? colKeys[j][i] : null)
+              x === -1 ? colKeys[j][i] : null
+            )
           )
         }
         if (rowTotal && i === 0) {
           elements.push(
-            h('th', {
-              className: {
-                pvtTotalLabel: true,
-                pvtRowTotalLabel: true
+            h(
+              'th',
+              {
+                className: {
+                  pvtTotalLabel: true,
+                  pvtRowTotalLabel: true
+                },
+                attrs: {
+                  rowspan: colAttrs.length + (rowAttrs.length === 0 ? 0 : 1)
+                }
               },
-              attrs: {
-                rowspan: colAttrs.length + (rowAttrs.length === 0 ? 0 : 1)
-              }
-            }, localeStrings.totals)
+              localeStrings.totals
+            )
           )
         }
         return elements
       }
-      const theadThTotal = (h) => {
-        return rowAttrs.length !== 0 ? h('tr',
-          [
-            rowAttrs.map((r, i) => {
-              return h('th', {
-                class: {
-                  pvtAxisLabel: true
-                },
-                attrs: {
-                  key: `rowAttr${i}`
-                }
-              }, r)
-            }),
-            rowTotal || colAttrs.length ? h('th', {
-              class: {
-                pvtTotalLabel: true
-              }
-            }, '') : null
-          ]
-        ) : null
+      const theadThTotal = h => {
+        return rowAttrs.length !== 0
+          ? h('tr', [
+              rowAttrs.map((r, i) => {
+                return h(
+                  'th',
+                  {
+                    class: {
+                      pvtAxisLabel: true
+                    },
+                    attrs: {
+                      key: `rowAttr${i}`
+                    }
+                  },
+                  r
+                )
+              }),
+              rowTotal || colAttrs.length
+                ? h(
+                    'th',
+                    {
+                      class: {
+                        pvtTotalLabel: true
+                      }
+                    },
+                    ''
+                  )
+                : null
+            ])
+          : null
       }
       const tbodyTr = (h, colIndex, rowIndex) => {
         const elements = []
         const [rowStart, rowEnd] = rowIndex
         for (let i = rowStart; i < rowEnd; i++) {
           if (!rowKeys.hasOwnProperty(i)) continue
-          elements.push(
-            h('tr', [
-              tbodyTrTh(h, i),
-              tbodyTrTd(h, i, colIndex)
-            ]
-            )
-          )
+          elements.push(h('tr', [tbodyTrTh(h, i), tbodyTrTd(h, i, colIndex)]))
         }
         return elements
       }
@@ -269,19 +302,23 @@ function makeRenderer (opts = {}) {
           if (!rowKey.hasOwnProperty(j)) continue
           const x = isOverlap(rowKeys, j, i)
           elements.push(
-            h('th', {
-              className: {
-                pvtRowLabel: true
+            h(
+              'th',
+              {
+                className: {
+                  pvtRowLabel: true
+                },
+                style: {
+                  'border-bottom': 'none',
+                  'border-top': x !== -1 ? 'none' : null
+                },
+                attrs: {
+                  key: `rowKeyLabel${i}-${j}`,
+                  colspan: colAttrs.length && j === rowKey.length - 1 ? 2 : null
+                }
               },
-              style: {
-                'border-bottom': 'none',
-                'border-top': x !== -1 ? 'none' : null
-              },
-              attrs: {
-                key: `rowKeyLabel${i}-${j}`,
-                colspan: colAttrs.length && j === rowKey.length - 1 ? 2 : null
-              }
-            }, x === -1 ? rowKey[j] : null)
+              x === -1 ? rowKey[j] : null
+            )
           )
         }
         return elements
@@ -296,18 +333,24 @@ function makeRenderer (opts = {}) {
           const aggregator = pivotData.getAggregator(rowKey, colKey)
           const val = aggregator.value()
           elements.push(
-            h('td', {
-              class: {
-                pvVal: true
+            h(
+              'td',
+              {
+                class: {
+                  pvVal: true
+                },
+                style: valueCellColors(rowKey, colKey, val),
+                attrs: {
+                  key: `pvtVal${i}-${j}`
+                },
+                on: this.tableOptions.clickCallback
+                  ? {
+                      click: getClickHandler(val, rowKey, colKey)
+                    }
+                  : {}
               },
-              style: valueCellColors(rowKey, colKey, val),
-              attrs: {
-                key: `pvtVal${i}-${j}`
-              },
-              on: this.tableOptions.clickCallback ? {
-                click: getClickHandler(val, rowKey, colKey)
-              } : {}
-            }, aggregator.format(val))
+              aggregator.format(val)
+            )
           )
         }
         if (rowTotal) elements.push(rowTotalTd(h, i))
@@ -316,25 +359,37 @@ function makeRenderer (opts = {}) {
       const rowTotalTd = (h, i) => {
         const rowKey = rowKeys[i]
         const totalAggregator = pivotData.getAggregator(rowKey, [])
-        return h('td', {
-          class: {
-            pvtTotal: true
+        return h(
+          'td',
+          {
+            class: {
+              pvtTotal: true
+            },
+            style: colTotalColors(totalAggregator.value()),
+            on: this.tableOptions.clickCallback
+              ? {
+                  click: getClickHandler(totalAggregator.value(), rowKey, [])
+                }
+              : {}
           },
-          style: colTotalColors(totalAggregator.value()),
-          on: this.tableOptions.clickCallback ? {
-            click: getClickHandler(totalAggregator.value(), rowKey, [])
-          } : {}
-        }, totalAggregator.format(totalAggregator.value()))
+          totalAggregator.format(totalAggregator.value())
+        )
       }
-      const colTotalTh = (h) => {
-        return colTotal ? h('th', {
-          class: {
-            pvtTotalLabel: true
-          },
-          attrs: {
-            colspan: rowAttrs.length + (colAttrs.length === 0 ? 0 : 1)
-          }
-        }, localeStrings.totals) : null
+      const colTotalTh = h => {
+        return colTotal
+          ? h(
+              'th',
+              {
+                class: {
+                  pvtTotalLabel: true
+                },
+                attrs: {
+                  colspan: rowAttrs.length + (colAttrs.length === 0 ? 0 : 1)
+                }
+              },
+              localeStrings.totals
+            )
+          : null
       }
       const colTotalTd = (h, colIndex) => {
         const [colStart, colEnd] = colIndex
@@ -343,81 +398,120 @@ function makeRenderer (opts = {}) {
           if (!colKeys.hasOwnProperty(i)) continue
           const colKey = colKeys[i]
           const totalAggregator = pivotData.getAggregator([], colKey)
-          elements.push(h('td', {
-            staticClass: ['pvtTotal'],
-            style: rowTotalColors(totalAggregator.value()),
-            attrs: {
-              key: `total${i}`
-            },
-            on: this.tableOptions.clickCallback ? {
-              click: getClickHandler(totalAggregator.value(), [], colKey)
-            } : {}
-          }, totalAggregator.format(totalAggregator.value())))
+          elements.push(
+            h(
+              'td',
+              {
+                staticClass: ['pvtTotal'],
+                style: rowTotalColors(totalAggregator.value()),
+                attrs: {
+                  key: `total${i}`
+                },
+                on: this.tableOptions.clickCallback
+                  ? {
+                      click: getClickHandler(
+                        totalAggregator.value(),
+                        [],
+                        colKey
+                      )
+                    }
+                  : {}
+              },
+              totalAggregator.format(totalAggregator.value())
+            )
+          )
         }
         return elements
       }
-      const grandTotalTd = (h) => {
+      const grandTotalTd = h => {
         const grandTotalAggregator = pivotData.getAggregator([], [])
-        return colTotal && rowTotal ? h('td', {
-          staticClass: ['pvtGrandTotal'],
-          on: this.tableOptions.clickCallback ? {
-            click: getClickHandler(grandTotalAggregator.value(), [], [])
-          } : {}
-        }, grandTotalAggregator.format(grandTotalAggregator.value())) : undefined
-      }
-      return h('table', {
-        ref: 'pvtOutput',
-        staticClass: ['pvtTable']
-      }, [
-        h('thead',
-          [
-            colAttrs.map((c, j) => {
-              return h('tr', {
-                attrs: {
-                  key: `colAttrs${j}`
-                }
+        return colTotal && rowTotal
+          ? h(
+              'td',
+              {
+                staticClass: ['pvtGrandTotal'],
+                on: this.tableOptions.clickCallback
+                  ? {
+                      click: getClickHandler(
+                        grandTotalAggregator.value(),
+                        [],
+                        []
+                      )
+                    }
+                  : {}
               },
-              [
-                j === 0 && rowAttrs.length !== 0 ? h('th', {
+              grandTotalAggregator.format(grandTotalAggregator.value())
+            )
+          : undefined
+      }
+      return h(
+        'table',
+        {
+          ref: 'pvtOutput',
+          staticClass: ['pvtTable']
+        },
+        [
+          h('thead', [
+            colAttrs.map((c, j) => {
+              return h(
+                'tr',
+                {
                   attrs: {
-                    colspan: rowAttrs.length,
-                    rowspan: colAttrs.length
+                    key: `colAttrs${j}`
                   }
-                }) : null,
-                h('th', {
-                  class: {
-                    pvtAxisLabel: true
-                  }
-                }, c),
-                theadTh(h, j, [colStart, colEnd])
-              ])
+                },
+                [
+                  j === 0 && rowAttrs.length !== 0
+                    ? h('th', {
+                        attrs: {
+                          colspan: rowAttrs.length,
+                          rowspan: colAttrs.length
+                        }
+                      })
+                    : null,
+                  h(
+                    'th',
+                    {
+                      class: {
+                        pvtAxisLabel: true
+                      }
+                    },
+                    c
+                  ),
+                  theadTh(h, j, [colStart, colEnd])
+                ]
+              )
             }),
             theadThTotal(h)
-          ]
-        ),
-        h('tbody',
-          [
+          ]),
+          h('tbody', [
             tbodyTr(h, [colStart, colEnd], [rowStart, rowEnd]),
-            !this.loaded && rowEnd < this.maxRows ? h('tr', [
-              h('td', {
-                style: {
-                  'text-align': 'center'
-                },
-                attrs: {
-                  colspan: rowAttrs.length + colEnd + 1
-                }
-              }, 'loading...')
-            ]) : null,
+            !this.loaded && rowEnd < this.maxRows
+              ? h('tr', [
+                  h(
+                    'td',
+                    {
+                      style: {
+                        'text-align': 'center'
+                      },
+                      attrs: {
+                        colspan: rowAttrs.length + colEnd + 1
+                      }
+                    },
+                    'loading...'
+                  )
+                ])
+              : null,
             h('tr', [
               colTotalTh(h),
               colTotalTd(h, [colStart, colEnd]),
               grandTotalTd(h)
             ])
-          ]
-        )
-      ])
+          ])
+        ]
+      )
     },
-    renderError (h, error) {
+    renderError(h, error) {
       return this.computeError(h)
     }
   }
@@ -425,8 +519,17 @@ function makeRenderer (opts = {}) {
 }
 
 export default {
-  'Table': makeRenderer({ name: 'vue-table' }),
-  'Table Heatmap': makeRenderer({ heatmapMode: 'full', name: 'vue-table-heatmap' }),
-  'Table Col Heatmap': makeRenderer({ heatmapMode: 'col', name: 'vue-table-col-heatmap' }),
-  'Table Row Heatmap': makeRenderer({ heatmapMode: 'row', name: 'vue-table-col-heatmap' })
+  Table: makeRenderer({ name: 'vue-table' }),
+  'Table Heatmap': makeRenderer({
+    heatmapMode: 'full',
+    name: 'vue-table-heatmap'
+  }),
+  'Table Col Heatmap': makeRenderer({
+    heatmapMode: 'col',
+    name: 'vue-table-col-heatmap'
+  }),
+  'Table Row Heatmap': makeRenderer({
+    heatmapMode: 'row',
+    name: 'vue-table-col-heatmap'
+  })
 }

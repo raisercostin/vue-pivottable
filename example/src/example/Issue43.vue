@@ -1,10 +1,5 @@
 <template>
-  <VuePivottableUi
-    :data="pivotData"
-    :rows="rows"
-    :cols="cols"
-    :vals="vals"
-  >
+  <VuePivottableUi :data="pivotData" :rows="rows" :cols="cols" :vals="vals">
     <template v-slot:pvtAttr="{ name }">
       {{ name.toUpperCase() }}
     </template>
@@ -19,7 +14,7 @@ import tips from '../tips'
 export default {
   name: 'PivotTable',
   components: { VuePivottableUi },
-  data () {
+  data() {
     return {
       pivotData: tips,
       aggregatorName: 'Sum',
@@ -29,12 +24,10 @@ export default {
       vals: ['Total Bill']
     }
   },
-  mounted () {
+  mounted() {
     console.log(this.pivotData)
   }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

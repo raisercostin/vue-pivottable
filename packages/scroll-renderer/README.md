@@ -3,20 +3,23 @@
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scroll Renderer</title>
-  <link rel="stylesheet" href="https://unpkg.com/vue-pivottable@0.4.5/dist/vue-pivottable.css">
-  <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
-  <script src="https://unpkg.com/vue-pivottable@0.4.5/dist/vue-pivottable.umd.js"></script>
-  <script src="dist/scroll-renderer.umd.js"></script>
-</head>
-<body>
-  <div id="app">
-    <vue-pivottable-ui
-      :data="[
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll Renderer</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/vue-pivottable@0.4.5/dist/vue-pivottable.css"
+    />
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-pivottable@0.4.5/dist/vue-pivottable.umd.js"></script>
+    <script src="dist/scroll-renderer.umd.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <vue-pivottable-ui
+        :data="[
               ['unix', 'date', 'symbol', 'open', 'high', 'low', 'close', 'Volume BTC', 'Volume USD'],
               [1646092800, '2022-03-01 00:00:00', 'BTC/USD', 43221.71, 43626.49, 43185.48, 43185.48, 49.0062887, 2116360.10052808],
               [1646006400, '2022-02-28 00:00:00', 'BTC/USD', 37717.1, 44256.08, 37468.99, 43178.98, 3160.61807044, 136472264.451167],
@@ -2670,34 +2673,34 @@
               [1417219200, '2014-11-29 00:00:00', 'BTC/USD', 376.42, 386.6, 372.25, 376.72, 2746157.05, 7245.19],
               [1417132800, '2014-11-28 00:00:00', 'BTC/USD', 363.59, 381.34, 360.57, 376.28, 3220878.18, 8617.15]
             ]"
-      renderer-name="Table"
-      aggregator-name="Sum"
-      :renderers="renderers"
-      :rows="['date']"
-      :cols="['symbol']"
-      :vals="['Volume BTC']"
-      :row-limit="200"
-      :col-limit="200"
-      :row-total="true"
-      :col-total="true"
-    >
-    </vue-pivottable-ui>
-  </div>
-  <script type="text/javascript">
-    Vue.use(VuePivottable.default)
-    new Vue({
-      el: '#app',
-      computed: {
-        renderers () {
-          return (() => ({
-            Table: ScrollRenderer.Table,
-            'Scroll Table': ScrollRenderer.Table,
-            'Table Heatmap': ScrollRenderer['Table Heatmap'],
-          }))()
+        renderer-name="Table"
+        aggregator-name="Sum"
+        :renderers="renderers"
+        :rows="['date']"
+        :cols="['symbol']"
+        :vals="['Volume BTC']"
+        :row-limit="200"
+        :col-limit="200"
+        :row-total="true"
+        :col-total="true"
+      >
+      </vue-pivottable-ui>
+    </div>
+    <script type="text/javascript">
+      Vue.use(VuePivottable.default)
+      new Vue({
+        el: '#app',
+        computed: {
+          renderers() {
+            return (() => ({
+              Table: ScrollRenderer.Table,
+              'Scroll Table': ScrollRenderer.Table,
+              'Table Heatmap': ScrollRenderer['Table Heatmap']
+            }))()
+          }
         }
-      }
-    })
-  </script>
-</body>
+      })
+    </script>
+  </body>
 </html>
 ```

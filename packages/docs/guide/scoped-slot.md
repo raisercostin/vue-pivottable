@@ -1,4 +1,3 @@
-
 # Scoped Slot
 
 For more information on ScopedSlot, see the [official Vue documentation](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots).

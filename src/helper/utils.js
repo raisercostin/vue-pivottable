@@ -1,4 +1,3 @@
-
 const addSeparators = function (nStr, thousandsSep, decimalSep) {
   const x = String(nStr).split('.')
   let x1 = x[0]
@@ -235,12 +234,14 @@ const aggregatorTemplates = {
               }
             }
             if (
-              mode === 'first' && this.sorter(x, this.val !== null ? this.val : x) <= 0
+              mode === 'first' &&
+              this.sorter(x, this.val !== null ? this.val : x) <= 0
             ) {
               this.val = x
             }
             if (
-              mode === 'last' && this.sorter(x, this.val !== null ? this.val : x) >= 0
+              mode === 'last' &&
+              this.sorter(x, this.val !== null ? this.val : x) >= 0
             ) {
               this.val = x
             }
@@ -350,7 +351,8 @@ const aggregatorTemplates = {
             return this.sumNum / this.sumDenom
           },
           format: formatter,
-          numInputs: typeof num !== 'undefined' && typeof denom !== 'undefined' ? 0 : 2
+          numInputs:
+            typeof num !== 'undefined' && typeof denom !== 'undefined' ? 0 : 2
         }
       }
     }
@@ -360,7 +362,9 @@ const aggregatorTemplates = {
     return (...x) =>
       function (data, rowKey, colKey) {
         return {
-          selector: { total: [[], []], row: [rowKey, []], col: [[], colKey] }[type],
+          selector: { total: [[], []], row: [rowKey, []], col: [[], colKey] }[
+            type
+          ],
           inner: wrapped(...Array.from(x || []))(data, rowKey, colKey),
           push (record) {
             this.inner.push(record)
@@ -368,7 +372,10 @@ const aggregatorTemplates = {
           format: formatter,
           value () {
             return (
-              this.inner.value() / data.getAggregator(...Array.from(this.selector || [])).inner.value()
+              this.inner.value() /
+              data
+                .getAggregator(...Array.from(this.selector || []))
+                .inner.value()
             )
           },
           numInputs: wrapped(...Array.from(x || []))().numInputs
@@ -377,16 +384,23 @@ const aggregatorTemplates = {
   }
 }
 
-aggregatorTemplates.countUnique = f => aggregatorTemplates.uniques(x => x.length, f)
-aggregatorTemplates.listUnique = s => aggregatorTemplates.uniques(x => x.join(s), x => x)
+aggregatorTemplates.countUnique = f =>
+  aggregatorTemplates.uniques(x => x.length, f)
+aggregatorTemplates.listUnique = s =>
+  aggregatorTemplates.uniques(
+    x => x.join(s),
+    x => x
+  )
 aggregatorTemplates.max = f => aggregatorTemplates.extremes('max', f)
 aggregatorTemplates.min = f => aggregatorTemplates.extremes('min', f)
 aggregatorTemplates.first = f => aggregatorTemplates.extremes('first', f)
 aggregatorTemplates.last = f => aggregatorTemplates.extremes('last', f)
 aggregatorTemplates.median = f => aggregatorTemplates.quantile(0.5, f)
 aggregatorTemplates.average = f => aggregatorTemplates.runningStat('mean', 1, f)
-aggregatorTemplates.var = (ddof, f) => aggregatorTemplates.runningStat('var', ddof, f)
-aggregatorTemplates.stdev = (ddof, f) => aggregatorTemplates.runningStat('stdev', ddof, f)
+aggregatorTemplates.var = (ddof, f) =>
+  aggregatorTemplates.runningStat('var', ddof, f)
+aggregatorTemplates.stdev = (ddof, f) =>
+  aggregatorTemplates.runningStat('stdev', ddof, f)
 
 // default aggregators & renderers use US naming and number formatting
 const aggregators = (tpl => ({
@@ -430,11 +444,31 @@ const frAggregators = (tpl => ({
   Dernier: tpl.last(usFmt),
   'Somme Total': tpl.sumOverSum(usFmt),
   'Somme en fraction du total': tpl.fractionOf(tpl.sum(), 'total', usFmtPct),
-  'Somme en tant que fraction de lignes': tpl.fractionOf(tpl.sum(), 'row', usFmtPct),
-  'Somme en tant que fraction de colonnes': tpl.fractionOf(tpl.sum(), 'col', usFmtPct),
-  'Comptage en tant que fraction du total': tpl.fractionOf(tpl.count(), 'total', usFmtPct),
-  'Comptage en tant que fraction de lignes': tpl.fractionOf(tpl.count(), 'row', usFmtPct),
-  'Comptage en tant que fraction de colonnes': tpl.fractionOf(tpl.count(), 'col', usFmtPct)
+  'Somme en tant que fraction de lignes': tpl.fractionOf(
+    tpl.sum(),
+    'row',
+    usFmtPct
+  ),
+  'Somme en tant que fraction de colonnes': tpl.fractionOf(
+    tpl.sum(),
+    'col',
+    usFmtPct
+  ),
+  'Comptage en tant que fraction du total': tpl.fractionOf(
+    tpl.count(),
+    'total',
+    usFmtPct
+  ),
+  'Comptage en tant que fraction de lignes': tpl.fractionOf(
+    tpl.count(),
+    'row',
+    usFmtPct
+  ),
+  'Comptage en tant que fraction de colonnes': tpl.fractionOf(
+    tpl.count(),
+    'col',
+    usFmtPct
+  )
 }))(aggregatorTemplates)
 
 const locales = {
@@ -460,7 +494,8 @@ const locales = {
     localeStrings: {
       renderError: 'Une erreur est survenue en dessinant le tableau croisé.',
       computeError: 'Une erreur est survenue en calculant le tableau croisé.',
-      uiRenderError: "Une erreur est survenue en dessinant l'interface du tableau croisé dynamique.",
+      uiRenderError:
+        "Une erreur est survenue en dessinant l'interface du tableau croisé dynamique.",
       selectAll: 'Sélectionner tout',
       selectNone: 'Ne rien sélectionner',
       tooMany: '(trop de valeurs à afficher)',
@@ -495,7 +530,7 @@ const zeroPad = number => `0${number}`.substr(-2, 2) // eslint-disable-line no-m
 
 const derivers = {
   bin (col, binWidth) {
-    return record => record[col] - record[col] % binWidth
+    return record => record[col] - (record[col] % binWidth)
   },
   dateFormat (
     col,

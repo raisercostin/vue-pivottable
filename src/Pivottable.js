@@ -2,41 +2,42 @@ import TableRenderer from './TableRenderer'
 import defaultProps from './helper/common'
 export default {
   name: 'vue-pivottable',
-  mixins: [
-    defaultProps
-  ],
+  mixins: [defaultProps],
   computed: {
-    rendererItems () {
+    rendererItems() {
       return this.renderers || Object.assign({}, TableRenderer)
     }
   },
   methods: {
-    createPivottable (h) {
+    createPivottable(h) {
       const props = this.$props
       return h(this.rendererItems[this.rendererName], {
-        props: Object.assign(
-          props,
-          { localeStrings: props.locales[props.locale].localeStrings }
-        )
+        props: Object.assign(props, {
+          localeStrings: props.locales[props.locale].localeStrings
+        })
       })
     },
-    createWrapperContainer (h) {
-      return h('div', {
-        style: {
-          display: 'block',
-          width: '100%',
-          'overflow-x': 'auto',
-          'max-width': this.tableMaxWidth ? `${this.tableMaxWidth}px` : undefined
-        }
-      }, [
-        this.createPivottable(h)
-      ])
+    createWrapperContainer(h) {
+      return h(
+        'div',
+        {
+          style: {
+            display: 'block',
+            width: '100%',
+            'overflow-x': 'auto',
+            'max-width': this.tableMaxWidth
+              ? `${this.tableMaxWidth}px`
+              : undefined
+          }
+        },
+        [this.createPivottable(h)]
+      )
     }
   },
-  render (h) {
+  render(h) {
     return this.createWrapperContainer(h)
   },
-  renderError (h, error) {
+  renderError(h, error) {
     return this.renderError(h)
   }
 }
