@@ -1,4 +1,3 @@
-
 # Vue Pivottable
 
 It is a Vue port of the jQuery-based [PivotTable.js](https://pivottable.js.org/)
@@ -7,13 +6,16 @@ It is a Vue port of the jQuery-based [PivotTable.js](https://pivottable.js.org/)
 [![npm](https://flat.badgen.net/npm/dt/vue-pivottable)](https://npmjs.com/package/vue-pivottable)
 [![npm](https://flat.badgen.net/npm/license/vue-pivottable)](https://flat.badgen.net/npm/license/vue-pivottable)
 [![jsdelivr](https://data.jsdelivr.com/v1/package/npm/vue-pivottable/badge)](https://www.jsdelivr.com/package/npm/vue-pivottable)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Documentation
 
-You can view the documentation at <https://seungwoo321.github.io/vue-pivottable>. 
+You can view the documentation at <https://seungwoo321.github.io/vue-pivottable>.
 It's also lighter by removing `vue-plotly` from the dependencies.
 
 ## Live Demo
@@ -48,7 +50,7 @@ npm i vue-pivottable
 
 ## Usage
 
-* Vue Pivottable
+- Vue Pivottable
 
 ```html
 <template>
@@ -61,17 +63,17 @@ npm i vue-pivottable
 </template>
 
 <script>
-import { VuePivottable } from 'vue-pivottable'
-import 'vue-pivottable/dist/vue-pivottable.css'
-export default {
-  components: {
-    VuePivottable
+  import { VuePivottable } from 'vue-pivottable'
+  import 'vue-pivottable/dist/vue-pivottable.css'
+  export default {
+    components: {
+      VuePivottable
+    }
   }
-}
 </script>
 ```
 
-* Vue Pivottable Ui
+- Vue Pivottable Ui
 
 ```html
 <template>
@@ -84,17 +86,17 @@ export default {
 </template>
 
 <script>
-import { VuePivottableUi } from 'vue-pivottable'
-import 'vue-pivottable/dist/vue-pivottable.css'
-export default {
-  components: {
-    VuePivottableUi
+  import { VuePivottableUi } from 'vue-pivottable'
+  import 'vue-pivottable/dist/vue-pivottable.css'
+  export default {
+    components: {
+      VuePivottableUi
+    }
   }
-}
 </script>
 ```
 
-* Plotly renderer
+- Plotly renderer
 
   [See docs](https://seungwoo321.github.io/vue-pivottable/guide/renderer.html#plotly-renderer-v0-4-6)
 
@@ -111,29 +113,29 @@ export default {
 </template>
 
 <script>
-import { VuePivottableUi } from 'vue-pivottable'
-import PlotlyRenderer from '@vue-pivottable/plotly-renderer'
-import 'vue-pivottable/dist/vue-pivottable.css'
-export default {
-  components: {
-    VuePivottableUi
-  },
-  computed: {
-    renderers () {
-      return (() => ({
-        'Grouped Column Chart': PlotlyRenderer['Grouped Column Chart'],
-        'Stacked Column Chart': PlotlyRenderer['Stacked Column Chart'],
-        'Grouped Bar Chart': PlotlyRenderer['Grouped Bar Chart'],
-        'Stacked Bar Chart': PlotlyRenderer['Stacked Bar Chart'],
-        'Line Chart': PlotlyRenderer['Line Chart'],
-        'Dot Chart': PlotlyRenderer['Dot Chart'],
-        'Area Chart': PlotlyRenderer['Area Chart'],
-        'Scatter Chart': PlotlyRenderer['Scatter Chart'],
-        'Multiple Pie Chart': PlotlyRenderer['Multiple Pie Chart']
-      }))()
+  import { VuePivottableUi } from 'vue-pivottable'
+  import PlotlyRenderer from '@vue-pivottable/plotly-renderer'
+  import 'vue-pivottable/dist/vue-pivottable.css'
+  export default {
+    components: {
+      VuePivottableUi
+    },
+    computed: {
+      renderers() {
+        return (() => ({
+          'Grouped Column Chart': PlotlyRenderer['Grouped Column Chart'],
+          'Stacked Column Chart': PlotlyRenderer['Stacked Column Chart'],
+          'Grouped Bar Chart': PlotlyRenderer['Grouped Bar Chart'],
+          'Stacked Bar Chart': PlotlyRenderer['Stacked Bar Chart'],
+          'Line Chart': PlotlyRenderer['Line Chart'],
+          'Dot Chart': PlotlyRenderer['Dot Chart'],
+          'Area Chart': PlotlyRenderer['Area Chart'],
+          'Scatter Chart': PlotlyRenderer['Scatter Chart'],
+          'Multiple Pie Chart': PlotlyRenderer['Multiple Pie Chart']
+        }))()
+      }
     }
   }
-}
 </script>
 ```
 
@@ -167,8 +169,8 @@ export default {
 
 ## Inspired
 
-* [plotly/react-pivottable](https://github.com/plotly/react-pivottable) - React-based pivot table library
-* [David-Desmaisons/vue-plotly](https://github.com/David-Desmaisons/vue-plotly) - vue wrapper for plotly.js
+- [plotly/react-pivottable](https://github.com/plotly/react-pivottable) - React-based pivot table library
+- [David-Desmaisons/vue-plotly](https://github.com/David-Desmaisons/vue-plotly) - vue wrapper for plotly.js
 
 ## License
 

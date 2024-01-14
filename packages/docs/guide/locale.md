@@ -22,41 +22,35 @@ const locales = {
     }
   }
 }
-export {
-  locales
-}
+export { locales }
 ```
 
 If you want to add a new language add both `locale` and `locales` props.
 
 ```js
-import { PivotUtilities } from "vue-pivottable";
+import { PivotUtilities } from 'vue-pivottable'
 
 const locales = {
   en: PivotUtilities.locales.en,
   ko: {
     aggregators: PivotUtilities.aggregators,
     localeStrings: {
-      renderError:
-        "피벗 테이블 결과를 렌더링하는 동안 오류가 발생 했습니다.",
-      computeError:
-        "피벗 테이블 결과를 계산하는 동안 오류가 발생 했습니다.",
-      uiRenderError:
-        "피벗 테이블 UI를 렌더링하는 동안 오류가 발생 했습니다.",
-      selectAll: "모두 선택",
-      selectNone: "선택 안함",
-      tooMany: "표시 할 값이 너무 많습니다.",
-      filterResults: "값 필터링",
-      totals: "합계",
-      only: "단독",
-      vs: "vs",
-      by: "by",
-    },
-  },
+      renderError: '피벗 테이블 결과를 렌더링하는 동안 오류가 발생 했습니다.',
+      computeError: '피벗 테이블 결과를 계산하는 동안 오류가 발생 했습니다.',
+      uiRenderError: '피벗 테이블 UI를 렌더링하는 동안 오류가 발생 했습니다.',
+      selectAll: '모두 선택',
+      selectNone: '선택 안함',
+      tooMany: '표시 할 값이 너무 많습니다.',
+      filterResults: '값 필터링',
+      totals: '합계',
+      only: '단독',
+      vs: 'vs',
+      by: 'by'
+    }
+  }
 }
 
 const locale = 'en' // or 'ko'
-
 ```
 
 ## Example

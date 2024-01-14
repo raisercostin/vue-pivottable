@@ -1,11 +1,10 @@
-
 module.exports = {
   base: '/vue-pivottable/',
   locales: {
     '/': {
       lang: 'en-US',
       title: 'VuePivottable',
-      description: 'It is a Vue port of the jQuery-based PivotTable.js',
+      description: 'It is a Vue port of the jQuery-based PivotTable.js'
     }
     // '/ko/': {
     //   lang: 'ko-KR',
@@ -14,28 +13,33 @@ module.exports = {
     // },
   },
   plugins: [
+    ['@vuepress/back-to-top'],
+    ['@vuepress/nprogress'],
     [
-      '@vuepress/back-to-top'
-    ],
-    [
-      '@vuepress/nprogress'
-    ],
-    [
-      '@vuepress/pwa', {
+      '@vuepress/pwa',
+      {
         serviceWorker: true,
         updatePopup: true
       }
     ],
     [
-      '@vuepress/google-analytics', {
-        'ga': 'G-G8TZ5WYL3Z'
+      '@vuepress/google-analytics',
+      {
+        ga: 'G-G8TZ5WYL3Z'
       }
-    ],
+    ]
   ],
   head: [
     ['meta', { name: 'application-name', content: 'VuePivottable' }],
     ['meta', { name: 'apple-mobile-web-app-title', content: 'VuePivottable' }],
-    ['script', { async: true, src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7701657858733816', crossorigin: 'anonymous'}]
+    [
+      'script',
+      {
+        async: true,
+        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7701657858733816',
+        crossorigin: 'anonymous'
+      }
+    ]
   ],
   themeConfig: {
     repo: 'seungwoo321/vue-pivottable',
@@ -74,21 +78,12 @@ function getGuideSidebar(groupA, groupB) {
     {
       title: groupA,
       collapsable: false,
-      children: [
-        '',
-        'getting-started'
-      ]
+      children: ['', 'getting-started']
     },
     {
       title: groupB,
       collapsable: false,
-      children: [
-        'locale',
-        'slot',
-        'scoped-slot',
-        'utilities',
-        'renderer'
-      ]
+      children: ['locale', 'slot', 'scoped-slot', 'utilities', 'renderer']
     }
   ]
 }

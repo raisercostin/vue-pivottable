@@ -4,8 +4,8 @@
 
 ### Direct Download / CDN
 
-* unpkg: <https://unpkg.com/vue-pivottable@latest/dist/vue-pivottable.umd.min.js>
-* jsdelivr: <https://cdn.jsdelivr.net/npm/vue-pivottable@latest/dist/vue-pivottable.umd.min.js>
+- unpkg: <https://unpkg.com/vue-pivottable@latest/dist/vue-pivottable.umd.min.js>
+- jsdelivr: <https://cdn.jsdelivr.net/npm/vue-pivottable@latest/dist/vue-pivottable.umd.min.js>
 
 Include vue-pivottable after Vue:
 
@@ -30,7 +30,10 @@ Import and use a component.
 ```vue
 <template>
   <vue-pivottable
-    :data="[{color: 'blue', shape: 'circle'},{color: 'red', shape: 'triangle'}]"
+    :data="[
+      { color: 'blue', shape: 'circle' },
+      { color: 'red', shape: 'triangle' }
+    ]"
     :rows="['color']"
     :cols="['shape']"
   >
@@ -55,7 +58,10 @@ export default {
 ```vue
 <template>
   <vue-pivottable-ui
-    :data="[{color: 'blue', shape: 'circle'},{color: 'red', shape: 'triangle'}]"
+    :data="[
+      { color: 'blue', shape: 'circle' },
+      { color: 'red', shape: 'triangle' }
+    ]"
     :rows="['color']"
     :cols="['shape']"
   >

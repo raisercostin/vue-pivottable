@@ -2,7 +2,12 @@ import { PivotUtilities } from 'vue-pivottable'
 import defaultProps from './common'
 import { Plotly } from '@seungwoo321/vue-plotly'
 
-function makeRenderer (opts = {}, traceOptions = {}, layoutOptions = {}, transpose = false) {
+function makeRenderer(
+  opts = {},
+  traceOptions = {},
+  layoutOptions = {},
+  transpose = false
+) {
   const plotlyRenderer = {
     name: opts.name,
     mixins: [defaultProps],
@@ -14,7 +19,7 @@ function makeRenderer (opts = {}, traceOptions = {}, layoutOptions = {}, transpo
         }
       }
     },
-    render (h) {
+    render(h) {
       const pivotData = new PivotUtilities.PivotData(this.$props)
       const rowKeys = pivotData.getRowKeys()
       const colKeys = pivotData.getColKeys()
@@ -24,7 +29,8 @@ function makeRenderer (opts = {}, traceOptions = {}, layoutOptions = {}, transpo
       if (datumKeys.length === 0) datumKeys.push([])
 
       let fullAggName = this.$props.aggregatorName
-      const numInputs = this.$props.aggregators[fullAggName]([])().numInputs || 0
+      const numInputs =
+        this.$props.aggregators[fullAggName]([])().numInputs || 0
       if (numInputs !== 0) {
         fullAggName += ` of ${this.$props.vals.slice(0, numInputs).join(', ')}`
       }
@@ -33,10 +39,12 @@ function makeRenderer (opts = {}, traceOptions = {}, layoutOptions = {}, transpo
         const labels = []
         for (const datumKey of datumKeys) {
           const val = parseFloat(
-            pivotData.getAggregator(
-              transpose ? datumKey : traceKey,
-              transpose ? traceKey : datumKey
-            ).value()
+            pivotData
+              .getAggregator(
+                transpose ? datumKey : traceKey,
+                transpose ? traceKey : datumKey
+              )
+              .value()
           )
           values.push(isFinite(val) ? val : null)
           labels.push(datumKey.join('-') || ' ')
@@ -53,8 +61,12 @@ function makeRenderer (opts = {}, traceOptions = {}, layoutOptions = {}, transpo
       })
 
       let titleText = fullAggName
-      const hAxisTitle = transpose ? this.$props.rows.join('-') : this.$props.cols.join('-')
-      const groupByTitle = transpose ? this.$props.cols.join('-') : this.$props.rows.join('-')
+      const hAxisTitle = transpose
+        ? this.$props.rows.join('-')
+        : this.$props.cols.join('-')
+      const groupByTitle = transpose
+        ? this.$props.cols.join('-')
+        : this.$props.rows.join('-')
       if (hAxisTitle !== '') titleText += ` vs ${hAxisTitle}`
       if (groupByTitle !== '') titleText += ` by ${groupByTitle}`
 
@@ -94,7 +106,8 @@ function makeRenderer (opts = {}, traceOptions = {}, layoutOptions = {}, transpo
       return h(Plotly, {
         props: {
           data,
-          layout: Object.assign({},
+          layout: Object.assign(
+            {},
             layout,
             layoutOptions,
             this.$props.plotlyOptions
@@ -105,7 +118,7 @@ function makeRenderer (opts = {}, traceOptions = {}, layoutOptions = {}, transpo
   }
   return plotlyRenderer
 }
-function makeScatterRenderer (opts = {}) {
+function makeScatterRenderer(opts = {}) {
   const scatterRenderer = {
     name: opts.name,
     mixins: [defaultProps],
@@ -117,7 +130,7 @@ function makeScatterRenderer (opts = {}) {
         }
       }
     },
-    render (h) {
+    render(h) {
       const pivotData = new PivotUtilities.PivotData(this.$props)
       const rowKeys = pivotData.getRowKeys()
       const colKeys = pivotData.getColKeys()
@@ -149,10 +162,7 @@ function makeScatterRenderer (opts = {}) {
         props: {
           data: [data],
 
-          layout: Object.assign({},
-            layout,
-            this.$props.plotlyOptions
-          )
+          layout: Object.assign({}, layout, this.$props.plotlyOptions)
         }
       })
     }
@@ -161,13 +171,41 @@ function makeScatterRenderer (opts = {}) {
 }
 
 export default {
-  'Grouped Column Chart': makeRenderer({ name: 'vue-grouped-column-chart' }, { type: 'bar' }, { barmode: 'group' }),
-  'Stacked Column Chart': makeRenderer({ name: 'vue-stacked-column-chart' }, { type: 'bar' }, { barmode: 'relative' }),
-  'Grouped Bar Chart': makeRenderer({ name: 'groupd-bar-chart' }, { type: 'bar', orientation: 'h' }, { barmode: 'group' }, true),
-  'Stacked Bar Chart': makeRenderer({ name: 'vue-stacked-bar-chart' }, { type: 'bar', orientation: 'h' }, { barmode: 'relative' }, true),
+  'Grouped Column Chart': makeRenderer(
+    { name: 'vue-grouped-column-chart' },
+    { type: 'bar' },
+    { barmode: 'group' }
+  ),
+  'Stacked Column Chart': makeRenderer(
+    { name: 'vue-stacked-column-chart' },
+    { type: 'bar' },
+    { barmode: 'relative' }
+  ),
+  'Grouped Bar Chart': makeRenderer(
+    { name: 'groupd-bar-chart' },
+    { type: 'bar', orientation: 'h' },
+    { barmode: 'group' },
+    true
+  ),
+  'Stacked Bar Chart': makeRenderer(
+    { name: 'vue-stacked-bar-chart' },
+    { type: 'bar', orientation: 'h' },
+    { barmode: 'relative' },
+    true
+  ),
   'Line Chart': makeRenderer({ name: 'vue-line-chart' }),
-  'Dot Chart': makeRenderer({ name: 'vue-dot-chart' }, { mode: 'markers' }, {}, true),
+  'Dot Chart': makeRenderer(
+    { name: 'vue-dot-chart' },
+    { mode: 'markers' },
+    {},
+    true
+  ),
   'Area Chart': makeRenderer({ name: 'vue-area-chart' }, { stackgroup: 1 }),
   'Scatter Chart': makeScatterRenderer({ name: 'vue-scatter-chart' }),
-  'Multiple Pie Chart': makeRenderer({ name: 'vue-multiple-pie-chart' }, { type: 'pie', scalegroup: 1, hoverinfo: 'label+value', textinfo: 'none' }, {}, true)
+  'Multiple Pie Chart': makeRenderer(
+    { name: 'vue-multiple-pie-chart' },
+    { type: 'pie', scalegroup: 1, hoverinfo: 'label+value', textinfo: 'none' },
+    {},
+    true
+  )
 }

@@ -1,4 +1,3 @@
-
 # Introduction
 
 ## VuePivottable이 무엇인가요?
@@ -18,8 +17,8 @@ jQuery 기반 PivotTable.js를 Vue로 포팅한 것입니다.
 
 ## Inspired
 
-* [plotly/react-pivottable](https://github.com/plotly/react-pivottable) - React-based pivot table library
-* [David-Desmaisons/vue-plotly](https://github.com/David-Desmaisons/vue-plotly) - vue wrapper for plotly.js
+- [plotly/react-pivottable](https://github.com/plotly/react-pivottable) - React-based pivot table library
+- [David-Desmaisons/vue-plotly](https://github.com/David-Desmaisons/vue-plotly) - vue wrapper for plotly.js
 
 ## License
 

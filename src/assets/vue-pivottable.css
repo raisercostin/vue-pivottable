@@ -1,6 +1,5 @@
-
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 .pvtUi {
@@ -9,14 +8,14 @@
   color: #2a3f5f;
   font-family: Verdana;
   border-collapse: collapse;
-} 
+}
 .pvtUi select {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -khtml-user-select: none;
   -ms-user-select: none;
-  border-radius: 5px ;
+  border-radius: 5px;
 }
 .pvtUi td {
   overflow-x: auto;
@@ -101,11 +100,11 @@ table.pvtTable tbody tr td {
   user-select: none;
   width: 25%;
 }
-@media screen and (max-width:576px) {
+@media screen and (max-width: 576px) {
   .pvtRenderers {
     width: 100%;
   }
-  .pvtAxisContainer{
+  .pvtAxisContainer {
     display: none;
   }
 }

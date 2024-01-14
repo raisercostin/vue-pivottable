@@ -4,9 +4,7 @@ import vue from '@vitejs/plugin-vue2'
 
 export default defineConfig(({ command, mode, ssrBuild }) => {
   return {
-    plugins: [
-      vue()
-    ],
+    plugins: [vue()],
     publicDir: false,
     build: {
       type: ['es', 'umd'],

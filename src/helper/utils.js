@@ -1,4 +1,3 @@
-
 const addSeparators = function (nStr, thousandsSep, decimalSep) {
   const x = String(nStr).split('.')
   let x1 = x[0]
@@ -161,15 +160,15 @@ const usFmtPct = numberFormat({
 })
 
 const aggregatorTemplates = {
-  count (formatter = usFmtInt) {
+  count(formatter = usFmtInt) {
     return () =>
       function () {
         return {
           count: 0,
-          push () {
+          push() {
             this.count++
           },
-          value () {
+          value() {
             return this.count
           },
           format: formatter
@@ -177,17 +176,17 @@ const aggregatorTemplates = {
       }
   },
 
-  uniques (fn, formatter = usFmtInt) {
+  uniques(fn, formatter = usFmtInt) {
     return function ([attr]) {
       return function () {
         return {
           uniq: [],
-          push (record) {
+          push(record) {
             if (!Array.from(this.uniq).includes(record[attr])) {
               this.uniq.push(record[attr])
             }
           },
-          value () {
+          value() {
             return fn(this.uniq)
           },
           format: formatter,
@@ -197,17 +196,17 @@ const aggregatorTemplates = {
     }
   },
 
-  sum (formatter = usFmt) {
+  sum(formatter = usFmt) {
     return function ([attr]) {
       return function () {
         return {
           sum: 0,
-          push (record) {
+          push(record) {
             if (!isNaN(parseFloat(record[attr]))) {
               this.sum += parseFloat(record[attr])
             }
           },
-          value () {
+          value() {
             return this.sum
           },
           format: formatter,
@@ -217,7 +216,7 @@ const aggregatorTemplates = {
     }
   },
 
-  extremes (mode, formatter = usFmt) {
+  extremes(mode, formatter = usFmt) {
     return function ([attr]) {
       return function (data) {
         return {
@@ -226,7 +225,7 @@ const aggregatorTemplates = {
             typeof data !== 'undefined' ? data.sorters : null,
             attr
           ),
-          push (record) {
+          push(record) {
             let x = record[attr]
             if (['min', 'max'].includes(mode)) {
               x = parseFloat(x)
@@ -235,20 +234,22 @@ const aggregatorTemplates = {
               }
             }
             if (
-              mode === 'first' && this.sorter(x, this.val !== null ? this.val : x) <= 0
+              mode === 'first' &&
+              this.sorter(x, this.val !== null ? this.val : x) <= 0
             ) {
               this.val = x
             }
             if (
-              mode === 'last' && this.sorter(x, this.val !== null ? this.val : x) >= 0
+              mode === 'last' &&
+              this.sorter(x, this.val !== null ? this.val : x) >= 0
             ) {
               this.val = x
             }
           },
-          value () {
+          value() {
             return this.val
           },
-          format (x) {
+          format(x) {
             if (isNaN(x)) {
               return x
             }
@@ -260,18 +261,18 @@ const aggregatorTemplates = {
     }
   },
 
-  quantile (q, formatter = usFmt) {
+  quantile(q, formatter = usFmt) {
     return function ([attr]) {
       return function () {
         return {
           vals: [],
-          push (record) {
+          push(record) {
             const x = parseFloat(record[attr])
             if (!isNaN(x)) {
               this.vals.push(x)
             }
           },
-          value () {
+          value() {
             if (this.vals.length === 0) {
               return null
             }
@@ -286,14 +287,14 @@ const aggregatorTemplates = {
     }
   },
 
-  runningStat (mode = 'mean', ddof = 1, formatter = usFmt) {
+  runningStat(mode = 'mean', ddof = 1, formatter = usFmt) {
     return function ([attr]) {
       return function () {
         return {
           n: 0.0,
           m: 0.0,
           s: 0.0,
-          push (record) {
+          push(record) {
             const x = parseFloat(record[attr])
             if (isNaN(x)) {
               return
@@ -306,7 +307,7 @@ const aggregatorTemplates = {
             this.s = this.s + (x - this.m) * (x - mNew)
             this.m = mNew
           },
-          value () {
+          value() {
             if (mode === 'mean') {
               if (this.n === 0) {
                 return 0 / 0
@@ -332,13 +333,13 @@ const aggregatorTemplates = {
     }
   },
 
-  sumOverSum (formatter = usFmt) {
+  sumOverSum(formatter = usFmt) {
     return function ([num, denom]) {
       return function () {
         return {
           sumNum: 0,
           sumDenom: 0,
-          push (record) {
+          push(record) {
             if (!isNaN(parseFloat(record[num]))) {
               this.sumNum += parseFloat(record[num])
             }
@@ -346,29 +347,35 @@ const aggregatorTemplates = {
               this.sumDenom += parseFloat(record[denom])
             }
           },
-          value () {
+          value() {
             return this.sumNum / this.sumDenom
           },
           format: formatter,
-          numInputs: typeof num !== 'undefined' && typeof denom !== 'undefined' ? 0 : 2
+          numInputs:
+            typeof num !== 'undefined' && typeof denom !== 'undefined' ? 0 : 2
         }
       }
     }
   },
 
-  fractionOf (wrapped, type = 'total', formatter = usFmtPct) {
+  fractionOf(wrapped, type = 'total', formatter = usFmtPct) {
     return (...x) =>
       function (data, rowKey, colKey) {
         return {
-          selector: { total: [[], []], row: [rowKey, []], col: [[], colKey] }[type],
+          selector: { total: [[], []], row: [rowKey, []], col: [[], colKey] }[
+            type
+          ],
           inner: wrapped(...Array.from(x || []))(data, rowKey, colKey),
-          push (record) {
+          push(record) {
             this.inner.push(record)
           },
           format: formatter,
-          value () {
+          value() {
             return (
-              this.inner.value() / data.getAggregator(...Array.from(this.selector || [])).inner.value()
+              this.inner.value() /
+              data
+                .getAggregator(...Array.from(this.selector || []))
+                .inner.value()
             )
           },
           numInputs: wrapped(...Array.from(x || []))().numInputs
@@ -377,16 +384,23 @@ const aggregatorTemplates = {
   }
 }
 
-aggregatorTemplates.countUnique = f => aggregatorTemplates.uniques(x => x.length, f)
-aggregatorTemplates.listUnique = s => aggregatorTemplates.uniques(x => x.join(s), x => x)
+aggregatorTemplates.countUnique = f =>
+  aggregatorTemplates.uniques(x => x.length, f)
+aggregatorTemplates.listUnique = s =>
+  aggregatorTemplates.uniques(
+    x => x.join(s),
+    x => x
+  )
 aggregatorTemplates.max = f => aggregatorTemplates.extremes('max', f)
 aggregatorTemplates.min = f => aggregatorTemplates.extremes('min', f)
 aggregatorTemplates.first = f => aggregatorTemplates.extremes('first', f)
 aggregatorTemplates.last = f => aggregatorTemplates.extremes('last', f)
 aggregatorTemplates.median = f => aggregatorTemplates.quantile(0.5, f)
 aggregatorTemplates.average = f => aggregatorTemplates.runningStat('mean', 1, f)
-aggregatorTemplates.var = (ddof, f) => aggregatorTemplates.runningStat('var', ddof, f)
-aggregatorTemplates.stdev = (ddof, f) => aggregatorTemplates.runningStat('stdev', ddof, f)
+aggregatorTemplates.var = (ddof, f) =>
+  aggregatorTemplates.runningStat('var', ddof, f)
+aggregatorTemplates.stdev = (ddof, f) =>
+  aggregatorTemplates.runningStat('stdev', ddof, f)
 
 // default aggregators & renderers use US naming and number formatting
 const aggregators = (tpl => ({
@@ -430,11 +444,31 @@ const frAggregators = (tpl => ({
   Dernier: tpl.last(usFmt),
   'Somme Total': tpl.sumOverSum(usFmt),
   'Somme en fraction du total': tpl.fractionOf(tpl.sum(), 'total', usFmtPct),
-  'Somme en tant que fraction de lignes': tpl.fractionOf(tpl.sum(), 'row', usFmtPct),
-  'Somme en tant que fraction de colonnes': tpl.fractionOf(tpl.sum(), 'col', usFmtPct),
-  'Comptage en tant que fraction du total': tpl.fractionOf(tpl.count(), 'total', usFmtPct),
-  'Comptage en tant que fraction de lignes': tpl.fractionOf(tpl.count(), 'row', usFmtPct),
-  'Comptage en tant que fraction de colonnes': tpl.fractionOf(tpl.count(), 'col', usFmtPct)
+  'Somme en tant que fraction de lignes': tpl.fractionOf(
+    tpl.sum(),
+    'row',
+    usFmtPct
+  ),
+  'Somme en tant que fraction de colonnes': tpl.fractionOf(
+    tpl.sum(),
+    'col',
+    usFmtPct
+  ),
+  'Comptage en tant que fraction du total': tpl.fractionOf(
+    tpl.count(),
+    'total',
+    usFmtPct
+  ),
+  'Comptage en tant que fraction de lignes': tpl.fractionOf(
+    tpl.count(),
+    'row',
+    usFmtPct
+  ),
+  'Comptage en tant que fraction de colonnes': tpl.fractionOf(
+    tpl.count(),
+    'col',
+    usFmtPct
+  )
 }))(aggregatorTemplates)
 
 const locales = {
@@ -460,7 +494,8 @@ const locales = {
     localeStrings: {
       renderError: 'Une erreur est survenue en dessinant le tableau croisé.',
       computeError: 'Une erreur est survenue en calculant le tableau croisé.',
-      uiRenderError: "Une erreur est survenue en dessinant l'interface du tableau croisé dynamique.",
+      uiRenderError:
+        "Une erreur est survenue en dessinant l'interface du tableau croisé dynamique.",
       selectAll: 'Sélectionner tout',
       selectNone: 'Ne rien sélectionner',
       tooMany: '(trop de valeurs à afficher)',
@@ -494,10 +529,10 @@ const dayNamesEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const zeroPad = number => `0${number}`.substr(-2, 2) // eslint-disable-line no-magic-numbers
 
 const derivers = {
-  bin (col, binWidth) {
-    return record => record[col] - record[col] % binWidth
+  bin(col, binWidth) {
+    return record => record[col] - (record[col] % binWidth)
   },
-  dateFormat (
+  dateFormat(
     col,
     formatString,
     utcOutput = false,
@@ -543,7 +578,7 @@ Data Model class
 */
 
 class PivotData {
-  constructor (inputProps = {}) {
+  constructor(inputProps = {}) {
     this.props = Object.assign({}, PivotData.defaultProps, inputProps)
     this.aggregator = this.props.aggregators[this.props.aggregatorName](
       this.props.vals
@@ -568,7 +603,7 @@ class PivotData {
       }
     )
   }
-  filter (record) {
+  filter(record) {
     for (const k in this.props.valueFilter) {
       if (record[k] in this.props.valueFilter[k]) {
         return false
@@ -577,7 +612,7 @@ class PivotData {
     return true
   }
 
-  forEachMatchingRecord (criteria, callback) {
+  forEachMatchingRecord(criteria, callback) {
     return PivotData.forEachRecord(
       this.props.data,
       this.props.derivedAttributes,
@@ -596,7 +631,7 @@ class PivotData {
     )
   }
 
-  arrSort (attrs) {
+  arrSort(attrs) {
     let a
     const sortersArr = (() => {
       const result = []
@@ -617,7 +652,7 @@ class PivotData {
     }
   }
 
-  sortKeys () {
+  sortKeys() {
     if (!this.sorted) {
       this.sorted = true
       const v = (r, c) => this.getAggregator(r, c).value()
@@ -644,21 +679,21 @@ class PivotData {
     }
   }
 
-  getFilteredData () {
+  getFilteredData() {
     return this.filteredData
   }
 
-  getColKeys () {
+  getColKeys() {
     this.sortKeys()
     return this.colKeys
   }
 
-  getRowKeys () {
+  getRowKeys() {
     this.sortKeys()
     return this.rowKeys
   }
 
-  processRecord (record) {
+  processRecord(record) {
     // this code is called in a tight loop
     const colKey = []
     const rowKey = []
@@ -704,7 +739,7 @@ class PivotData {
     }
   }
 
-  getAggregator (rowKey, colKey) {
+  getAggregator(rowKey, colKey) {
     let agg
     const flatRowKey = rowKey.join(String.fromCharCode(0))
     const flatColKey = colKey.join(String.fromCharCode(0))
@@ -719,10 +754,10 @@ class PivotData {
     }
     return (
       agg || {
-        value () {
+        value() {
           return null
         },
-        format () {
+        format() {
           return ''
         }
       }
