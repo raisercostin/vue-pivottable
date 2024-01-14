@@ -242,8 +242,8 @@ table.pvtTable th {
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 0.375rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow
+      0.15s ease-in-out;
 }
 .pvtCheckContainer .pvtOnly:hover {
   color: #0a58ca;
@@ -259,8 +259,8 @@ table.pvtTable th {
   border: 1px solid #ced4da;
   border-radius: 0.375rem;
   outline: none;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow
+      0.15s ease-in-out;
 }
 
 /* pvtButton */
@@ -278,8 +278,8 @@ table.pvtTable th {
   cursor: pointer;
   border: 1px solid #6c757d;
   border-radius: 0.375rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow
+      0.15s ease-in-out;
 }
 .pvtButton:hover,
 .pvtButton:active {

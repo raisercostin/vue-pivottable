@@ -8,10 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scroll Renderer</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/vue-pivottable@0.4.5/dist/vue-pivottable.css"
-    />
+    <link rel="stylesheet" href="https://unpkg.com/vue-pivottable@0.4.5/dist/vue-pivottable.css" />
     <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-pivottable@0.4.5/dist/vue-pivottable.umd.js"></script>
     <script src="dist/scroll-renderer.umd.js"></script>

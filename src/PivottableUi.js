@@ -69,23 +69,13 @@ export default {
       return this.aggregators || aggregators
     },
     numValsAllowed() {
-      return (
-        this.aggregatorItems[this.propsData.aggregatorName]([])().numInputs || 0
-      )
+      return this.aggregatorItems[this.propsData.aggregatorName]([])().numInputs || 0
     },
     rowAttrs() {
-      return this.propsData.rows.filter(
-        e =>
-          !this.hiddenAttributes.includes(e) &&
-          !this.hiddenFromDragDrop.includes(e)
-      )
+      return this.propsData.rows.filter(e => !this.hiddenAttributes.includes(e) && !this.hiddenFromDragDrop.includes(e))
     },
     colAttrs() {
-      return this.propsData.cols.filter(
-        e =>
-          !this.hiddenAttributes.includes(e) &&
-          !this.hiddenFromDragDrop.includes(e)
-      )
+      return this.propsData.cols.filter(e => !this.hiddenAttributes.includes(e) && !this.hiddenFromDragDrop.includes(e))
     },
     unusedAttrs() {
       return this.propsData.attributes
@@ -210,8 +200,7 @@ export default {
     },
     attributes: {
       handler(value) {
-        this.propsData.attributes =
-          value.length > 0 ? value : Object.keys(this.attrValues)
+        this.propsData.attributes = value.length > 0 ? value : Object.keys(this.attrValues)
       },
       deep: true
     },
@@ -256,10 +245,7 @@ export default {
       this.propsData.colOrder = this.colOrder
       this.propsData.rendererName = this.rendererName
       this.propsData.aggregatorName = this.aggregatorName
-      this.propsData.attributes =
-        this.attributes.length > 0
-          ? this.attributes
-          : Object.keys(this.attrValues)
+      this.propsData.attributes = this.attributes.length > 0 ? this.attributes : Object.keys(this.attrValues)
       this.unusedOrder = this.unusedAttrs
       const allSelector = '*'
       Object.entries(this.attrValues).forEach(([key, values]) => {
@@ -317,29 +303,25 @@ export default {
       const attrValues = {}
       const materializedInput = []
       let recordsProcessed = 0
-      PivotData.forEachRecord(
-        this.pivotData,
-        this.derivedAttributes,
-        function (record) {
-          materializedInput.push(record)
-          for (const attr of Object.keys(record)) {
-            if (!(attr in attrValues)) {
-              attrValues[attr] = {}
-              if (recordsProcessed > 0) {
-                attrValues[attr].null = recordsProcessed
-              }
+      PivotData.forEachRecord(this.pivotData, this.derivedAttributes, function (record) {
+        materializedInput.push(record)
+        for (const attr of Object.keys(record)) {
+          if (!(attr in attrValues)) {
+            attrValues[attr] = {}
+            if (recordsProcessed > 0) {
+              attrValues[attr].null = recordsProcessed
             }
           }
-          for (const attr in attrValues) {
-            const value = attr in record ? record[attr] : 'null'
-            if (!(value in attrValues[attr])) {
-              attrValues[attr][value] = 0
-            }
-            attrValues[attr][value]++
-          }
-          recordsProcessed++
         }
-      )
+        for (const attr in attrValues) {
+          const value = attr in record ? record[attr] : 'null'
+          if (!(value in attrValues[attr])) {
+            attrValues[attr][value] = 0
+          }
+          attrValues[attr][value]++
+        }
+        recordsProcessed++
+      })
       this.materializedInput = materializedInput
       this.attrValues = attrValues
     },
@@ -373,12 +355,8 @@ export default {
                   }
                 : undefined,
               props: {
-                sortable:
-                  this.sortonlyFromDragDrop.includes(x) ||
-                  !this.disabledFromDragDrop.includes(x),
-                draggable:
-                  !this.sortonlyFromDragDrop.includes(x) &&
-                  !this.disabledFromDragDrop.includes(x),
+                sortable: this.sortonlyFromDragDrop.includes(x) || !this.disabledFromDragDrop.includes(x),
+                draggable: !this.sortonlyFromDragDrop.includes(x) && !this.disabledFromDragDrop.includes(x),
                 name: x,
                 key: x,
                 attrValues: this.attrValues[x],
@@ -426,10 +404,7 @@ export default {
                 on: {
                   input: value => {
                     this.propUpdater('rendererName')(value)
-                    this.propUpdater(
-                      'renderer',
-                      this.rendererItems[this.rendererName]
-                    )
+                    this.propUpdater('renderer', this.rendererItems[this.rendererName])
                   }
                 }
               })
@@ -472,9 +447,7 @@ export default {
                     },
                     on: {
                       click: () => {
-                        this.propUpdater('rowOrder')(
-                          this.sortIcons[this.propsData.rowOrder].next
-                        )
+                        this.propUpdater('rowOrder')(this.sortIcons[this.propsData.rowOrder].next)
                       }
                     }
                   },
@@ -489,9 +462,7 @@ export default {
                     },
                     on: {
                       click: () => {
-                        this.propUpdater('colOrder')(
-                          this.sortIcons[this.propsData.colOrder].next
-                        )
+                        this.propUpdater('colOrder')(this.sortIcons[this.propsData.colOrder].next)
                       }
                     }
                   },
@@ -503,9 +474,7 @@ export default {
                     h(Dropdown, {
                       props: {
                         values: Object.keys(this.attrValues).filter(
-                          e =>
-                            !this.hiddenAttributes.includes(e) &&
-                            !this.hiddenFromAggregators.includes(e)
+                          e => !this.hiddenAttributes.includes(e) && !this.hiddenFromAggregators.includes(e)
                         ),
                         value: vals[i]
                       },
@@ -547,8 +516,7 @@ export default {
         const item = e.item.getAttribute('data-id')
         if (
           this.sortonlyFromDragDrop.includes(item) &&
-          (!e.from.classList.contains('pvtUnused') ||
-            !e.to.classList.contains('pvtUnused'))
+          (!e.from.classList.contains('pvtUnused') || !e.to.classList.contains('pvtUnused'))
         ) {
           return
         }
@@ -572,8 +540,7 @@ export default {
         const item = e.item.getAttribute('data-id')
         if (
           this.sortonlyFromDragDrop.includes(item) &&
-          (!e.from.classList.contains('pvtCols') ||
-            !e.to.classList.contains('pvtCols'))
+          (!e.from.classList.contains('pvtCols') || !e.to.classList.contains('pvtCols'))
         ) {
           return
         }
@@ -595,8 +562,7 @@ export default {
         const item = e.item.getAttribute('data-id')
         if (
           this.sortonlyFromDragDrop.includes(item) &&
-          (!e.from.classList.contains('pvtRows') ||
-            !e.to.classList.contains('pvtRows'))
+          (!e.from.classList.contains('pvtRows') || !e.to.classList.contains('pvtRows'))
         ) {
           return
         }
@@ -638,11 +604,7 @@ export default {
     }
     const rendererCell = this.rendererCell(rendererName, h)
     const aggregatorCell = this.aggregatorCell(aggregatorName, vals, h)
-    const outputCell = this.outputCell(
-      props,
-      rendererName.indexOf('Chart') > -1,
-      h
-    )
+    const outputCell = this.outputCell(props, rendererName.indexOf('Chart') > -1, h)
     const colGroupSlot = this.$slots.colGroup
     return h(
       'table',
@@ -663,15 +625,9 @@ export default {
             h('tr', [aggregatorCell, colAttrsCell]),
             h('tr', [
               rowAttrsCell,
-              outputSlot
-                ? h('td', { staticClass: 'pvtOutput' }, outputSlot)
-                : undefined,
+              outputSlot ? h('td', { staticClass: 'pvtOutput' }, outputSlot) : undefined,
               outputScopedSlot && !outputSlot
-                ? h(
-                    'td',
-                    { staticClass: 'pvtOutput' },
-                    outputScopedSlot({ pivotData })
-                  )
+                ? h('td', { staticClass: 'pvtOutput' }, outputScopedSlot({ pivotData }))
                 : undefined,
               !outputSlot && !outputScopedSlot ? outputCell : undefined
             ])

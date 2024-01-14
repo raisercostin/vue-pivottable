@@ -21,15 +21,7 @@ const usFmtPct = PivotUtilities.numberFormat({
 ```js
 const sorters = function () {
   return {
-    'Day of Week': PivotUtilities.sortAs([
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday'
-    ])
+    'Day of Week': PivotUtilities.sortAs(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
   }
 }
 ```
@@ -87,8 +79,7 @@ const locales = {
     localeStrings: {
       renderError: 'Une erreur est survenue en dessinant le tableau croisé.',
       computeError: 'Une erreur est survenue en calculant le tableau croisé.',
-      uiRenderError:
-        "Une erreur est survenue en dessinant l'interface du tableau croisé dynamique.",
+      uiRenderError: "Une erreur est survenue en dessinant l'interface du tableau croisé dynamique.",
       selectAll: 'Sélectionner tout',
       selectNone: 'Ne rien sélectionner',
       tooMany: '(trop de valeurs à afficher)',

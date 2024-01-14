@@ -23,11 +23,7 @@ const numberFormat = function (optsIn) {
     if (isNaN(x) || !isFinite(x)) {
       return ''
     }
-    const result = addSeparators(
-      (opts.scaler * x).toFixed(opts.digitsAfterDecimal),
-      opts.thousandsSep,
-      opts.decimalSep
-    )
+    const result = addSeparators((opts.scaler * x).toFixed(opts.digitsAfterDecimal), opts.thousandsSep, opts.decimalSep)
     return `${opts.prefix}${result}${opts.suffix}`
   }
 }
@@ -221,10 +217,7 @@ const aggregatorTemplates = {
       return function (data) {
         return {
           val: null,
-          sorter: getSort(
-            typeof data !== 'undefined' ? data.sorters : null,
-            attr
-          ),
+          sorter: getSort(typeof data !== 'undefined' ? data.sorters : null, attr),
           push (record) {
             let x = record[attr]
             if (['min', 'max'].includes(mode)) {
@@ -233,16 +226,10 @@ const aggregatorTemplates = {
                 this.val = Math[mode](x, this.val !== null ? this.val : x)
               }
             }
-            if (
-              mode === 'first' &&
-              this.sorter(x, this.val !== null ? this.val : x) <= 0
-            ) {
+            if (mode === 'first' && this.sorter(x, this.val !== null ? this.val : x) <= 0) {
               this.val = x
             }
-            if (
-              mode === 'last' &&
-              this.sorter(x, this.val !== null ? this.val : x) >= 0
-            ) {
+            if (mode === 'last' && this.sorter(x, this.val !== null ? this.val : x) >= 0) {
               this.val = x
             }
           },
@@ -351,8 +338,7 @@ const aggregatorTemplates = {
             return this.sumNum / this.sumDenom
           },
           format: formatter,
-          numInputs:
-            typeof num !== 'undefined' && typeof denom !== 'undefined' ? 0 : 2
+          numInputs: typeof num !== 'undefined' && typeof denom !== 'undefined' ? 0 : 2
         }
       }
     }
@@ -362,21 +348,14 @@ const aggregatorTemplates = {
     return (...x) =>
       function (data, rowKey, colKey) {
         return {
-          selector: { total: [[], []], row: [rowKey, []], col: [[], colKey] }[
-            type
-          ],
+          selector: { total: [[], []], row: [rowKey, []], col: [[], colKey] }[type],
           inner: wrapped(...Array.from(x || []))(data, rowKey, colKey),
           push (record) {
             this.inner.push(record)
           },
           format: formatter,
           value () {
-            return (
-              this.inner.value() /
-              data
-                .getAggregator(...Array.from(this.selector || []))
-                .inner.value()
-            )
+            return this.inner.value() / data.getAggregator(...Array.from(this.selector || [])).inner.value()
           },
           numInputs: wrapped(...Array.from(x || []))().numInputs
         }
@@ -384,8 +363,7 @@ const aggregatorTemplates = {
   }
 }
 
-aggregatorTemplates.countUnique = f =>
-  aggregatorTemplates.uniques(x => x.length, f)
+aggregatorTemplates.countUnique = f => aggregatorTemplates.uniques(x => x.length, f)
 aggregatorTemplates.listUnique = s =>
   aggregatorTemplates.uniques(
     x => x.join(s),
@@ -397,10 +375,8 @@ aggregatorTemplates.first = f => aggregatorTemplates.extremes('first', f)
 aggregatorTemplates.last = f => aggregatorTemplates.extremes('last', f)
 aggregatorTemplates.median = f => aggregatorTemplates.quantile(0.5, f)
 aggregatorTemplates.average = f => aggregatorTemplates.runningStat('mean', 1, f)
-aggregatorTemplates.var = (ddof, f) =>
-  aggregatorTemplates.runningStat('var', ddof, f)
-aggregatorTemplates.stdev = (ddof, f) =>
-  aggregatorTemplates.runningStat('stdev', ddof, f)
+aggregatorTemplates.var = (ddof, f) => aggregatorTemplates.runningStat('var', ddof, f)
+aggregatorTemplates.stdev = (ddof, f) => aggregatorTemplates.runningStat('stdev', ddof, f)
 
 // default aggregators & renderers use US naming and number formatting
 const aggregators = (tpl => ({
@@ -444,31 +420,11 @@ const frAggregators = (tpl => ({
   Dernier: tpl.last(usFmt),
   'Somme Total': tpl.sumOverSum(usFmt),
   'Somme en fraction du total': tpl.fractionOf(tpl.sum(), 'total', usFmtPct),
-  'Somme en tant que fraction de lignes': tpl.fractionOf(
-    tpl.sum(),
-    'row',
-    usFmtPct
-  ),
-  'Somme en tant que fraction de colonnes': tpl.fractionOf(
-    tpl.sum(),
-    'col',
-    usFmtPct
-  ),
-  'Comptage en tant que fraction du total': tpl.fractionOf(
-    tpl.count(),
-    'total',
-    usFmtPct
-  ),
-  'Comptage en tant que fraction de lignes': tpl.fractionOf(
-    tpl.count(),
-    'row',
-    usFmtPct
-  ),
-  'Comptage en tant que fraction de colonnes': tpl.fractionOf(
-    tpl.count(),
-    'col',
-    usFmtPct
-  )
+  'Somme en tant que fraction de lignes': tpl.fractionOf(tpl.sum(), 'row', usFmtPct),
+  'Somme en tant que fraction de colonnes': tpl.fractionOf(tpl.sum(), 'col', usFmtPct),
+  'Comptage en tant que fraction du total': tpl.fractionOf(tpl.count(), 'total', usFmtPct),
+  'Comptage en tant que fraction de lignes': tpl.fractionOf(tpl.count(), 'row', usFmtPct),
+  'Comptage en tant que fraction de colonnes': tpl.fractionOf(tpl.count(), 'col', usFmtPct)
 }))(aggregatorTemplates)
 
 const locales = {
@@ -494,8 +450,7 @@ const locales = {
     localeStrings: {
       renderError: 'Une erreur est survenue en dessinant le tableau croisé.',
       computeError: 'Une erreur est survenue en calculant le tableau croisé.',
-      uiRenderError:
-        "Une erreur est survenue en dessinant l'interface du tableau croisé dynamique.",
+      uiRenderError: "Une erreur est survenue en dessinant l'interface du tableau croisé dynamique.",
       selectAll: 'Sélectionner tout',
       selectNone: 'Ne rien sélectionner',
       tooMany: '(trop de valeurs à afficher)',
@@ -511,20 +466,7 @@ const locales = {
 }
 
 // dateFormat deriver l10n requires month and day names to be passed in directly
-const mthNamesEn = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
-]
+const mthNamesEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const dayNamesEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const zeroPad = number => `0${number}`.substr(-2, 2) // eslint-disable-line no-magic-numbers
 
@@ -532,13 +474,7 @@ const derivers = {
   bin (col, binWidth) {
     return record => record[col] - (record[col] % binWidth)
   },
-  dateFormat (
-    col,
-    formatString,
-    utcOutput = false,
-    mthNames = mthNamesEn,
-    dayNames = dayNamesEn
-  ) {
+  dateFormat(col, formatString, utcOutput = false, mthNames = mthNamesEn, dayNames = dayNamesEn) {
     const utc = utcOutput ? 'UTC' : ''
     return function (record) {
       const date = new Date(Date.parse(record[col]))
@@ -580,9 +516,7 @@ Data Model class
 class PivotData {
   constructor (inputProps = {}) {
     this.props = Object.assign({}, PivotData.defaultProps, inputProps)
-    this.aggregator = this.props.aggregators[this.props.aggregatorName](
-      this.props.vals
-    )
+    this.aggregator = this.props.aggregators[this.props.aggregatorName](this.props.vals)
     this.tree = {}
     this.rowKeys = []
     this.colKeys = []
@@ -592,17 +526,13 @@ class PivotData {
     this.sorted = false
     this.filteredData = []
     // iterate through input, accumulating data for cells
-    PivotData.forEachRecord(
-      this.props.data,
-      this.props.derivedAttributes,
-      record => {
+    PivotData.forEachRecord(this.props.data, this.props.derivedAttributes, record => {
         if (this.filter(record)) {
           this.filteredData.push(record)
           this.processRecord(record)
         }
+    })
       }
-    )
-  }
 
   filter(record) {
     const allSelector = '*'
@@ -624,10 +554,7 @@ class PivotData {
 
 
   forEachMatchingRecord (criteria, callback) {
-    return PivotData.forEachRecord(
-      this.props.data,
-      this.props.derivedAttributes,
-      record => {
+    return PivotData.forEachRecord(this.props.data, this.props.derivedAttributes, record => {
         if (!this.filter(record)) {
           return
         }
@@ -638,9 +565,8 @@ class PivotData {
           }
         }
         callback(record)
+    })
       }
-    )
-  }
 
   arrSort (attrs) {
     let a
@@ -740,11 +666,7 @@ class PivotData {
         this.tree[flatRowKey] = {}
       }
       if (!this.tree[flatRowKey][flatColKey]) {
-        this.tree[flatRowKey][flatColKey] = this.aggregator(
-          this,
-          rowKey,
-          colKey
-        )
+        this.tree[flatRowKey][flatColKey] = this.aggregator(this, rowKey, colKey)
       }
       this.tree[flatRowKey][flatColKey].push(record)
     }
@@ -829,7 +751,7 @@ PivotData.forEachRecord = function (input, derivedAttributes, f) {
 }
 
 PivotData.defaultProps = {
-  aggregators: aggregators,
+  aggregators,
   cols: [],
   rows: [],
   vals: [],
@@ -841,14 +763,4 @@ PivotData.defaultProps = {
   derivedAttributes: {}
 }
 
-export {
-  aggregatorTemplates,
-  aggregators,
-  derivers,
-  locales,
-  naturalSort,
-  numberFormat,
-  getSort,
-  sortAs,
-  PivotData
-}
+export { aggregatorTemplates, aggregators, derivers, locales, naturalSort, numberFormat, getSort, sortAs, PivotData }

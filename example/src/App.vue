@@ -19,15 +19,9 @@
     </div>
     <div>
       <select v-model="locale">
-        <option value="en" :selected="locale === 'en' ? 'selected' : undefined">
-          en
-        </option>
-        <option value="ko" :selected="locale === 'ko' ? 'selected' : undefined">
-          ko
-        </option>
-        <option value="fr" :selected="locale === 'fr' ? 'selected' : undefined">
-          fr
-        </option>
+        <option value="en" :selected="locale === 'en' ? 'selected' : undefined">en</option>
+        <option value="ko" :selected="locale === 'ko' ? 'selected' : undefined">ko</option>
+        <option value="fr" :selected="locale === 'fr' ? 'selected' : undefined">fr</option>
       </select>
     </div>
     <div class="main-wrapper">
@@ -114,18 +108,11 @@
                 :locale="locale"
               >
               </vue-pivottable> -->
-      <textarea
-        style="height: 500px; margin: 10px"
-        readonly
-        :value="JSON.stringify(config, undefined, 2)"
-      >
-      </textarea>
+      <textarea style="height: 500px; margin: 10px" readonly :value="JSON.stringify(config, undefined, 2)"> </textarea>
     </div>
     <footer>
       Released under the
-      <a href="//github.com/seungwoo321/vue-pivottable/blob/master/LICENSE"
-        >MIT</a
-      >
+      <a href="//github.com/seungwoo321/vue-pivottable/blob/master/LICENSE">MIT</a>
       license.
       <a href="//github.com/seungwoo321/vue-pivottable">View source.</a>
     </footer>
@@ -161,31 +148,14 @@ export default {
       filteredData: [],
       pivotData: btcDaily,
       asyncFields: ['Unused 1'],
-      attributes: [
-        'Unused 1',
-        'unix',
-        'date',
-        'symbol',
-        'open',
-        'high',
-        'low',
-        'close',
-        'Volume BTC',
-        'Volume USD'
-      ],
+      attributes: ['Unused 1', 'unix', 'date', 'symbol', 'open', 'high', 'low', 'close', 'Volume BTC', 'Volume USD'],
       rows: ['date'],
       cols: ['symbol'],
       vals: ['Volume BTC'],
       disabledFromDragDrop: [], // ['Payer Gender'],
       hiddenFromDragDrop: [],
       sortonlyFromDragDrop: [], // ['Party Size'],
-      pivotColumns: [
-        'Meal',
-        'Payer Smoker',
-        'Day of Week',
-        'Payer Gender',
-        'Party Size'
-      ],
+      pivotColumns: ['Meal', 'Payer Smoker', 'Day of Week', 'Payer Gender', 'Party Size'],
       loading: false,
       aggregatorName: 'Sum',
       rendererName: 'Table',
@@ -227,12 +197,9 @@ export default {
         ko: {
           aggregators: this.aggregators,
           localeStrings: {
-            renderError:
-              '피벗 테이블 결과를 렌더링하는 동안 오류가 발생 했습니다.',
-            computeError:
-              '피벗 테이블 결과를 계산하는 동안 오류가 발생 했습니다.',
-            uiRenderError:
-              '피벗 테이블 UI를 렌더링하는 동안 오류가 발생 했습니다.',
+            renderError: '피벗 테이블 결과를 렌더링하는 동안 오류가 발생 했습니다.',
+            computeError: '피벗 테이블 결과를 계산하는 동안 오류가 발생 했습니다.',
+            uiRenderError: '피벗 테이블 UI를 렌더링하는 동안 오류가 발생 했습니다.',
             selectAll: '모두 선택',
             selectNone: '선택 안함',
             tooMany: '표시 할 값이 너무 많습니다.',
@@ -269,32 +236,12 @@ export default {
         First: tpl.first(usFmt),
         Last: tpl.last(usFmt),
         'Sum over Sum': tpl.sumOverSum(usFmt),
-        'Sum as Fraction of Total': tpl.fractionOf(
-          tpl.sum(),
-          'total',
-          usFmtPct
-        ),
+        'Sum as Fraction of Total': tpl.fractionOf(tpl.sum(), 'total', usFmtPct),
         'Sum as Fraction of Rows': tpl.fractionOf(tpl.sum(), 'row', usFmtPct),
-        'Sum as Fraction of Columns': tpl.fractionOf(
-          tpl.sum(),
-          'col',
-          usFmtPct
-        ),
-        'Count as Fraction of Total': tpl.fractionOf(
-          tpl.count(),
-          'total',
-          usFmtPct
-        ),
-        'Count as Fraction of Rows': tpl.fractionOf(
-          tpl.count(),
-          'row',
-          usFmtPct
-        ),
-        'Count as Fraction of Columns': tpl.fractionOf(
-          tpl.count(),
-          'col',
-          usFmtPct
-        )
+        'Sum as Fraction of Columns': tpl.fractionOf(tpl.sum(), 'col', usFmtPct),
+        'Count as Fraction of Total': tpl.fractionOf(tpl.count(), 'total', usFmtPct),
+        'Count as Fraction of Rows': tpl.fractionOf(tpl.count(), 'row', usFmtPct),
+        'Count as Fraction of Columns': tpl.fractionOf(tpl.count(), 'col', usFmtPct)
       }))(PivotUtilities.aggregatorTemplates)
     },
     renderers() {
