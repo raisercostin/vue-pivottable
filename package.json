@@ -36,7 +36,8 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "docs:dev": "vuepress dev packages/docs",
     "docs:build": "vuepress build packages/docs",
-    "docs:deploy": "sh packages/docs/deploy-docs.sh"
+    "docs:deploy": "sh packages/docs/deploy-docs.sh",
+    "prettier": "prettier . --write"
   },
   "dependencies": {
     "vue": "^2.6.10",
