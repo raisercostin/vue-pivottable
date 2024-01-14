@@ -100,10 +100,7 @@ export default {
       }
     },
     matchesFilter(x) {
-      return x
-        .toLowerCase()
-        .trim()
-        .includes(this.filterText.toLowerCase().trim())
+      return x.toLowerCase().trim().includes(this.filterText.toLowerCase().trim())
     },
     selectOnly(e, value) {
       e.stopPropagation()
@@ -116,9 +113,7 @@ export default {
     getFilterBox(h) {
       const showMenu = Object.keys(this.attrValues).length < this.menuLimit
       const values = Object.keys(this.attrValues)
-      const shown = values
-        .filter(this.matchesFilter.bind(this))
-        .sort(this.sorter)
+      const shown = values.filter(this.matchesFilter.bind(this)).sort(this.sorter)
       return h(
         'div',
         {
@@ -179,9 +174,7 @@ export default {
                     click: () =>
                       this.removeValuesFromFilter(
                         this.name,
-                        Object.keys(this.attrValues).filter(
-                          this.matchesFilter.bind(this)
-                        )
+                        Object.keys(this.attrValues).filter(this.matchesFilter.bind(this))
                       )
                   }
                 },
@@ -198,9 +191,7 @@ export default {
                     click: () =>
                       this.addValuesToFilter(
                         this.name,
-                        Object.keys(this.attrValues).filter(
-                          this.matchesFilter.bind(this)
-                        )
+                        Object.keys(this.attrValues).filter(this.matchesFilter.bind(this))
                       )
                   }
                 },
@@ -235,7 +226,7 @@ export default {
                         type: 'checkbox'
                       },
                       domProps: {
-                        checked: checked
+                        checked
                       }
                     }),
                     x,
@@ -275,8 +266,7 @@ export default {
     }
   },
   render(h) {
-    const filtered =
-      Object.keys(this.valueFilter).length !== 0 ? 'pvtFilteredAttribute' : ''
+    const filtered = Object.keys(this.valueFilter).length !== 0 ? 'pvtFilteredAttribute' : ''
     const pvtAttrScopedSlot = this.$scopedSlots.pvtAttr
     return h(
       'li',
@@ -296,9 +286,7 @@ export default {
             }
           },
           [
-            pvtAttrScopedSlot
-              ? pvtAttrScopedSlot({ name: this.name })
-              : this.name,
+            pvtAttrScopedSlot ? pvtAttrScopedSlot({ name: this.name }) : this.name,
             !this.disabled && (!this.async || (!this.unused && this.async))
               ? h(
                   'span',

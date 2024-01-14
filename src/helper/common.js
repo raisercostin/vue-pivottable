@@ -95,18 +95,14 @@ export default {
       type: String,
       default: 'key_a_to_z',
       validator: function (value) {
-        return (
-          ['key_a_to_z', 'value_a_to_z', 'value_z_to_a'].indexOf(value) !== -1
-        )
+        return ['key_a_to_z', 'value_a_to_z', 'value_z_to_a'].indexOf(value) !== -1
       }
     },
     colOrder: {
       type: String,
       default: 'key_a_to_z',
       validator: function (value) {
-        return (
-          ['key_a_to_z', 'value_a_to_z', 'value_z_to_a'].indexOf(value) !== -1
-        )
+        return ['key_a_to_z', 'value_a_to_z', 'value_z_to_a'].indexOf(value) !== -1
       }
     },
     tableMaxWidth: {
@@ -129,22 +125,19 @@ export default {
     renderError(h) {
       return h(
         'span',
-        this.locales[this.locale].localeStrings.renderError ||
-          'An error occurred rendering the PivotTable results.'
+        this.locales[this.locale].localeStrings.renderError || 'An error occurred rendering the PivotTable results.'
       )
     },
     computeError(h) {
       return h(
         'span',
-        this.locales[this.locale].localeStrings.computeError ||
-          'An error occurred computing the PivotTable results.'
+        this.locales[this.locale].localeStrings.computeError || 'An error occurred computing the PivotTable results.'
       )
     },
     uiRenderError(h) {
       return h(
         'span',
-        this.locales[this.locale].localeStrings.uiRenderError ||
-          'An error occurred rendering the PivotTable UI.'
+        this.locales[this.locale].localeStrings.uiRenderError || 'An error occurred rendering the PivotTable UI.'
       )
     }
   }
